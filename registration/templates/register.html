@@ -1,0 +1,18 @@
+{% extends 'user_app_base.html' %}
+
+{% block title %}Register Page{% endblock %}
+
+{% block content %}
+    <h1>Register Page</h1>
+    {% if user.is_authenticated %}
+        <h3>User is logged, can't register</h3>
+    {% else %}
+        <form action="#" method="post" class="form-group">
+            {% csrf_token %}
+            {{ form }}
+            <br>
+            <button type="submit" class="btn btn-success">Register</button>
+        </form>
+        <h5>Already have an account? Click <a href="/registration/login">HERE</a></h5>
+    {% endif %}
+{% endblock %}

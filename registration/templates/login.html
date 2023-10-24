@@ -1,0 +1,18 @@
+{% extends 'user_app_base.html' %}
+
+{% block title %}Login Page{% endblock %}
+
+{% block content %}
+    <h1>Login Page</h1>
+    {% if user.is_authenticated %}
+        <h3>User is logged, can't login</h3>
+    {% else %}
+        <form action="#" method="post" class="form-group">
+            {% csrf_token %}
+            {{ form }}
+            <br>
+            <button type="submit" class="btn btn-success">Login</button>
+        </form>
+        <h5>Don't have an account? Click <a href="/registration/register">HERE</a></h5>
+    {% endif %}
+{% endblock %}
