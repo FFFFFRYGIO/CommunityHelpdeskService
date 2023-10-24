@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Article Page{% endblock %}
+
+{% block content %}
+    <h1>Create Article page</h1>
+    <h2>User: {{ user }}</h2>
+    {% if user.is_authenticated %}
+        <h3>Logged user content</h3>
+    {% else %}
+        <h3>User not authenticated, login <a href="/login">HERE</a></h3>
+    {% endif %}
+{% endblock %}
