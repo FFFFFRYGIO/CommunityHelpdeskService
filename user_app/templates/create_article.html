@@ -1,10 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'user_app_base.html' %}
 
 {% block title %}Create Article Page{% endblock %}
 
 {% block content %}
     <h1>Create Article page</h1>
-    <h2>User: {{ user }}</h2>
     {% if user.is_authenticated %}
         <h3>Logged user content</h3>
     {% else %}
