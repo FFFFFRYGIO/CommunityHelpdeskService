@@ -76,8 +76,14 @@ WSGI_APPLICATION = 'CommunityHelpdeskService.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': config("DB_ENGINE"),
+        'NAME': config("DB_NAME"),
+        'CLIENT': {
+            'host': config("DB_CLIENT_HOST", default='localhost'),
+            'port': config("DB_CLIENT_PORT", default=27017, cast=int),
+            'username': config("DB_CLIENT_USERNAME"),
+            'password': config("DB_CLIENT_PASSWORD"),
+        },
     }
 }
 
