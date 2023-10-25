@@ -3,25 +3,25 @@ from django.shortcuts import render
 # In your views.py
 
 
-def home(request):
+def home_view(request):
     return render(request, 'home.html')
 
 
-def search(request):
+def search_view(request):
     return render(request, 'search.html')
 
 
-def create_article(request):
+def create_article_view(request):
     return render(request, 'create_article.html')
 
 
-def edit_article(request):
+def edit_article_view(request):
     return render(request, 'edit_article.html')
 
 
-def create_report(request):
+def create_report_view(request):
     return render(request, 'create_report.html')
 
 
-def user_panel(request):
+def user_panel_view(request):
     return render(request, 'user_panel.html')
