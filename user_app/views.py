@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import ArticleForm
+import datetime
 
 # In your views.py
 
@@ -14,8 +16,15 @@ def search_view(request):
 
 @login_required
 def create_article_view(request):
-    article_form = set()  # TODO: parse article creation form
-    return render(request, 'create_article.html', {'article_form': article_form})
+    if request.method == "POST":
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            new_article = form.save(commit=False)
+            new_article.author = request.user
+            new_article.created_at = datetime.datetime.now()
+            new_article.save()
+            return redirect('home')
+    return render(request, 'create_article.html', {'form': ArticleForm})
 
 
 @login_required

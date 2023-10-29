@@ -6,6 +6,22 @@
     <h1>Create Article page</h1>
     {% if user.is_authenticated %}
         <h3>Logged user content</h3>
+        <h3>Add Article:</h3>
+        <form action="#" method="post" class="form-group">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br>
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+        {% if form.errors %}
+            <ul class="errorlist">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        {% endif %}
     {% else %}
         <h3>User not authenticated, login <a href="/registration/login">HERE</a></h3>
     {% endif %}
