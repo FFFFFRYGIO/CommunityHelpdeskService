@@ -5,7 +5,7 @@ from registration.models import User
 
 
 class Article(models.Model):
-    # id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateField()
@@ -13,7 +13,7 @@ class Article(models.Model):
 
 
 class ArticleStep(models.Model):
-    # id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     step_number = models.IntegerField()
     title = models.CharField(max_length=255)

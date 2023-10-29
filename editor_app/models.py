@@ -6,7 +6,7 @@ from user_app.models import Article
 
 
 class Report(models.Model):
-    # id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='report_author')
