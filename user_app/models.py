@@ -1,5 +1,6 @@
 from django.db import models
 from registration.models import User
+from taggit.managers import TaggableManager
 
 # Create your models here.
 
@@ -9,7 +10,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateField()
-    tags = models.JSONField(default=list)
+    tags = TaggableManager()
 
 
 class ArticleStep(models.Model):
