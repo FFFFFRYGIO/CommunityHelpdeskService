@@ -2,6 +2,7 @@ from django.db import models
 from registration.models import User
 from user_app.models import Article
 
+
 # Create your models here.
 
 

@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .forms import ArticleForm, SearchByNameForm, SearchByTagsForm
 import datetime
 
+
 # In your views.py
 
 

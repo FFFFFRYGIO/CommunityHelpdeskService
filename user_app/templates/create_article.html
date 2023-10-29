@@ -13,15 +13,6 @@
             <br>
             <button type="submit" class="btn btn-success">Save</button>
         </form>
-        {% if form.errors %}
-            <ul class="errorlist">
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <li>{{ field.label }}: {{ error }}</li>
-                    {% endfor %}
-                {% endfor %}
-            </ul>
-        {% endif %}
     {% else %}
         <h3>User not authenticated, login <a href="/registration/login">HERE</a></h3>
     {% endif %}

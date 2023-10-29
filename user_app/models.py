@@ -2,6 +2,7 @@ from django.db import models
 from registration.models import User
 from taggit.managers import TaggableManager
 
+
 # Create your models here.
 
 
