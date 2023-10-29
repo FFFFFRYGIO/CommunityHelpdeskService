@@ -82,12 +82,10 @@ DATABASES = {
     'default': {
         'ENGINE': config("DB_ENGINE"),
         'NAME': config("DB_NAME"),
-        'CLIENT': {
-            'host': config("DB_CLIENT_HOST", default='localhost'),
-            'port': config("DB_CLIENT_PORT", default=27017, cast=int),
-            'username': config("DB_CLIENT_USERNAME"),
-            'password': config("DB_CLIENT_PASSWORD"),
-        },
+        'USER': config("DB_USER", default='postgres'),
+        'PASSWORD': config("DB_PASSWORD"),
+        'HOST': config("DB_HOST", default='localhost'),
+        'PORT': config("DB_PORT", default=5432, cast=int),
     }
 }
 
