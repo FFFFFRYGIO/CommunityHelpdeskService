@@ -18,8 +18,10 @@
         <button type="submit" name="search_tags">Search by Tags</button>
     </form>
 
-    <h3>Search by recent viewed</h3>
-    <h4>TODO</h4>
+    {% if user.is_authenticated %}
+        <h3>Search by recently viewed</h3>
+        <button>Search</button>
+    {% endif %}
 
     {% if search_result %}
         <h3>Search Results:</h3>
