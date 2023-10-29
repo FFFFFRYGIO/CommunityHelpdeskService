@@ -5,9 +5,51 @@
 {% block content %}
     <h1>Search page</h1>
     <h3>Search by name</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ search_name_form.as_p }}
+        <button type="submit" name="search_name">Search by Name</button>
+    </form>
 
     <h3>Search by tags</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ search_tags_form.as_p }}
+        <button type="submit" name="search_tags">Search by Tags</button>
+    </form>
 
     <h3>Search by recent viewed</h3>
+    <h4>TODO</h4>
+
+    {% if search_result %}
+        <h3>Search Results:</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Created At</th>
+                <th>Tags</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for article in search_result %}
+                <tr>
+                    <td>{{ article.id }}</td>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.author }}</td>
+                    <td>{{ article.created_at }}</td>
+                    <td>
+                        {% for tag in article.tags.all %}
+                            {{ tag.name }}
+                            {% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 
 {% endblock %}

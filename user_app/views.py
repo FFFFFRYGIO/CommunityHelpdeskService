@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import ArticleForm, SearchByNameForm, SearchByTagsForm
+from .models import Article
 import datetime
+from taggit.models import Tag
 
 
 # In your views.py
@@ -12,8 +14,24 @@ def home_view(request):
 
 
 def search_view(request):
+    search_result = []
+
+    if request.method == "POST":
+        if 'search_name' in request.POST:
+            search_name_form = SearchByNameForm(request.POST)
+            if search_name_form.is_valid():
+                search_text = search_name_form.cleaned_data['search_text']
+                search_result = Article.objects.filter(title__icontains=search_text)
+
+        if 'search_tags' in request.POST:
+            search_tags_form = SearchByTagsForm(request.POST)
+            if search_tags_form.is_valid():
+                tags_to_search = search_tags_form.cleaned_data['tags']
+                tag_objects = Tag.objects.filter(name__in=tags_to_search)
+                search_result = Article.objects.filter(tags__in=tag_objects)
+
     return render(request, 'search.html', {
-        'form': ArticleForm, 'search_name_form': SearchByNameForm, 'search_tags_form': SearchByTagsForm})
+        'search_name_form': SearchByNameForm, 'search_tags_form': SearchByTagsForm, 'search_result': search_result})
 
 
 @login_required
@@ -25,6 +43,12 @@ def create_article_view(request):
             new_article.author = request.user
             new_article.created_at = datetime.datetime.now()
             new_article.save()
+
+            tags = request.POST.get('tags')
+            if tags:
+                tag_list = [tag.strip() for tag in tags.split(',')]
+                new_article.tags.set(tag_list)
+
             return redirect('home')
     return render(request, 'create_article.html', {'form': ArticleForm})
 
