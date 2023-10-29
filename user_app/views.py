@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import ArticleForm
+from .forms import ArticleForm, SearchByNameForm, SearchByTagsForm
 import datetime
 
 # In your views.py
@@ -11,7 +11,8 @@ def home_view(request):
 
 
 def search_view(request):
-    return render(request, 'search.html')
+    return render(request, 'search.html', {
+        'form': ArticleForm, 'search_name_form': SearchByNameForm, 'search_tags_form': SearchByTagsForm})
 
 
 @login_required
