@@ -4,7 +4,11 @@
 
 {% block content %}
     <h1>Home page</h1>
-    <h5>Create article <a href="/user_app/create_article">HERE</a></h5>
     <h5>Search articles <a href="/user_app/search">HERE</a></h5>
-    <h5>Go to user panel <a href="/user_app/user_panel">HERE</a></h5>
+
+    {% if user.is_authenticated %}
+        <h5>Create article <a href="/user_app/create_article">HERE</a></h5>
+        <h5>Go to user panel <a href="/user_app/user_panel">HERE</a></h5>
+    {% endif %}
+
 {% endblock %}
