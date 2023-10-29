@@ -4,6 +4,8 @@ from .forms import ArticleForm, SearchByNameForm, SearchByTagsForm
 from .models import Article
 import datetime
 from taggit.models import Tag
+from django.http import HttpResponse
+from django.db.models import Q
 
 
 # In your views.py
@@ -29,6 +31,12 @@ def search_view(request):
                 tags_to_search = search_tags_form.cleaned_data['tags']
                 tag_objects = Tag.objects.filter(name__in=tags_to_search)
                 search_result = Article.objects.filter(tags__in=tag_objects)
+
+        if 'search_ownership' in request.POST:
+            if request.user.is_authenticated:
+                search_result = Article.objects.filter(Q(author=request.user))
+            else:
+                return HttpResponse("HTTP Unauthorized", status=401)
 
     return render(request, 'search.html', {
         'search_name_form': SearchByNameForm, 'search_tags_form': SearchByTagsForm, 'search_result': search_result})
