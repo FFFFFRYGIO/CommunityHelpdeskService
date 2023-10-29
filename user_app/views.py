@@ -30,7 +30,7 @@ def create_article_view(request):
 @login_required
 def edit_article_view(request, article_id):
     article_form = []  # TODO: parse article creation form
-    # TODO: verify that user is owner of ther article
+    # TODO: verify that user is owner of the article
     article = article_id  # TODO: get article from article_id
     return render(request, 'edit_article.html', {'article': article, 'article_form': article_form})
 
