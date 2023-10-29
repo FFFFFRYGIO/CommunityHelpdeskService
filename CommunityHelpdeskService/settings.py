@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'user_app.apps.UserAppConfig',
     'registration.apps.RegistrationConfig',
     'editor_app.apps.EditorAppConfig',
+    'taggit',
 ]
 
 MIDDLEWARE = [
