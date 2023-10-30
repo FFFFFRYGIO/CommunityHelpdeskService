@@ -6,14 +6,14 @@
     <h1>Edit Article page</h1>
     {% if user.is_authenticated and user == article.author %}
         <h3>Logged user content</h3>
-        <h3>Add Article:</h3>
+        <h3>Edit Article:</h3>
         <form action="#" method="post" class="form-group">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ article_form.as_p }}
             <br>
             <button type="submit" class="btn btn-success">Save</button>
         </form>
     {% else %}
-        <h3>User not authenticated, login <a href="/registration/login">HERE</a></h3>
+        <h3>Not author of the article</h3>
     {% endif %}
 {% endblock %}
