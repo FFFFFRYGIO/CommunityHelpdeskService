@@ -61,7 +61,6 @@ def create_article_view(request):
     return render(request, 'create_article.html', {'form': ArticleForm})
 
 
-@login_required
 def view_article_view(request, article_id):
     article = Article.objects.get(id=article_id)
     return render(request, 'view_article.html', {'article': article})
