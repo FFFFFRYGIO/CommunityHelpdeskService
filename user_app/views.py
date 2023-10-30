@@ -78,10 +78,9 @@ def edit_article_view(request, article_id):
                 return redirect('home')
         else:
             article_form = ArticleForm(instance=article)
-    else:
-        return redirect('search')
+        return render(request, 'edit_article.html', {'article': article, 'article_form': article_form})
 
-    return render(request, 'edit_article.html', {'article': article, 'article_form': article_form})
+    return redirect('home')
 
 
 @login_required
