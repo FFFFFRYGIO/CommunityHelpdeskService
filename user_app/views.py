@@ -63,9 +63,18 @@ def create_article_view(request):
 
 @login_required
 def edit_article_view(request, article_id):
-    article_form = []  # TODO: parse article creation form
-    # TODO: verify that user is owner of the article
-    article = article_id  # TODO: get article from article_id
+    article = Article.objects.get(id=article_id)
+    if request.user == article.author:
+        if request.method == 'POST':
+            article_form = ArticleForm(request.POST, instance=article)
+            if article_form.is_valid():
+                article_form.save()
+                return redirect('home')
+        else:
+            article_form = ArticleForm(instance=article)
+    else:
+        return redirect('search')
+
     return render(request, 'edit_article.html', {'article': article, 'article_form': article_form})
 
 
