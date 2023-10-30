@@ -51,6 +51,11 @@
                             {% if not forloop.last %}, {% endif %}
                         {% endfor %}
                     </td>
+                    <td>
+                        <form method="get" action="{% url 'view_article' article.id %}">
+                            <button type="submit">View</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -62,6 +62,12 @@ def create_article_view(request):
 
 
 @login_required
+def view_article_view(request, article_id):
+    article = Article.objects.get(id=article_id)
+    return render(request, 'view_article.html', {'article': article})
+
+
+@login_required
 def edit_article_view(request, article_id):
     article = Article.objects.get(id=article_id)
     if request.user == article.author:

@@ -1,0 +1,22 @@
+{% extends 'user_app_base.html' %}
+
+{% block title %}View Article Page{% endblock %}
+
+{% block content %}
+    <h1>View Article page</h1>
+
+    <h2>Title: {{ article.title }}</h2>
+    <p>Author: {{ article.author.username }}</p>
+    <p>Created At: {{ article.created_at }}</p>
+    <p>Tags:
+        {% for tag in article.tags.all %}
+            {{ tag.name }}
+            {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    {% if user.is_authenticated and user == article.author %}
+        <form method="get" action="{% url 'edit_article' article.id %}">
+            <button type="submit">Edit</button>
+        </form>
+    {% endif %}
+{% endblock %}
