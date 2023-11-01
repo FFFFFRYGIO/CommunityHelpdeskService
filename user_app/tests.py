@@ -56,7 +56,7 @@ class AccessTestsBase(TestCase):
         self.navbar_elements = []
         self.footer_elements = [
             '<div class="footer-left">Community Helpdesk Service</div>',
-            '<div class="footer-center">Autor</div>',
+            '<div class="footer-center">Author: Radosław Relidzyński</div>',
             '<div class="footer-right">&copy; 2023</div>',
         ]
         self.home_elements = []
