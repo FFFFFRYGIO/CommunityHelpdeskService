@@ -83,9 +83,9 @@ def edit_article_view(request, article_id):
 
 
 @login_required
-def create_report_view(request, article_id):
+def report_article_view(request, article_id):
     report_form = []  # TODO: parse report creation form
-    return render(request, 'create_report.html', {'article_id': article_id, 'report_form': report_form})
+    return render(request, 'report_article.html', {'article_id': article_id, 'report_form': report_form})
 
 
 @login_required
