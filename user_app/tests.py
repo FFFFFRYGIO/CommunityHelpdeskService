@@ -217,3 +217,9 @@ class AuthenticatedUserAccessTests(AccessTestsBase):
         response = self.client.get(reverse('user_panel'))
         self.assertEqual(response.status_code, 200)
         # TODO: create reports and articles to check if they are seen here
+
+
+del AccessTestsBase
+del OldAllUsersAccessTests
+del OldUnauthenticatedUserAccessTests
+del OldAuthenticatedUserAccessTests
