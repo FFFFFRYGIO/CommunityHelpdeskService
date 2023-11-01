@@ -14,9 +14,14 @@
             {% if not forloop.last %}, {% endif %}
         {% endfor %}
     </p>
-    {% if user.is_authenticated and user == article.author %}
-        <form method="get" action="{% url 'edit_article' article.id %}">
-            <button type="submit" name="edit_article">Edit</button>
+    {% if user.is_authenticated %}
+        {% if user == article.author %}
+            <form method="get" action="{% url 'edit_article' article.id %}">
+                <button type="submit" name="edit_article">Edit</button>
+            </form>
+        {% endif %}
+        <form method="get" action="{% url 'report_article' article.id %}">
+            <button type="submit" name="report_article">Report</button>
         </form>
     {% endif %}
 {% endblock %}

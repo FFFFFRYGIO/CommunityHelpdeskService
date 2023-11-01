@@ -19,7 +19,7 @@ def search_view(request):
     search_result = []
 
     if request.method == "POST":
-        if 'search_name' in request.POST:
+        if 'search_title' in request.POST:
             search_name_form = SearchByNameForm(request.POST)
             if search_name_form.is_valid():
                 search_text = search_name_form.cleaned_data['search_text']
