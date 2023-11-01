@@ -6,6 +6,7 @@ import datetime
 from taggit.models import Tag
 from django.http import HttpResponse
 from django.db.models import Q
+from editor_app.models import Report
 
 
 # In your views.py
@@ -83,13 +84,13 @@ def edit_article_view(request, article_id):
 
 
 @login_required
-def report_article_view(request, article_id):
-    report_form = []  # TODO: parse report creation form
-    return render(request, 'report_article.html', {'article_id': article_id, 'report_form': report_form})
+def user_panel_view(request):
+    user_articles = Article.objects.filter(author=request.user)
+    user_reports = Report.objects.filter(author=request.user)
+    return render(request, 'user_panel.html', {'articles': user_articles, 'reports': user_reports})
 
 
 @login_required
-def user_panel_view(request):
-    user_articles = []  # TODO: parse user articles
-    user_reports = []  # TODO: parse user reports
-    return render(request, 'user_panel.html')
+def report_article_view(request, article_id):
+    report_form = []  # TODO: parse report creation form
+    return render(request, 'report_article.html', {'article_id': article_id, 'report_form': report_form})

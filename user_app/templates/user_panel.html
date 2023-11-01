@@ -4,4 +4,64 @@
 
 {% block content %}
     <h1>User Panel</h1>
+
+    {% if articles %}
+        <h3>Your Articles:</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Created At</th>
+                <th>Tags</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.id }}</td>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.created_at }}</td>
+                    <td>
+                        {% for tag in article.tags.all %}
+                            {{ tag.name }}
+                            {% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You haven't authored any articles yet.</p>
+    {% endif %}
+
+    {% if reports %}
+        <h3>Your Reports:</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created At</th>
+                <th>Additional File</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for report in reports %}
+                <tr>
+                    <td>{{ report.id }}</td>
+                    <td>{{ report.title }}</td>
+                    <td>{{ report.description }}</td>
+                    <td>{{ report.created_at }}</td>
+                    <td>{{ report.additional_file.url }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You haven't authored any reports yet.</p>
+    {% endif %}
+
 {% endblock %}
