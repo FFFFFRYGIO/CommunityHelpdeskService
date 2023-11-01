@@ -1,4 +1,6 @@
 from django.test import TestCase, Client
+
+from editor_app.models import Report
 from registration.models import User
 from .forms import ArticleForm
 from .models import Article
@@ -132,15 +134,15 @@ class AccessTestsBase(TestCase):
             self.assertEqual(response.status_code, 401)
 
     def test_view_article_page_access_and_content(self):
-        article_ids = Article.objects.values_list('id', flat=True)
-        for article_id in article_ids:
-            response = self.client.get(reverse('view_article', args=[article_id]))
+        articles = Article.objects.all()
+        for article in articles:
+            response = self.client.get(reverse('view_article', args=[article.id]))
             self.assertEqual(response.status_code, 200)
 
             if self.client.session.get('_auth_user_id'):
                 self.assertContains(response, '<button type="submit" name="report_article">Report</button>', count=1)
 
-                if Article.objects.get(id=article_id).author.id == int(self.client.session.get('_auth_user_id')):
+                if article.author_id == int(self.client.session.get('_auth_user_id')):
                     self.assertContains(response, '<button type="submit" name="edit_article">Edit</button>', count=1)
                 else:
                     self.assertNotContains(response, '<button type="submit" name="edit_article">Edit</button>')
@@ -148,6 +150,62 @@ class AccessTestsBase(TestCase):
                 self.assertNotContains(response, '<button type="submit" name="report_article">Report</button>')
                 self.assertNotContains(response, '<button type="submit" name="edit_article">Edit</button>')
 
+    def test_edit_article_page_access_and_content(self):
+        articles = Article.objects.all()
+        for article in articles:
+            response = self.client.get(reverse('edit_article', args=[article.id]))
+            if self.client.session.get('_auth_user_id'):
+                if article.author_id == int(self.client.session.get('_auth_user_id')):
+                    self.assertEqual(response.status_code, 200)
+                    self.assertContains(response, article.title)
+                else:
+                    self.assertRedirects(response, reverse('home'))
+            else:
+                self.assertRedirects(response, reverse('login') + "?next=" + reverse('edit_article', args=[article.id]))
+
+    def test_create_article_page_access_and_content(self):
+        response = self.client.get(reverse('create_article'))
+
+        if self.client.session.get('_auth_user_id'):
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, '<form action="#" method="post" class="form-group">')
+        else:
+            self.assertRedirects(response, reverse('login') + "?next=" + reverse('create_article'))
+
+    def test_user_panel_page_access_and_content(self):
+        response = self.client.get(reverse('user_panel'))
+        if self.client.session.get('_auth_user_id'):
+            self.assertEqual(response.status_code, 200)
+
+
+            user_id = int(self.client.session.get('_auth_user_id'))
+
+            user_articles = Article.objects.filter(author_id=user_id)
+            if len(user_articles) > 0:
+                self.assertContains(response, '<h3>Your Articles:</h3>')
+                for article in user_articles:
+                    self.assertContains(response, article.title)
+            else:
+                self.assertContains(response, "<p>You haven't authored any articles yet.</p>")
+
+            other_articles = Article.objects.exclude(author_id=user_id)
+            for article in other_articles:
+                self.assertNotContains(response, article.title)
+
+            user_reports = Report.objects.filter(author_id=user_id)
+            if len(user_reports) > 0:
+                for report in user_reports:
+                    self.assertContains(response, '<h3>Your Reports:</h3>')
+                    self.assertContains(response, report.title)
+            else:
+                self.assertContains(response, "<p>You haven't authored any reports yet.</p>")
+
+            other_reports = Report.objects.exclude(author_id=user_id)
+            for report in other_reports:
+                self.assertNotContains(response, report.title)
+
+        else:
+            self.assertRedirects(response, reverse('login') + "?next=" + reverse('user_panel'))
 
 
 class UnauthenticatedUserAccessTests(AccessTestsBase):
