@@ -9,7 +9,6 @@ from parameterized import parameterized
 from django.contrib.auth.models import Group
 from datetime import datetime
 
-
 # Create your tests here.
 
 USERS = [
@@ -35,6 +34,7 @@ class AccessTestsBase(TestCase):
 
         for user in USERS:
             test_user = User.objects.create_user(username=user['username'], password=user['password'])
+
             if 'editor' in test_user.username:
                 test_user.groups.add(editors_group)
                 cls.test_users['editors'].append(test_user)
@@ -43,6 +43,7 @@ class AccessTestsBase(TestCase):
                     cls.test_users['master_editors'].append(test_user)
             else:
                 cls.test_users['users'].append(test_user)
+
             if 'number_of_articles' in user:
                 for i in range(user['number_of_articles']):
                     Article.objects.create(
@@ -55,35 +56,83 @@ class AccessTestsBase(TestCase):
     def setUp(self):
         """setUp method for AccessTests"""
         self.client = Client()
-        self.navbar_elements = []
-        self.footer_elements = [
+
+    def tearDown(self):
+        """tearDown method for AccessTestsBase"""
+        self.client.logout()
+
+    def get_home_page_contents(self):
+        """ generate lists of contents for navbar, footer and home page """
+
+        navbar_elements = [
+            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/home">Home',
+            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/search">Search',
+            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/user_panel">User Panel',
+            '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel',
+            '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">Master Editor Panel',
+            '<a class="nav-link" href="http://127.0.0.1:8000/registration/logout">Logout',
+        ]
+        footer_elements = [
             '<div class="footer-left">Community Helpdesk Service</div>',
             '<div class="footer-center">Author: Radosław Relidzyński</div>',
             '<div class="footer-right">&copy; 2023</div>',
         ]
-        self.home_elements = []
+        home_elements = [
+            '<h5>Search articles <a href="/user_app/search">HERE</a></h5>',
+            '<h5>Create article <a href="/user_app/create_article">HERE</a></h5>',
+            '<h5>Go to user panel <a href="/user_app/user_panel">HERE</a></h5>',
+            '<h5>Go to editor panel <a href="/user_app/editor_panel">HERE</a></h5>',
+            '<h5>Go to master editor panel <a href="/user_app/master_editor_panel">HERE</a></h5>',
+        ]
 
-    def tearDown(self):
-        """tearDown method for AccessTestsBase"""
-        self.client.post(reverse('logout'))
+        try:
+            user = User.objects.get(id=self.client.session.get('_auth_user_id'))
+        except User.DoesNotExist:
+            navbar_elements.remove('<a class="nav-link" href="http://127.0.0.1:8000/user_app/user_panel">User Panel')
+            navbar_elements.remove(
+                '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel')
+            navbar_elements.remove(
+                '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">Master Editor Panel')
+            navbar_elements.remove('<a class="nav-link" href="http://127.0.0.1:8000/registration/logout">Logout')
+            navbar_elements.append('<a class="nav-link" href="http://127.0.0.1:8000/registration/register">Register')
+            navbar_elements.append('<a class="nav-link" href="http://127.0.0.1:8000/registration/login">Login')
+            home_elements.remove('<h5>Create article <a href="/user_app/create_article">HERE</a></h5>')
+            home_elements.remove('<h5>Go to user panel <a href="/user_app/user_panel">HERE</a></h5>')
+            home_elements.remove('<h5>Go to editor panel <a href="/user_app/editor_panel">HERE</a></h5>')
+            home_elements.remove('<h5>Go to master editor panel <a href="/user_app/master_editor_panel">HERE</a></h5>')
+            return navbar_elements, footer_elements, home_elements
 
-    def test_base_template_access_and_content(self):
+        if not user.groups.filter(name='MasterEditors').exists:
+            navbar_elements.remove(
+                '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">'
+                'Master Editor Panel')
+            home_elements.remove(
+                '<h5>Go to master editor panel <a href="/user_app/master_editor_panel">HERE</a></h5>')
+
+            if not user.groups.filter(name='Editors').exists():
+                navbar_elements.remove(
+                    '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel')
+                home_elements.remove('<h5>Go to editor panel <a href="/user_app/editor_panel">HERE</a></h5>')
+
+        return navbar_elements, footer_elements, home_elements
+
+    def test_base_template_and_home_page_access_and_content(self):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
 
-        self.assertContains(response, '<li class="nav-item active">', count=len(self.navbar_elements))
-        for element in self.navbar_elements:
+        navbar_elements, footer_elements, home_elements = self.get_home_page_contents()
+
+        print(response._container)
+
+        self.assertContains(response, '<li class="nav-item active">', count=len(navbar_elements))
+        for element in navbar_elements:
             self.assertContains(response, element, count=1)
 
         self.assertContains(response, '<footer class="footer text-center">', count=1)
-        for element in self.footer_elements:
+        for element in footer_elements:
             self.assertContains(response, element, count=1)
 
-    def test_home_page_access_and_content(self):
-        response = self.client.get(reverse('home'))
-        self.assertEqual(response.status_code, 200)
-
-        for element in self.home_elements:
+        for element in home_elements:
             self.assertContains(response, element, count=1)
 
     def test_search_page_access_and_content(self):
@@ -169,6 +218,21 @@ class AccessTestsBase(TestCase):
         if self.client.session.get('_auth_user_id'):
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, '<form action="#" method="post" class="form-group">')
+
+            form_data = {
+                'title': 'New Test Article',
+                'tags': 'tag1, tag2',
+            }
+            form = ArticleForm(data=form_data)
+            self.assertTrue(form.is_valid())
+
+            response = self.client.post(reverse('create_article'), form_data)
+            self.assertRedirects(response, reverse('home'))
+
+            new_article = Article.objects.get(title='New Test Article')
+            self.assertEqual(new_article.author_id, int(self.client.session.get('_auth_user_id')))
+            self.assertEqual(list(new_article.tags.names()), ['tag1', 'tag2'])
+
         else:
             self.assertRedirects(response, reverse('login') + "?next=" + reverse('create_article'))
 
@@ -176,7 +240,6 @@ class AccessTestsBase(TestCase):
         response = self.client.get(reverse('user_panel'))
         if self.client.session.get('_auth_user_id'):
             self.assertEqual(response.status_code, 200)
-
 
             user_id = int(self.client.session.get('_auth_user_id'))
 
@@ -209,20 +272,7 @@ class AccessTestsBase(TestCase):
 
 
 class UnauthenticatedUserAccessTests(AccessTestsBase):
-
-    def setUp(self):
-        super().setUp()
-        unauthenticated_user_navbar_elements = [
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/home">Home',
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/search">Search',
-            '<a class="nav-link" href="http://127.0.0.1:8000/registration/register">Register',
-            '<a class="nav-link" href="http://127.0.0.1:8000/registration/login">Login',
-        ]
-        self.navbar_elements = unauthenticated_user_navbar_elements
-        unauthenticated_user_home_elements = [
-            '<h5>Search articles <a href="/user_app/search">HERE</a></h5>'
-        ]
-        self.home_elements = unauthenticated_user_home_elements
+    pass
 
 
 class AuthenticatedUserAccessTests(AccessTestsBase):
@@ -230,44 +280,17 @@ class AuthenticatedUserAccessTests(AccessTestsBase):
         super().setUp()
         self.client.force_login(self.test_users['users'][0])
 
-        authenticated_user_navbar_elements = [
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/home">Home',
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/search">Search',
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/user_panel">User Panel',
-            '<a class="nav-link" href="http://127.0.0.1:8000/registration/logout">Logout',
-        ]
-        self.navbar_elements = authenticated_user_navbar_elements
-
 
 class EditorAccessTests(AccessTestsBase):
     def setUp(self):
         super().setUp()
         self.client.force_login(self.test_users['editors'][0])
 
-        editor_navbar_elements = [
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/home">Home',
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/search">Search',
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/user_panel">User Panel',
-            '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel',
-            '<a class="nav-link" href="http://127.0.0.1:8000/registration/logout">Logout',
-        ]
-        self.navbar_elements = editor_navbar_elements
-
 
 class MasterEditorAccessTests(AccessTestsBase):
     def setUp(self):
         super().setUp()
-        self.client.force_login(self.test_users['editors'][0])
-
-        master_editor_navbar_elements = [
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/home">Home',
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/search">Search',
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/user_panel">User Panel',
-            '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel',
-            '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">Master Editor Panel',
-            '<a class="nav-link" href="http://127.0.0.1:8000/registration/logout">Logout',
-        ]
-        self.navbar_elements = master_editor_navbar_elements
+        self.client.force_login(self.test_users['master_editors'][0])
 
 
 del AccessTestsBase
