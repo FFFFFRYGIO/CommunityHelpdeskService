@@ -102,17 +102,17 @@ class AccessTestsBase(TestCase):
             home_elements.remove('<h5>Go to master editor panel <a href="/user_app/master_editor_panel">HERE</a></h5>')
             return navbar_elements, footer_elements, home_elements
 
-        if not user.groups.filter(name='MasterEditors').exists:
+        if not user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
             navbar_elements.remove(
-                '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">'
-                'Master Editor Panel')
-            home_elements.remove(
-                '<h5>Go to master editor panel <a href="/user_app/master_editor_panel">HERE</a></h5>')
+                '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel')
+            home_elements.remove('<h5>Go to editor panel <a href="/user_app/editor_panel">HERE</a></h5>')
 
-            if not user.groups.filter(name='Editors').exists():
+            if not user.groups.values_list('name', flat=True).filter(name='Editors'):
                 navbar_elements.remove(
-                    '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel')
-                home_elements.remove('<h5>Go to editor panel <a href="/user_app/editor_panel">HERE</a></h5>')
+                    '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">'
+                    'Master Editor Panel')
+                home_elements.remove(
+                    '<h5>Go to master editor panel <a href="/user_app/master_editor_panel">HERE</a></h5>')
 
         return navbar_elements, footer_elements, home_elements
 
