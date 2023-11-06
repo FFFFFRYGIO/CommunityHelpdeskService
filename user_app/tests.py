@@ -1,5 +1,3 @@
-from django.test import TestCase, Client
-
 from editor_app.models import Report
 from registration.models import User
 from .forms import ArticleForm
@@ -8,59 +6,12 @@ from django.urls import reverse
 from parameterized import parameterized
 from django.contrib.auth.models import Group
 from datetime import datetime
+from tests.main_test_classes import AccessTestsBaseConfig
 
 # Create your tests here.
 
-USERS = [
-    {'username': 'test_user1', 'password': 'user_password1', 'number_of_articles': 5},
-    {'username': 'test_user2', 'password': 'user_password2', 'number_of_articles': 5},
-    {'username': 'test_editor1', 'password': 'editor_password1'},
-    {'username': 'test_editor2', 'password': 'editor_password2'},
-    {'username': 'test_master_editor1', 'password': 'master_editor_password1'},
-]
 
-
-class AccessTestsBase(TestCase):
-    test_users = {
-        'users': [],
-        'editors': [],
-        'master_editors': [],
-    }
-
-    @classmethod
-    def setUpTestData(cls):
-        editors_group, created = Group.objects.get_or_create(name='Editors')
-        master_editors_group, created = Group.objects.get_or_create(name='MasterEditors')
-
-        for user in USERS:
-            test_user = User.objects.create_user(username=user['username'], password=user['password'])
-
-            if 'editor' in test_user.username:
-                test_user.groups.add(editors_group)
-                cls.test_users['editors'].append(test_user)
-                if 'master' in test_user.username:
-                    test_user.groups.add(master_editors_group)
-                    cls.test_users['master_editors'].append(test_user)
-            else:
-                cls.test_users['users'].append(test_user)
-
-            if 'number_of_articles' in user:
-                for i in range(user['number_of_articles']):
-                    Article.objects.create(
-                        title=f'Test Article {user["username"]}-{i}',
-                        author=test_user,
-                        created_at=datetime.today().strftime('%Y-%m-%d'),
-                        tags=f'tag2, tag{i % 2}'
-                    )
-
-    def setUp(self):
-        """setUp method for AccessTests"""
-        self.client = Client()
-
-    def tearDown(self):
-        """tearDown method for AccessTestsBase"""
-        self.client.logout()
-
+class AccessTestsBase(AccessTestsBaseConfig):
     def get_home_page_contents(self):
         """ generate lists of contents for navbar, footer and home page """
 
@@ -81,8 +32,8 @@ class AccessTestsBase(TestCase):
             '<h5>Search articles <a href="/user_app/search">HERE</a></h5>',
             '<h5>Create article <a href="/user_app/create_article">HERE</a></h5>',
             '<h5>Go to user panel <a href="/user_app/user_panel">HERE</a></h5>',
-            '<h5>Go to editor panel <a href="/user_app/editor_panel">HERE</a></h5>',
-            '<h5>Go to master editor panel <a href="/user_app/master_editor_panel">HERE</a></h5>',
+            '<h5>Go to editor panel <a href="/editor_app/editor_panel">HERE</a></h5>',
+            '<h5>Go to master editor panel <a href="/editor_app/master_editor_panel">HERE</a></h5>',
         ]
 
         try:
@@ -98,14 +49,14 @@ class AccessTestsBase(TestCase):
             navbar_elements.append('<a class="nav-link" href="http://127.0.0.1:8000/registration/login">Login')
             home_elements.remove('<h5>Create article <a href="/user_app/create_article">HERE</a></h5>')
             home_elements.remove('<h5>Go to user panel <a href="/user_app/user_panel">HERE</a></h5>')
-            home_elements.remove('<h5>Go to editor panel <a href="/user_app/editor_panel">HERE</a></h5>')
-            home_elements.remove('<h5>Go to master editor panel <a href="/user_app/master_editor_panel">HERE</a></h5>')
+            home_elements.remove('<h5>Go to editor panel <a href="/editor_app/editor_panel">HERE</a></h5>')
+            home_elements.remove('<h5>Go to master editor panel <a href="/editor_app/master_editor_panel">HERE</a></h5>')
             return navbar_elements, footer_elements, home_elements
 
         if not user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
             navbar_elements.remove(
                 '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel')
-            home_elements.remove('<h5>Go to editor panel <a href="/user_app/editor_panel">HERE</a></h5>')
+            home_elements.remove('<h5>Go to editor panel <a href="/editor_app/editor_panel">HERE</a></h5>')
 
             if not user.groups.values_list('name', flat=True).filter(name='Editors'):
                 navbar_elements.remove(
@@ -320,6 +271,3 @@ class MasterEditorAccessTests(AccessTestsBase):
     def setUp(self):
         super().setUp()
         self.client.force_login(self.test_users['master_editors'][0])
-
-
-del AccessTestsBase
