@@ -116,9 +116,8 @@ def view_report_view(request, report_id):
     """ view the whole content of the report """
     report = Report.objects.get(id=report_id)
 
-    if report.editor == request.user:
+    if report.author == request.user:
         return render(request, 'view_report.html', {'report': report})
 
     else:
         return redirect("home")
-
