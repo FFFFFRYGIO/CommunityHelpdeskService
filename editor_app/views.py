@@ -34,7 +34,7 @@ def manage_report_view(request, report_id):
     is_editor = request.user.groups.values_list('name', flat=True).filter(name='Editors')
 
     if is_master_editor or (is_editor and report.editor == request.user):
-        return render(request, 'view_report.html', {'report': report})
+        return render(request, 'manage_report.html', {'report': report})
 
     else:
         return redirect("home")
