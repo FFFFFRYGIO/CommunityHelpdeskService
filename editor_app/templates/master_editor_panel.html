@@ -4,4 +4,37 @@
 
 {% block content %}
     <h1>Master Editor Panel</h1>
+
+    {% if all_reports %}
+        <h3>Existing reports</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Description</th>
+                <th>Author</th>
+                <th>Article</th>
+                <th>Status</th>
+                <th>View Report</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for report in all_reports %}
+                <tr>
+                    <td>{{ report.description }}</td>
+                    <td>{{ report.author }}</td>
+                    <td>{{ report.article.title }}</td>
+                    <td>{{ report.status }}</td>
+                    <td>
+                        <form method="get" action="{% url 'manage_report' report.id %}">
+                            <button type="submit" name="manage_report">Manage</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>There are no reports to manage</p>
+    {% endif %}
+
 {% endblock %}

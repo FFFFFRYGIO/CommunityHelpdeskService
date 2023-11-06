@@ -4,4 +4,36 @@
 
 {% block content %}
     <h1>Editor Panel</h1>
+
+    {% if editor_reports %}
+        <h3>Your Reports to resolve:</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Article</th>
+                <th>Status</th>
+                <th>View Report</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for report in editor_reports %}
+                <tr>
+                    <td>{{ report.title }}</td>
+                    <td>{{ report.author }}</td>
+                    <td>{{ report.article }}</td>
+                    <td>{{ report.status }}</td>
+                    <td>
+                        <form method="get" action="{% url 'manage_report' report.id %}">
+                            <button type="submit" name="manage_report">Manage</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have no reports assigned for now</p>
+    {% endif %}
 {% endblock %}
