@@ -28,6 +28,11 @@
                             {% if not forloop.last %}, {% endif %}
                         {% endfor %}
                     </td>
+                    <td>
+                        <form method="get" action="{% url 'view_article' article.id %}">
+                            <button type="submit" name="view_article">View</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -46,6 +51,7 @@
                 <th>Description</th>
                 <th>Created At</th>
                 <th>Additional File</th>
+                <th>View Report</th>
             </tr>
             </thead>
             <tbody>
@@ -55,7 +61,16 @@
                     <td>{{ report.title }}</td>
                     <td>{{ report.description }}</td>
                     <td>{{ report.created_at }}</td>
-                    <td>{{ report.additional_file.url }}</td>
+                    {% if report.additional_file %}
+                        <td><a href="{{ report.additional_file.url }}" target="_blank">Download File</a></td>
+                    {% else %}
+                        <td>No additional file</td>
+                    {% endif %}
+                    <td>
+                        <form method="get" action="{% url 'view_report' report.id %}">
+                            <button type="submit" name="view_report">View</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
