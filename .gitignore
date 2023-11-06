@@ -5,6 +5,7 @@
 .env
 
 # Pychache files
+__pycache__/
 CommunityHelpdeskService/__pycache__/
 editor_app/__pycache__/
 editor_app/migrations/__pycache__/
