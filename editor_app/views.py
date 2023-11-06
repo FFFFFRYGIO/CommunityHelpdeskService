@@ -19,7 +19,7 @@ def editor_panel_view(request):
 @login_required
 def master_editor_panel_view(request):
     """ master editor panel with all reports """
-    if request.user.groups.values_list('name', flat=True).filter(name='Editors'):
+    if request.user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
         all_reports = Report.objects.all()
         return render(request, 'master_editor_panel.html', {'all_reports': all_reports})
     else:
