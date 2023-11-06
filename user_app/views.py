@@ -2,11 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import ArticleForm, SearchByNameForm, SearchByTagsForm
 from .models import Article
-import datetime
+from datetime import datetime
 from taggit.models import Tag
 from django.http import HttpResponse
 from django.db.models import Q
 from editor_app.models import Report
+from editor_app.forms import ReportForm
 
 
 # In your views.py
@@ -50,7 +51,7 @@ def create_article_view(request):
         if form.is_valid():
             new_article = form.save(commit=False)
             new_article.author = request.user
-            new_article.created_at = datetime.datetime.now()
+            new_article.created_at = datetime.now()
             new_article.save()
 
             tags = request.POST.get('tags')
@@ -92,5 +93,32 @@ def user_panel_view(request):
 
 @login_required
 def report_article_view(request, article_id):
-    report_form = []  # TODO: parse report creation form
-    return render(request, 'report_article.html', {'article_id': article_id, 'report_form': report_form})
+    article = Article.objects.get(id=article_id)
+
+    if request.method == 'POST':
+        report_form = ReportForm(request.POST, request.FILES)
+        if report_form.is_valid():
+            report = report_form.save(commit=False)
+            report.author = request.user
+            report.article = article
+            report.created_at = datetime.now()
+            report.status = "Created"
+            report.save()
+            return redirect('home')
+
+    else:
+        report_form = ReportForm(initial={'article': article})
+        return render(request, 'report_article.html', {'article': article, 'report_form': report_form})
+
+
+@login_required
+def view_report_view(request, report_id):
+    """ view the whole content of the report """
+    report = Report.objects.get(id=report_id)
+
+    if report.editor == request.user:
+        return render(request, 'view_report.html', {'report': report})
+
+    else:
+        return redirect("home")
+

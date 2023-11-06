@@ -18,9 +18,24 @@ def editor_panel_view(request):
 
 @login_required
 def master_editor_panel_view(request):
-    """ master editor panel with the all reports """
+    """ master editor panel with all reports """
     if request.user.groups.values_list('name', flat=True).filter(name='Editors'):
         all_reports = Report.objects.all()
         return render(request, 'master_editor_panel.html', {'all_reports': all_reports})
     else:
         return redirect("home")
+
+
+@login_required
+def manage_report_view(request, report_id):
+    """ view the content of the report and allow to manage it """
+    report = Report.objects.get(id=report_id)
+    is_master_editor = request.user.groups.values_list('name', flat=True).filter(name='MasterEditors')
+    is_editor = request.user.groups.values_list('name', flat=True).filter(name='Editors')
+
+    if is_master_editor or (is_editor and report.editor == request.user):
+        return render(request, 'view_report.html', {'report': report})
+
+    else:
+        return redirect("home")
+
