@@ -14,10 +14,12 @@ from editor_app.forms import ReportForm
 
 
 def home_view(request):
+    """ home page, default redirection from other pages """
     return render(request, 'home.html')
 
 
 def search_view(request):
+    """ search articles to view them """
     search_result = []
 
     if request.method == "POST":
@@ -46,6 +48,7 @@ def search_view(request):
 
 @login_required
 def create_article_view(request):
+    """ a form to create an article """
     if request.method == "POST":
         form = ArticleForm(request.POST)
         if form.is_valid():
@@ -64,12 +67,14 @@ def create_article_view(request):
 
 
 def view_article_view(request, article_id):
+    """ view or report an article """
     article = Article.objects.get(id=article_id)
     return render(request, 'view_article.html', {'article': article})
 
 
 @login_required
 def edit_article_view(request, article_id):
+    """ change article elements (for owners and editors) """
     article = Article.objects.get(id=article_id)
     if request.user == article.author:
         if request.method == 'POST':
@@ -86,6 +91,7 @@ def edit_article_view(request, article_id):
 
 @login_required
 def user_panel_view(request):
+    """ all user's articles and reports """
     user_articles = Article.objects.filter(author=request.user)
     user_reports = Report.objects.filter(author=request.user)
     return render(request, 'user_panel.html', {'articles': user_articles, 'reports': user_reports})
@@ -93,6 +99,7 @@ def user_panel_view(request):
 
 @login_required
 def report_article_view(request, article_id):
+    """ a form to create report about specified article """
     article = Article.objects.get(id=article_id)
 
     if request.method == 'POST':

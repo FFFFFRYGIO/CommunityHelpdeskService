@@ -4,8 +4,6 @@ from .forms import ArticleForm
 from .models import Article
 from django.urls import reverse
 from parameterized import parameterized
-from django.contrib.auth.models import Group
-from datetime import datetime
 from tests.main_test_classes import AccessTestsBaseConfig
 
 # Create your tests here.
@@ -50,7 +48,8 @@ class AccessTestsBase(AccessTestsBaseConfig):
             home_elements.remove('<h5>Create article <a href="/user_app/create_article">HERE</a></h5>')
             home_elements.remove('<h5>Go to user panel <a href="/user_app/user_panel">HERE</a></h5>')
             home_elements.remove('<h5>Go to editor panel <a href="/editor_app/editor_panel">HERE</a></h5>')
-            home_elements.remove('<h5>Go to master editor panel <a href="/editor_app/master_editor_panel">HERE</a></h5>')
+            home_elements.remove(
+                '<h5>Go to master editor panel <a href="/editor_app/master_editor_panel">HERE</a></h5>')
             return navbar_elements, footer_elements, home_elements
 
         if not user.groups.values_list('name', flat=True).filter(name='MasterEditors'):

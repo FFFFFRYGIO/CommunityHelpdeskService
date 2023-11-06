@@ -2,7 +2,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import Group
 
 
 # Create your views here.
@@ -25,6 +24,7 @@ def register_view(request):
 
 
 def login_view(request):
+    """ login user to session """
     messages = []
     if request.method == "POST":
         username = request.POST['username']
@@ -44,5 +44,6 @@ def login_view(request):
 
 @login_required
 def logout_view(request):
+    """ logout user from session """
     logout(request)
     return redirect("login")
