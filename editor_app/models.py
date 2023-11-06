@@ -8,11 +8,10 @@ from user_app.models import Article
 
 class Report(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=255)
     description = models.TextField(max_length=512)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='report_author')
     created_at = models.DateField()
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    editor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='report_editor')
-    additional_file = models.FileField()
+    editor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='report_editor')
+    additional_file = models.FileField(null=True)
     status = models.TextField(max_length=50)
