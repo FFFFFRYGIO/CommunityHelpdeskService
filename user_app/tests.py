@@ -270,6 +270,35 @@ class AccessTestsBase(TestCase):
         else:
             self.assertRedirects(response, reverse('login') + "?next=" + reverse('user_panel'))
 
+    def test_report_article_page_access_and_content(self):
+        articles = Article.objects.all()
+        for article in articles:
+            response = self.client.get(reverse('report_article', args=[article.id]))
+
+            if self.client.session.get('_auth_user_id'):
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, "<h1>Report Article page</h1>")
+                self.assertContains(response, article.title)
+            else:
+                self.assertRedirects(response,
+                                     reverse('login') + "?next=" + reverse('report_article', args=[article.id]))
+
+    def test_view_report_page_access_and_content(self):
+        reports = Report.objects.all()
+        for report in reports:
+            response = self.client.get(reverse('view_report', args=[report.id]))
+
+            if self.client.session.get('_auth_user_id'):
+                if report.author_id == self.client.session.get('_auth_user_id'):
+                    self.assertEqual(response.status_code, 200)
+                    self.assertContains(response, "<h1>View Report Page</h1>")
+                    self.assertContains(response, report.title)
+                else:
+                    self.assertRedirects(response, reverse('home'))
+            else:
+                self.assertRedirects(response,
+                                     reverse('login') + "?next=" + reverse('view_report', args=[report.id]))
+
 
 class UnauthenticatedUserAccessTests(AccessTestsBase):
     pass
