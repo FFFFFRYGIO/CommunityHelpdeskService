@@ -12,10 +12,16 @@ class ArticleForm(forms.ModelForm):
 class StepForm(forms.ModelForm):
     class Meta:
         model = Step
-        exclude = ['article', 'step_number']
+        exclude = ['article', 'ordinal_number']
+        widgets = {
+            'title': forms.TextInput(attrs={'required': False}),
+            'description1': forms.Textarea(attrs={'rows': 2, 'cols': 40}),
+            'description2': forms.Textarea(attrs={'rows': 2, 'cols': 40}),
+        }
 
 
-StepFormSet = forms.modelformset_factory(Step, form=StepForm, extra=3)
+StepFormSet = forms.modelformset_factory(Step, form=StepForm)
+
 
 class SearchByNameForm(forms.Form):
     search_text = forms.CharField(label='Search by Name', max_length=255)

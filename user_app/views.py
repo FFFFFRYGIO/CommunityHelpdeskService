@@ -62,16 +62,28 @@ def create_article_view(request):
                 tag_list = [tag.strip() for tag in tags.split(',')]
                 new_article.tags.set(tag_list)
 
-            step_form_set = StepFormSet(request.POST, prefix='steps')
+            step_form_set = StepFormSet(request.POST)
             if step_form_set.is_valid():
+                ordinal_number = 1
                 for step_form in step_form_set:
-                    step = step_form.save(commit=False)
-                    step.article = article
-                    step.save()
+                    step_data = step_form.save(commit=False)
+                    if step_data.title:
+                        step = Step()
+                        step.article = new_article
+                        step.ordinal_number = ordinal_number
+                        step.title = step_data.title
+                        step.description1 = step_data.description1
+                        step.file1 = step_data.file1
+                        step.description2 = step_data.description2
+                        step.file2 = step_data.file2
+                        step.save()
+                        ordinal_number += 1
 
             return redirect('home')
     else:
-        return render(request, 'create_article.html', {'article_form': ArticleForm(), 'step_form_set': StepFormSet()})
+        article_form = ArticleForm()
+        step_form_set = StepFormSet(queryset=Step.objects.none())
+        return render(request, 'create_article.html', {'article_form': article_form, 'step_form_set': step_form_set})
 
 
 def view_article_view(request, article_id):
