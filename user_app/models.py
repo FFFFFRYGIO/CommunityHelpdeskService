@@ -14,7 +14,7 @@ class Article(models.Model):
     tags = TaggableManager()
 
 
-class ArticleStep(models.Model):
+class Step(models.Model):
     id = models.AutoField(primary_key=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     step_number = models.IntegerField()
