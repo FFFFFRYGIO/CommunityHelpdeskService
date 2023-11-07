@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import ArticleForm, SearchByNameForm, SearchByTagsForm
+from .forms import ArticleForm, StepForm, StepFormSet, SearchByNameForm, SearchByTagsForm
 from .models import Article, Step
 from datetime import datetime
 from taggit.models import Tag
@@ -62,8 +62,16 @@ def create_article_view(request):
                 tag_list = [tag.strip() for tag in tags.split(',')]
                 new_article.tags.set(tag_list)
 
+            step_form_set = StepFormSet(request.POST, prefix='steps')
+            if step_form_set.is_valid():
+                for step_form in step_form_set:
+                    step = step_form.save(commit=False)
+                    step.article = article
+                    step.save()
+
             return redirect('home')
-    return render(request, 'create_article.html', {'form': ArticleForm})
+    else:
+        return render(request, 'create_article.html', {'article_form': ArticleForm(), 'step_form_set': StepFormSet()})
 
 
 def view_article_view(request, article_id):

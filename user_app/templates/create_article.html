@@ -9,9 +9,15 @@
         <h3>Add Article:</h3>
         <form action="#" method="post" class="form-group">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ article_form.as_p }}
             <br>
-            <button type="submit" class="btn btn-success">Save</button>
+            {{ step_form_set.management_form }}
+            {{ step_form_set.non_form_errors }}
+            {% for step_form in step_form_set %}
+                {{ step_form.as_p }}
+                <br>
+            {% endfor %}
+            <button type="submit" class="btn btn-success" value="Save">Save</button>
         </form>
     {% else %}
         <h3>User not authenticated, login <a href="/registration/login">HERE</a></h3>
