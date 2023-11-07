@@ -15,3 +15,6 @@ class Report(models.Model):
     editor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='report_editor')
     additional_file = models.FileField(null=True)
     status = models.TextField(max_length=50)
+
+    def __str__(self):
+        return f"{self.description} created by {self.author.username}"
