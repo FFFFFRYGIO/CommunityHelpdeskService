@@ -62,6 +62,7 @@ class AccessTestsBase(TestCase):
     def tearDown(self):
         """tearDown method for AccessTestsBase"""
         self.client.logout()
+
     def get_home_page_contents(self):
         """ generate lists of contents for navbar, footer and home page """
 
