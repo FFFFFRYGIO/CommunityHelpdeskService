@@ -77,12 +77,12 @@ WSGI_APPLICATION = 'CommunityHelpdeskService.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': config("DB_ENGINE"),
-        'NAME': config("DB_NAME"),
-        'USER': config("DB_USER", default='postgres'),
-        'PASSWORD': config("DB_PASSWORD"),
-        'HOST': config("DB_HOST", default='localhost'),
-        'PORT': config("DB_PORT", default=5432, cast=int),
+        'ENGINE': config("PG_DB_ENGINE"),
+        'NAME': config("PG_DB_NAME"),
+        'USER': config("PG_DB_USER", default='postgres'),
+        'PASSWORD': config("PG_DB_PASSWORD"),
+        'HOST': config("PG_DB_HOST", default='localhost'),
+        'PORT': config("PG_DB_PORT", default=5432, cast=int),
     }
 }
 
