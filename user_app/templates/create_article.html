@@ -18,51 +18,43 @@
                     <div class="step-form">
                         <h3>ANOTHER STEP</h3>
                         {{ step_form.as_p }}
-                        <button type="button" class="btn btn-danger remove-step-button">Remove Step</button>
                         <br>
                     </div>
                 {% endfor %}
             </div>
-            <a href="#" id="add-step-button" class="btn btn-secondary add-images">Add Another Step</a>
-            <button type="submit" class="btn btn-success" value="Save">Save</button>
+            <p><a href="#" id="remove-step-button" class="btn btn-secondary remove-step-button">Remove Step</a></p>
+            <p><a href="#" id="add-step-button" class="btn btn-secondary add-step-button">Add Another Step</a></p>
+            <p><button type="submit" class="btn btn-success" value="Save">Save</button></p>
         </form>
     {% else %}
         <h3>User not authenticated, login <a href="/registration/login">HERE</a></h3>
     {% endif %}
     <script>
-        // Znajdź przycisk "Add Another Step"
-        var addStepButton = document.getElementById("add-step-button");
+        let addStepButton = document.getElementById("add-step-button");
+        let removeStepButton = document.getElementById("remove-step-button");
+        let stepsFormset = document.getElementById("steps-formset");
+        let stepForms = document.querySelectorAll(".step-form");
+        let stepFormTemplate = document.querySelector(".step-form").cloneNode(true);
+        let stepCounter = {{ step_form_set|length }};
+        let totalFormsInput = document.querySelector('input[name$="TOTAL_FORMS"]');
 
-        // Znajdź kontener div "steps-formset"
-        var stepsFormset = document.getElementById("steps-formset");
-
-        // Klonuj wzorzec pierwszego formularza kroku
-        var stepFormTemplate = document.querySelector(".step-form").cloneNode(true);
-
-        // Licznik używany do generowania unikalnych identyfikatorów dla nowych kroków
-        var stepCounter = {{ step_form_set|length }};
-
-        // Funkcja dodawania nowego formularza kroku
         addStepButton.addEventListener("click", function(e) {
             if (e.target && e.target.classList.contains("add-step-button")) {
                 e.preventDefault();
-                var newStepForm = stepFormTemplate.cloneNode(true);
-                stepCounter++;
-                var formPrefix = "formset-" + stepCounter;
-                newStepForm.innerHTML = newStepForm.innerHTML.replace(/formset-0/g, formPrefix);
-                newStepForm.innerHTML = newStepForm.innerHTML.replace(/id_steps-0/g, "id_steps-" + stepCounter);
-                // Aktualizuj etykiety na formularzu kroku
-                newStepForm.querySelectorAll("label").forEach(function(label) {
-                    label.htmlFor = label.htmlFor.replace(/formset-0/g, formPrefix);
-                });
+                let newStepForm = stepFormTemplate.cloneNode(true);
+                newStepForm.innerHTML = newStepForm.innerHTML.replace(/form-0/g, "form-" + stepCounter);
                 stepsFormset.appendChild(newStepForm);
+                totalFormsInput.value = stepCounter + 1;
             }
         });
-        document.addEventListener("click", function(e) {
+        removeStepButton.addEventListener("click", function(e) {
             if (e.target && e.target.classList.contains("remove-step-button")) {
                 e.preventDefault();
-                var stepForm = e.target.parentElement;
-                stepForm.remove();
+                if (stepForms.length > 0) {
+                    let stepForm = stepForms[stepForms.length - 1];
+                    stepForm.remove();
+                    totalFormsInput.value = stepCounter - 1;
+                }
             }
         });
     </script>
