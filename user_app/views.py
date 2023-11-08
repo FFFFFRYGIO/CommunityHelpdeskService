@@ -79,11 +79,11 @@ def create_article_view(request):
                         step.save()
                         ordinal_number += 1
 
-            return redirect('home')
-    else:
-        article_form = ArticleForm()
-        step_form_set = StepFormSet(queryset=Step.objects.none())
-        return render(request, 'create_article.html', {'article_form': article_form, 'step_form_set': step_form_set})
+                        return redirect('home')
+
+    article_form = ArticleForm()
+    step_form_set = StepFormSet(queryset=Step.objects.none())
+    return render(request, 'create_article.html', {'article_form': article_form, 'step_form_set': step_form_set})
 
 
 def view_article_view(request, article_id):

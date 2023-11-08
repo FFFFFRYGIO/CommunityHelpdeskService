@@ -15,8 +15,8 @@ class StepForm(forms.ModelForm):
         exclude = ['article', 'ordinal_number']
         widgets = {
             'title': forms.TextInput(attrs={'required': False}),
-            'description1': forms.Textarea(attrs={'rows': 2, 'cols': 40}),
-            'description2': forms.Textarea(attrs={'rows': 2, 'cols': 40}),
+            'description1': forms.Textarea(attrs={'rows': 1, 'cols': 40}),
+            'description2': forms.Textarea(attrs={'rows': 1, 'cols': 40}),
         }
 
 
