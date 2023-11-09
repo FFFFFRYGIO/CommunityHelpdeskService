@@ -55,6 +55,7 @@ def create_article_view(request):
             new_article = form.save(commit=False)
             new_article.author = request.user
             new_article.created_at = datetime.now()
+            new_article.status = "unapproved"
             new_article.save()
 
             tags = request.POST.get('tags')
