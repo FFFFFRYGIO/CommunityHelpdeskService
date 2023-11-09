@@ -9,7 +9,12 @@
     <p><strong>Author:</strong> {{ report.author }}</p>
     <p><strong>Created At:</strong> {{ report.created_at }}</p>
     <p><strong>Description:</strong> {{ report.description }}</p>
-    <p><strong>Article:</strong> {{ report.article }}</p>
+    <p>
+        <strong>Article:</strong> {{ report.article }}
+        <form method="get" action="{% url 'view_article' report.article.id %}">
+            <button type="submit" name="view_article">View</button>
+        </form>
+    </p>
     {# TODO: changing status of the report #}
     <p><strong>Status:</strong> {{ report.status }}</p>
 
