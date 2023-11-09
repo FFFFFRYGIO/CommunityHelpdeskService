@@ -6,7 +6,7 @@ from taggit.forms import TagField
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        exclude = ['author', 'created_at']
+        exclude = ['author', 'created_at', 'status']
 
 
 class StepForm(forms.ModelForm):
