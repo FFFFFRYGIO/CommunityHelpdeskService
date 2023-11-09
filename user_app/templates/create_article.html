@@ -50,10 +50,13 @@
         removeStepButton.addEventListener("click", function(e) {
             if (e.target && e.target.classList.contains("remove-step-button")) {
                 e.preventDefault();
-                if (stepForms.length > 0) {
+                if (stepForms.length > 1) {
                     let stepForm = stepForms[stepForms.length - 1];
                     stepForm.remove();
                     totalFormsInput.value = stepCounter - 1;
+                }
+                else {
+                    alert("You have to have at least 1 step");
                 }
             }
         });
