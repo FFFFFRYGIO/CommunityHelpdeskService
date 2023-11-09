@@ -14,6 +14,16 @@
             {% if not forloop.last %}, {% endif %}
         {% endfor %}
     </p>
+    <p>Steps:
+        {% for step in steps %}
+            <p>{{ step.ordinal_number }}</p>
+            <p>{{ step.title }}</p>
+            <p>{{ step.description1 }}</p>
+            <p>{{ step.file1 }}</p>
+            <p>{{ step.description2 }}</p>
+            <p>{{ step.file2 }}</p>
+        {% endfor %}
+    </p>
     {% if user.is_authenticated %}
         {% if can_edit %}
             <form method="get" action="{% url 'edit_article' article.id %}">

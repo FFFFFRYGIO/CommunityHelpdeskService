@@ -90,7 +90,8 @@ def view_article_view(request, article_id):
     """ view or report an article """
     article = Article.objects.get(id=article_id)
     can_edit = request.user == article.author or Report.objects.filter(article=article, editor=request.user).exists()
-    return render(request, 'view_article.html', {'article': article, 'can_edit': can_edit})
+    steps = Step.objects.filter(article=article)
+    return render(request, 'view_article.html', {'article': article, 'steps': steps, 'can_edit': can_edit})
 
 
 @login_required
