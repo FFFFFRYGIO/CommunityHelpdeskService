@@ -15,7 +15,7 @@
         {% endfor %}
     </p>
     {% if user.is_authenticated %}
-        {% if user == article.author %}
+        {% if can_edit %}
             <form method="get" action="{% url 'edit_article' article.id %}">
                 <button type="submit" name="edit_article">Edit</button>
             </form>

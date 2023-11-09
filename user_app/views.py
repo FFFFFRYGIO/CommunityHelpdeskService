@@ -89,14 +89,15 @@ def create_article_view(request):
 def view_article_view(request, article_id):
     """ view or report an article """
     article = Article.objects.get(id=article_id)
-    return render(request, 'view_article.html', {'article': article})
+    can_edit = request.user == article.author or Report.objects.filter(article=article, editor=request.user).exists()
+    return render(request, 'view_article.html', {'article': article, 'can_edit': can_edit})
 
 
 @login_required
 def edit_article_view(request, article_id):
     """ change article elements (for owners and editors) """
     article = Article.objects.get(id=article_id)
-    if request.user == article.author:
+    if request.user == article.author or Report.objects.filter(article=article, editor=request.user).exists():
         if request.method == 'POST':
             article_form = ArticleForm(request.POST, instance=article)
             if article_form.is_valid():
