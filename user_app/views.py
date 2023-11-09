@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.db.models import Q
 from editor_app.models import Report
 from editor_app.forms import ReportForm
+from registration.models import User
 
 
 # In your views.py
@@ -79,6 +80,14 @@ def create_article_view(request):
                         step.file2 = step_data.file2
                         step.save()
                         ordinal_number += 1
+
+                new_report = Report()
+                new_report.description = f"Review new article {new_article.title}"
+                new_report.author = User.objects.get(username='system_automat')
+                new_report.created_at = datetime.now()
+                new_report.article = new_article
+                new_report.status = "new article"
+                new_report.save()
 
                 return redirect('home')
 
