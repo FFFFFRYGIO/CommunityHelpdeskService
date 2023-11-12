@@ -127,6 +127,7 @@ class AccessTestsBase(TestCase):
         navbar_elements, footer_elements, home_elements = self.get_home_page_contents()
 
         self.assertContains(response, '<li class="nav-item active">', count=len(navbar_elements))
+        self.assertContains(response, '<li class="nav-item active">', count=len(navbar_elements))
         for element in navbar_elements:
             self.assertContains(response, element, count=1)
 
