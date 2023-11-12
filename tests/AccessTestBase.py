@@ -220,7 +220,7 @@ class AccessTestsBase(TestCase):
 
         if self.client.session.get('_auth_user_id'):
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, '<form action="#" method="post" class="form-group">')
+            self.assertContains(response, '<form action="#" method="post" class="form-group" id="article-form">')
 
             form_data = {
                 'title': 'New Test Article',
