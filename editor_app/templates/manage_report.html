@@ -12,7 +12,7 @@
     <p>
         <strong>Article:</strong> {{ report.article }}
         <form method="get" action="{% url 'view_article' report.article.id %}">
-            <button type="submit" name="view_article">View</button>
+            <button type="submit" name="view_article">View Article</button>
         </form>
     </p>
     {# TODO: changing status of the report #}

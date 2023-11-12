@@ -10,8 +10,9 @@
         <table>
             <thead>
             <tr>
-                <th>Title</th>
+                <th>Description</th>
                 <th>Author</th>
+                <th>Created At</th>
                 <th>Article</th>
                 <th>Status</th>
                 <th>View Report</th>
@@ -20,8 +21,9 @@
             <tbody>
             {% for report in editor_reports %}
                 <tr>
-                    <td>{{ report.title }}</td>
+                    <td>{{ report.description }}</td>
                     <td>{{ report.author }}</td>
+                    <td>{{ report.created_at }}</td>
                     <td>{{ report.article }}</td>
                     <td>{{ report.status }}</td>
                     <td>
