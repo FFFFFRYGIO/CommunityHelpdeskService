@@ -108,13 +108,13 @@ def view_article_view(request, article_id):
 def edit_article_view(request, article_id):
     """ change article elements (for owners and editors) """
     article = Article.objects.get(id=article_id)
-    possible_reports = Report.objects.filter(article=article, editor=request.user)
-    if request.user == article.author or possible_reports:
+    reports = Report.objects.filter(article=article, editor=request.user)
+    if request.user == article.author or reports:
         if request.method == 'POST':
             article_form = ArticleForm(request.POST, instance=article)
             if article_form.is_valid():
                 article_form.save()
-                for report in possible_reports:
+                for report in reports:
                     report.status = "changes applied"
                     report.save()
                 return redirect('home')
