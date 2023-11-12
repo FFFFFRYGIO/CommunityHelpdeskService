@@ -1,6 +1,8 @@
+from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Report
+from registration.models import User
 
 
 # In your views.py
@@ -20,8 +22,14 @@ def editor_panel_view(request):
 def master_editor_panel_view(request):
     """ master editor panel with all reports """
     if request.user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
+        if request.method == 'POST':
+            report = Report.objects.get(id=request.POST.get('report_id'))
+            new_editor = User.objects.get(id=request.POST.get('editor_assign'))
+            report.editor = new_editor
+            report.save()
         all_reports = Report.objects.all()
-        return render(request, 'master_editor_panel.html', {'all_reports': all_reports})
+        editors = Group.objects.get(name='Editors').user_set.all()
+        return render(request, 'master_editor_panel.html', {'all_reports': all_reports, 'editors': editors})
     else:
         return redirect("home")
 

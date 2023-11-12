@@ -12,9 +12,12 @@
             <tr>
                 <th>Description</th>
                 <th>Author</th>
+                <th>Created At</th>
                 <th>Article</th>
+                <th>Editor</th>
                 <th>Status</th>
                 <th>View Report</th>
+                <th>Assign report</th>
             </tr>
             </thead>
             <tbody>
@@ -22,11 +25,25 @@
                 <tr>
                     <td>{{ report.description }}</td>
                     <td>{{ report.author }}</td>
+                    <td>{{ report.created_at }}</td>
                     <td>{{ report.article.title }}</td>
+                    <td>{{ report.editor }}</td>
                     <td>{{ report.status }}</td>
                     <td>
                         <form method="get" action="{% url 'manage_report' report.id %}">
                             <button type="submit" name="manage_report">Manage</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post">
+                            {% csrf_token %}
+                            <select name="editor_assign">
+                                {% for editor in editors %}
+                                    <option value="{{ editor.id }}">{{ editor.username }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="hidden" name="report_id" value="{{ report.id }}">
+                            <button type="submit">Assign</button>
                         </form>
                     </td>
                 </tr>
