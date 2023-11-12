@@ -11,7 +11,7 @@ class Article(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateField()
+    created_at = models.DateTimeField()
     tags = TaggableManager()
     status = models.CharField(max_length=50)
 
