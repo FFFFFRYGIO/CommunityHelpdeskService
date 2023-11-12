@@ -12,11 +12,12 @@ from user_app.models import Article, Step
 # Create your tests here.
 
 
-class StepTesting(TestCase):
+class StepTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         """ setUp separate database to test functionalities """
         User.objects.create_user(username='test_user', password='user_password1')
+        User.objects.create_user(username='system_automat', password='system_password1')
 
     def setUp(self):
         """setUp method for AccessTests"""
