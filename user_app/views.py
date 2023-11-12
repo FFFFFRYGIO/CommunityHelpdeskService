@@ -131,7 +131,7 @@ def user_panel_view(request):
 
 @login_required
 def report_article_view(request, article_id):
-    """ a form to create report about specified article """
+    """ a form to create a report about specified article """
     article = Article.objects.get(id=article_id)
 
     if request.method == 'POST':
