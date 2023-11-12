@@ -26,6 +26,7 @@ def master_editor_panel_view(request):
             report = Report.objects.get(id=request.POST.get('report_id'))
             new_editor = User.objects.get(id=request.POST.get('editor_assign'))
             report.editor = new_editor
+            report.status = "assigned"
             report.save()
         all_reports = Report.objects.all()
         editors = Group.objects.get(name='Editors').user_set.all()
