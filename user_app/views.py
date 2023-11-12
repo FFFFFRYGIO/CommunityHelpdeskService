@@ -141,7 +141,7 @@ def report_article_view(request, article_id):
             report.author = request.user
             report.article = article
             report.created_at = datetime.now()
-            report.status = "Created"
+            report.status = "opened"
             report.save()
             return redirect('home')
 
