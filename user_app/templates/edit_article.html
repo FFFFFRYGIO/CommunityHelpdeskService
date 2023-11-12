@@ -4,16 +4,12 @@
 
 {% block content %}
     <h1>Edit Article page</h1>
-    {% if user.is_authenticated and user == article.author %}
-        <h3>Logged user content</h3>
-        <h3>Edit Article:</h3>
-        <form action="#" method="post" class="form-group">
-            {% csrf_token %}
-            {{ article_form.as_p }}
-            <br>
-            <button type="submit" class="btn btn-success">Save</button>
-        </form>
-    {% else %}
-        <h3>Not author of the article</h3>
-    {% endif %}
+    <h3>Logged user content</h3>
+    <h3>Edit Article:</h3>
+    <form action="#" method="post" class="form-group">
+        {% csrf_token %}
+        {{ article_form.as_p }}
+        <br>
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
 {% endblock %}
