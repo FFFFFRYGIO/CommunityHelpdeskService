@@ -12,7 +12,7 @@ from registration.models import User
 def editor_panel_view(request):
     """ editor panel with the assigned reports """
     if request.user.groups.values_list('name', flat=True).filter(name='Editors'):
-        editor_reports = Report.objects.filter(editor=request.user)
+        editor_reports = Report.objects.filter(editor=request.user, status='assigned')
         return render(request, 'editor_panel.html', {'editor_reports': editor_reports})
     else:
         return redirect("home")
