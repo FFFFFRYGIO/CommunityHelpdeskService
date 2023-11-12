@@ -20,11 +20,9 @@
         <form method="get" action="{% url 'edit_article' report.article.id %}">
             <button type="submit" name="edit_article">Edit Article</button>
         </form>
-        <form method="get">
-            <button type="submit" name="reject_report">Reject Report</button>
-        </form>
-        <form method="get">
-            <button type="submit" name="conclude_report">Conclude Report</button>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="close_report">Close Report</button>
         </form>
 
     {% if report.additional_file %}
