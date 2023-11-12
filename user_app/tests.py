@@ -50,10 +50,7 @@ class StepTests(TestCase):
 
         step_form_set = StepFormSet(step_data)
 
-        if not step_form_set.is_valid():
-            print(step_form_set.errors)
-
-        self.assertTrue(step_form_set.is_valid())
+        self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
 
         response = self.client.post(reverse('create_article'), data=step_data)
 
