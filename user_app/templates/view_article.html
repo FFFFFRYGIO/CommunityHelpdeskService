@@ -17,8 +17,7 @@
     </p>
     <p>Steps:
         {% for step in steps %}
-            <p>{{ step.ordinal_number }}</p>
-            <p>{{ step.title }}</p>
+            <p>Step {{ step.ordinal_number }}. {{ step.title }}</p>
             <p>{{ step.description1 }}</p>
             <p>{{ step.file1 }}</p>
             <p>{{ step.description2 }}</p>
