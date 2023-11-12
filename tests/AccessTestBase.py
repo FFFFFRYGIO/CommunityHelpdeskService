@@ -31,6 +31,7 @@ class AccessTestsBase(TestCase):
     @classmethod
     def setUpTestData(cls):
         """ setUp separate database to test functionalities """
+        User.objects.create_user(username='system_automat', password='system_password1')
         editors_group, created = Group.objects.get_or_create(name='Editors')
         master_editors_group, created = Group.objects.get_or_create(name='MasterEditors')
 
