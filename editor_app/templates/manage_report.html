@@ -10,13 +10,22 @@
     <p><strong>Created At:</strong> {{ report.created_at }}</p>
     <p><strong>Description:</strong> {{ report.description }}</p>
     <p>
-        <strong>Article:</strong> {{ report.article }}
+        <strong>Article:</strong> {{ report.article.title }}
+
+    </p>
+    <p><strong>Status:</strong> {{ report.status }}</p>
         <form method="get" action="{% url 'view_article' report.article.id %}">
             <button type="submit" name="view_article">View Article</button>
         </form>
-    </p>
-    {# TODO: changing status of the report #}
-    <p><strong>Status:</strong> {{ report.status }}</p>
+        <form method="get" action="{% url 'edit_article' report.article.id %}">
+            <button type="submit" name="edit_article">Edit Article</button>
+        </form>
+        <form method="get">
+            <button type="submit" name="reject_report">Reject Report</button>
+        </form>
+        <form method="get">
+            <button type="submit" name="conclude_report">Conclude Report</button>
+        </form>
 
     {% if report.additional_file %}
         <p><strong>Additional File:</strong></p>

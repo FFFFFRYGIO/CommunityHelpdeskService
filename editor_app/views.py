@@ -40,10 +40,16 @@ def manage_report_view(request, report_id):
     report = Report.objects.get(id=report_id)
     is_master_editor = request.user.groups.values_list('name', flat=True).filter(name='MasterEditors')
     is_editor = request.user.groups.values_list('name', flat=True).filter(name='Editors')
-
     if is_master_editor or (is_editor and report.editor == request.user):
+
+        if request.method == "POST":
+            if 'reject_report' in request.POST:
+                report.status = "rejected"
+
+            if 'conclude_report' in request.POST:
+                report.status = "concluded"
+
         return render(request, 'manage_report.html', {'report': report})
 
     else:
         return redirect("home")
-
