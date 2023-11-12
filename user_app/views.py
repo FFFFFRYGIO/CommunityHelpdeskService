@@ -99,7 +99,12 @@ def create_article_view(request):
 def view_article_view(request, article_id):
     """ view or report an article """
     article = Article.objects.get(id=article_id)
-    can_edit = request.user == article.author or Report.objects.filter(article=article, editor=request.user).exists()
+    if request.user.is_authenticated:
+        can_edit_author = request.user == article.author
+        can_edit_editor = Report.objects.filter(article=article, editor=request.user).exists()
+        can_edit = can_edit_author or can_edit_editor
+    else:
+        can_edit = False
     steps = Step.objects.filter(article=article).order_by('ordinal_number')
     return render(request, 'view_article.html', {'article': article, 'steps': steps, 'can_edit': can_edit})
 
