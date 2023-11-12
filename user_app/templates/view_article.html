@@ -8,6 +8,7 @@
     <h2>Title: {{ article.title }}</h2>
     <p>Author: {{ article.author.username }}</p>
     <p>Created At: {{ article.created_at }}</p>
+    <p>Status: {{ article.status }}</p>
     <p>Tags:
         {% for tag in article.tags.all %}
             {{ tag.name }}
