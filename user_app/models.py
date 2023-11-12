@@ -7,6 +7,7 @@ from taggit.managers import TaggableManager
 
 
 class Article(models.Model):
+    """ Article model structure """
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -19,6 +20,7 @@ class Article(models.Model):
 
 
 class Step(models.Model):
+    """ Article Step model structure """
     id = models.AutoField(primary_key=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     ordinal_number = models.IntegerField()
