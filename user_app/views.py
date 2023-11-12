@@ -82,7 +82,7 @@ def create_article_view(request):
                         ordinal_number += 1
 
                 new_report = Report()
-                new_report.description = f"Review new article {new_article.title}"
+                new_report.description = f'Review new article "{new_article.title}"'
                 new_report.author = User.objects.get(username='system_automat')
                 new_report.created_at = datetime.now()
                 new_report.article = new_article
@@ -115,7 +115,7 @@ def edit_article_view(request, article_id):
             if article_form.is_valid():
                 article_form.save()
                 for report in possible_reports:
-                    report.changes_applied = True
+                    report.status = "changes applied"
                     report.save()
                 return redirect('home')
         else:

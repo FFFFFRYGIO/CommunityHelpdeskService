@@ -1,4 +1,5 @@
 from django.contrib.auth.models import Group
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Report
@@ -43,10 +44,12 @@ def manage_report_view(request, report_id):
     is_editor = request.user.groups.values_list('name', flat=True).filter(name='Editors')
     if is_master_editor or (is_editor and report.editor == request.user):
         if request.method == "POST":
-            if report.changes_applied:
+            if report.status == "changes applied":
                 report.status = "concluded"
-            else:
+            elif report.status == "assigned":
                 report.status = "rejected"
+            else:
+                return HttpResponse("HTTP Bad Request", status=400)
             report.save()
 
         return render(request, 'manage_report.html', {'report': report})
