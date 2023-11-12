@@ -143,6 +143,10 @@ def report_article_view(request, article_id):
             report.created_at = datetime.now()
             report.status = "opened"
             report.save()
+
+            article.status = "changes requested"
+            article.save()
+
             return redirect('home')
 
     else:
