@@ -34,26 +34,23 @@
         let removeStepButton = document.getElementById("remove-step-button");
         let stepsFormset = document.getElementById("steps-formset");
         let stepForms = document.querySelectorAll(".step-form");
-        let stepFormTemplate = document.querySelector(".step-form").cloneNode(true);
-        let stepCounter = {{ step_form_set|length }};
         let totalFormsInput = document.querySelector('input[name$="TOTAL_FORMS"]');
 
         addStepButton.addEventListener("click", function(e) {
             if (e.target && e.target.classList.contains("add-step-button")) {
                 e.preventDefault();
-                let newStepForm = stepFormTemplate.cloneNode(true);
-                newStepForm.innerHTML = newStepForm.innerHTML.replace(/form-0/g, "form-" + stepCounter);
+                let newStepForm = stepForms[0].cloneNode(true);
+                newStepForm.innerHTML = newStepForm.innerHTML.replace(/form-0/g, "form-" + totalFormsInput.value);
                 stepsFormset.appendChild(newStepForm);
-                totalFormsInput.value = stepCounter + 1;
+                totalFormsInput.value = parseInt(totalFormsInput.value, 10) + 1;
             }
         });
         removeStepButton.addEventListener("click", function(e) {
             if (e.target && e.target.classList.contains("remove-step-button")) {
                 e.preventDefault();
-                if (stepForms.length > 1) {
-                    let stepForm = stepForms[stepForms.length - 1];
-                    stepForm.remove();
-                    totalFormsInput.value = stepCounter - 1;
+                if (totalFormsInput.value > 1) {
+                    stepsFormset.removeChild(stepsFormset.lastChild);
+                    totalFormsInput.value = parseInt(totalFormsInput.value, 10) - 1;
                 }
                 else {
                     alert("You have to have at least 1 step");
