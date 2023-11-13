@@ -29,6 +29,7 @@ def master_editor_panel_view(request):
             report.editor = new_editor
             report.status = "assigned"
             report.save()
+            return redirect("home")
         all_reports = Report.objects.all()
         editors = Group.objects.get(name='Editors').user_set.all()
         return render(request, 'master_editor_panel.html', {'all_reports': all_reports, 'editors': editors})
@@ -51,6 +52,8 @@ def manage_report_view(request, report_id):
             else:
                 return HttpResponse("HTTP Bad Request", status=400)
             report.save()
+
+            return redirect("home")
 
         return render(request, 'manage_report.html', {'report': report})
 
