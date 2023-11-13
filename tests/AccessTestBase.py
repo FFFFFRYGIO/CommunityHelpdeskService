@@ -20,6 +20,19 @@ USERS = [
     {'username': 'test_master_editor1', 'password': 'master_editor_password1'},
 ]
 
+FORM_DATA = {
+    'title': 'Test Article',
+    'tags': 'tag1, tag2',
+    'form-TOTAL_FORMS': '2',
+    'form-INITIAL_FORMS': '0',
+    'form-MIN_NUM_FORMS': '0',
+    'form-MAX_NUM_FORMS': '1000',
+    'form-0-title': 'Step 1',
+    'form-0-description1': 'Description for Step 1',
+    'form-1-title': 'Step 2',
+    'form-1-description1': 'Description for Step 2',
+}
+
 
 class AccessTestsBase(TestCase):
     test_users = {
@@ -225,35 +238,22 @@ class AccessTestsBase(TestCase):
             initial_article_count = Article.objects.count()
             initial_step_count = Step.objects.count()
 
-            form_data = {
-                'title': 'Test Article',
-                'tags': 'tag1, tag2',
-                'form-TOTAL_FORMS': '2',
-                'form-INITIAL_FORMS': '0',
-                'form-MIN_NUM_FORMS': '0',
-                'form-MAX_NUM_FORMS': '1000',
-                'form-0-title': 'Step 1',
-                'form-0-description1': 'Description for Step 1',
-                'form-1-title': 'Step 2',
-                'form-1-description1': 'Description for Step 2',
-            }
-
-            step_form_set = StepFormSet(form_data)
+            step_form_set = StepFormSet(FORM_DATA)
             self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
 
-            response = self.client.post(reverse('create_article'), data=form_data)
+            response = self.client.post(reverse('create_article'), data=FORM_DATA)
 
             self.assertRedirects(response, reverse('home'))
 
             self.assertEqual(Article.objects.count(), initial_article_count + 1)
-            self.assertEqual(Article.objects.latest('id').title, form_data['title'])
-            self.assertEqual(Article.objects.latest('id').tags.count(), len(form_data['tags'].split(",")))
+            self.assertEqual(Article.objects.latest('id').title, FORM_DATA['title'])
+            self.assertEqual(Article.objects.latest('id').tags.count(), len(FORM_DATA['tags'].split(",")))
 
             self.assertEqual(Step.objects.count(), initial_step_count + 2)
             self.assertEqual(
-                Step.objects.get(title=form_data['form-0-title']).description1, form_data['form-0-description1'])
+                Step.objects.get(title=FORM_DATA['form-0-title']).description1, FORM_DATA['form-0-description1'])
             self.assertEqual(
-                Step.objects.get(title=form_data['form-1-title']).description1, form_data['form-1-description1'])
+                Step.objects.get(title=FORM_DATA['form-1-title']).description1, FORM_DATA['form-1-description1'])
 
 
         else:
