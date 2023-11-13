@@ -37,7 +37,7 @@
                     <td>
                         <form method="post">
                             {% csrf_token %}
-                            <select name="editor_assign">
+                            <select name="editor_assign_id">
                                 {% for editor in editors %}
                                     <option value="{{ editor.id }}">{{ editor.username }}</option>
                                 {% endfor %}

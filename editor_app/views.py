@@ -25,7 +25,7 @@ def master_editor_panel_view(request):
     if request.user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
         if request.method == 'POST':
             report = Report.objects.get(id=request.POST.get('report_id'))
-            new_editor = User.objects.get(id=request.POST.get('editor_assign'))
+            new_editor = User.objects.get(id=request.POST.get('editor_assign_id'))
             report.editor = new_editor
             report.status = "assigned"
             report.save()
