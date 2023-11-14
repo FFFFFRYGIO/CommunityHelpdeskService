@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import ArticleForm, StepForm, StepFormSet, SearchByNameForm, SearchByTagsForm
+from .forms import ArticleForm, StepFormSetCreate, StepFormSetEdit, SearchByNameForm, SearchByTagsForm
 from .models import Article, Step
 from datetime import datetime
 from taggit.models import Tag
@@ -117,15 +117,25 @@ def edit_article_view(request, article_id):
     if request.user == article.author or reports:
         if request.method == 'POST':
             article_form = ArticleForm(request.POST, instance=article)
+            step_form_set = StepFormSetEdit(request.POST, queryset=Step.objects.filter(article=article))
             if article_form.is_valid():
                 article_form.save()
+
+                for step_form in step_form_set:
+                    step_data = step_form.save(commit=False)
+                    step_data.article = article
+                    step_data.save()
+
                 for report in reports:
                     report.status = "changes applied"
                     report.save()
                 return redirect('home')
+            return HttpResponse("HTTP Bad Request", status=400)
         else:
             article_form = ArticleForm(instance=article)
-        return render(request, 'edit_article.html', {'article': article, 'article_form': article_form})
+            step_form_set = StepFormSetEdit(queryset=Step.objects.filter(article=article))
+        return render(request, 'edit_article.html', {
+            'article': article, 'article_form': article_form, 'step_form_set': step_form_set})
 
     return redirect('home')
 
