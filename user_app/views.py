@@ -64,7 +64,7 @@ def create_article_view(request):
                 tag_list = [tag.strip() for tag in tags.split(',')]
                 new_article.tags.set(tag_list)
 
-            step_form_set = StepFormSet(request.POST)
+            step_form_set = StepFormSetCreate(request.POST)
             if step_form_set.is_valid():
                 ordinal_number = 1
                 for step_form in step_form_set:
@@ -92,7 +92,7 @@ def create_article_view(request):
                 return redirect('home')
 
     article_form = ArticleForm()
-    step_form_set = StepFormSet(queryset=Step.objects.none())
+    step_form_set = StepFormSetCreate(queryset=Step.objects.none())
     return render(request, 'create_article.html', {'article_form': article_form, 'step_form_set': step_form_set})
 
 
