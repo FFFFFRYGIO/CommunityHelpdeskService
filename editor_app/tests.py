@@ -7,7 +7,7 @@ from django.urls import reverse
 from editor_app.forms import ReportForm
 from editor_app.models import Report
 from tests.AccessTestBase import AccessTestsBase, USERS, FORM_DATA
-from user_app.forms import StepFormSet
+from user_app.forms import StepFormSetCreate
 from user_app.models import Article, Step
 
 
@@ -19,7 +19,7 @@ class ReportsTests(AccessTestsBase):
         """ Create article to be reported"""
         self.client.login(username=USERS[0]['username'], password=USERS[0]['password'])
 
-        step_form_set = StepFormSet(FORM_DATA)
+        step_form_set = StepFormSetCreate(FORM_DATA)
         self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
         response = self.client.post(reverse('create_article'), data=FORM_DATA)
 

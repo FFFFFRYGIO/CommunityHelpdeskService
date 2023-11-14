@@ -6,7 +6,7 @@ from django.urls import reverse
 from parameterized import parameterized
 
 from editor_app.models import Report
-from user_app.forms import StepFormSet
+from user_app.forms import StepFormSetCreate
 from user_app.models import Article, Step
 
 # Create your tests here.
@@ -238,7 +238,7 @@ class AccessTestsBase(TestCase):
             initial_article_count = Article.objects.count()
             initial_step_count = Step.objects.count()
 
-            step_form_set = StepFormSet(FORM_DATA)
+            step_form_set = StepFormSetCreate(FORM_DATA)
             self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
 
             response = self.client.post(reverse('create_article'), data=FORM_DATA)

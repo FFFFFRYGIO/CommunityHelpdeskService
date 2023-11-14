@@ -20,8 +20,8 @@ class StepForm(forms.ModelForm):
         }
 
 
-StepFormSet = forms.modelformset_factory(Step, form=StepForm)
-
+StepFormSetCreate = forms.modelformset_factory(Step, form=StepForm)
+StepFormSetEdit = forms.modelformset_factory(Step, form=StepForm, extra=0)
 
 class SearchByNameForm(forms.Form):
     search_text = forms.CharField(label='Search by Name', max_length=255)
