@@ -40,7 +40,7 @@ class ArticleTests(TestCase):
     def test_edit_article_no_changes(self):
         for article in Article.objects.all():
             steps = Step.objects.filter(article=article).order_by('ordinal_number')
-            FORM_DATA = {
+            form_data = {
                 'title': article.title,
                 'tags': "tag",
                 'form-TOTAL_FORMS': str(steps.count()),
@@ -49,15 +49,15 @@ class ArticleTests(TestCase):
                 'form-MAX_NUM_FORMS': '1000',
             }
             for i, step in enumerate(steps):
-                FORM_DATA[f'form-{i}-id'] = step.id
-                FORM_DATA[f'form-{i}-title'] = step.title
-                FORM_DATA[f'form-{i}-ordinal_number'] = step.ordinal_number
-                FORM_DATA[f'form-{i}-description1'] = step.description1
+                form_data[f'form-{i}-id'] = step.id
+                form_data[f'form-{i}-title'] = step.title
+                form_data[f'form-{i}-ordinal_number'] = step.ordinal_number
+                form_data[f'form-{i}-description1'] = step.description1
 
-            step_form_set = StepFormSetCreate(FORM_DATA)
+            step_form_set = StepFormSetCreate(form_data)
             self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
 
-            response = self.client.post(reverse('edit_article', args=[article.id]), data=FORM_DATA)
+            response = self.client.post(reverse('edit_article', args=[article.id]), data=form_data)
             self.assertRedirects(response, reverse('home'))
 
             edited_article = Article.objects.get(id=article.id)
