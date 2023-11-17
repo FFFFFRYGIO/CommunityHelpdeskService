@@ -72,7 +72,73 @@ class ArticleTests(TestCase):
                 self.assertEqual(step.__dict__, edited_step.__dict__)
 
     def test_edit_article_different_steps_amount(self):
-        pass
+        for article in Article.objects.all():
+            steps = Step.objects.filter(article=article).order_by('ordinal_number')
+            form_data = {
+                'title': article.title + " changed",
+                'tags': "tag_changed",
+                'form-TOTAL_FORMS': str(steps.count()),
+                'form-INITIAL_FORMS': str(steps.count()),
+                'form-MIN_NUM_FORMS': '0',
+                'form-MAX_NUM_FORMS': '1000',
+            }
+            for i, step in enumerate(steps):
+                form_data[f'form-{i}-id'] = step.id
+                form_data[f'form-{i}-title'] = step.title + " changed"
+                form_data[f'form-{i}-ordinal_number'] = step.ordinal_number
+                form_data[f'form-{i}-description1'] = step.description1 + " changed"
+                form_data[f'form-{i}-description2'] = step.description2
+
+            step_form_set = StepFormSetCreate(form_data)
+            self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
+
+            response = self.client.post(reverse('edit_article', args=[article.id]), data=form_data)
+            self.assertRedirects(response, reverse('home'))
+
+            edited_article = Article.objects.get(id=article.id)
+            del article._state, edited_article._state
+            self.assertNotEqual(article.__dict__, edited_article.__dict__)
+
+            self.assertEqual(article.title + " changed", edited_article.title)
+            self.assertEqual(["tag_changed"], list(edited_article.tags.names()))
+
+            self.assertEqual(Step.objects.filter(article=article).count(), steps.count())
+            for step in steps:
+                edited_step = Step.objects.get(id=step.id)
+                del step._state, edited_step._state
+                self.assertNotEqual(step.__dict__, edited_step.__dict__)
+
+                self.assertEqual(step.title + " changed", Step.objects.get(id=step.id).title)
+                self.assertEqual(step.description1 + " changed", Step.objects.get(id=step.id).description1)
+
+    @parameterized.expand([1, 2])
+    def test_edit_article_remove_steps(self, remove_amount):
+        for article in Article.objects.all():
+            steps = Step.objects.filter(article=article).order_by('ordinal_number')
+            form_data = {
+                'title': article.title + " changed",
+                'tags': "tag_changed",
+                'form-TOTAL_FORMS': str(steps.count()),
+                'form-INITIAL_FORMS': str(steps.count()),
+                'form-MIN_NUM_FORMS': '0',
+                'form-MAX_NUM_FORMS': '1000',
+            }
+            for i, step in enumerate(steps[:]):
+                form_data[f'form-{i}-id'] = step.id
+                form_data[f'form-{i}-title'] = step.title + " changed"
+                form_data[f'form-{i}-ordinal_number'] = step.ordinal_number
+                form_data[f'form-{i}-description1'] = step.description1 + " changed"
+                form_data[f'form-{i}-description2'] = step.description2
+
+            step_form_set = StepFormSetCreate(form_data)
+            self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
+
+            response = self.client.post(reverse('edit_article', args=[article.id]), data=form_data)
+            self.assertRedirects(response, reverse('home'))
+
+            edited_article = Article.objects.get(id=article.id)
+            del article._state, edited_article._state
+            self.assertNotEqual(article.__dict__, edited_article.__dict__)
 
     def test_edit_article_remove_steps(self):
         pass
