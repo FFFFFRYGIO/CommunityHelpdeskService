@@ -17,7 +17,7 @@ class ArticleTests(TestCase):
     def setUpTestData(cls):
         """ setUp separate database to test functionalities """
         User.objects.create_user(username='system_automat', password='system_password1')
-        cls.user = User.objects.create_user(username='standart_user', password='user_password1')
+        cls.user = User.objects.create_user(username='standard_user', password='user_password1')
 
         for i in range(1, 5):
             article = Article.objects.create(
