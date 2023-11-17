@@ -62,11 +62,14 @@ class ArticleTests(TestCase):
             self.assertRedirects(response, reverse('home'))
 
             edited_article = Article.objects.get(id=article.id)
-            self.assertEqual(article, edited_article)
+            del article._state, edited_article._state
+            self.assertEqual(article.__dict__, edited_article.__dict__)
 
             self.assertEqual(Step.objects.filter(article=article).count(), steps.count())
             for step in steps:
-                self.assertEqual(step, Step.objects.get(id=step.id))
+                edited_step = Step.objects.get(id=step.id)
+                del step._state, edited_step._state
+                self.assertEqual(step.__dict__, edited_step.__dict__)
 
     def test_edit_article_different_steps_amount(self):
         pass
