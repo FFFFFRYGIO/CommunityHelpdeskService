@@ -128,8 +128,64 @@ class ArticleTests(TestCase):
 
     @parameterized.expand([-1, -2])
     def test_edit_article_remove_steps(self, modify_amount_number):
-        pass
+        for article in Article.objects.all():
+            steps_to_compare = [step.__dict__.copy() for step in Step.objects.filter(
+                article=article).order_by('ordinal_number')]
+            form_data = self.generate_form_data(article)
+
+            response = self.client.post(reverse('edit_article', args=[article.id]), data=form_data)
+            self.assertRedirects(response, reverse('home'))
+
+            edited_article = Article.objects.get(id=article.id)
+            del article._state, edited_article._state
+            self.assertNotEqual(article.__dict__, edited_article.__dict__)
+
+            self.assertEqual(article.title + " modified", edited_article.title)
+            self.assertEqual(sorted(["tag", "modified"]), list(edited_article.tags.names()))
+
+            self.assertEqual(Step.objects.filter(article=article).count(), len(steps_to_compare))
+            for step_dict in steps_to_compare[:modify_amount_number]:
+                edited_step = Step.objects.get(id=step_dict['id'])
+                self.assertNotEqual(step_dict, edited_step.__dict__)
+
+                self.assertEqual(step_dict['title'] + " modified", Step.objects.get(id=step_dict['id']).title)
+                self.assertEqual(step_dict['description1'] + " modified", Step.objects.get(id=step_dict['id']).description1)
+                self.assertEqual(step_dict['description2'] + " modified", Step.objects.get(id=step_dict['id']).description2)
+
+            for i in range(modify_amount_number, 0, -1):
+                not_existing_step_id = steps_to_compare[i].id
+                self.assertFalse(Step.objects.filter(id=not_existing_step_id).exists())
 
     @parameterized.expand([1, 2])
-    def test_edit_article_add_steps(self):
-        pass
+    def test_edit_article_add_steps(self, modify_amount_number):
+        for article in Article.objects.all():
+            steps_to_compare = [step.__dict__.copy() for step in Step.objects.filter(
+                article=article).order_by('ordinal_number')]
+            form_data = self.generate_form_data(article)
+
+            response = self.client.post(reverse('edit_article', args=[article.id]), data=form_data)
+            self.assertRedirects(response, reverse('home'))
+
+            edited_article = Article.objects.get(id=article.id)
+            del article._state, edited_article._state
+            self.assertNotEqual(article.__dict__, edited_article.__dict__)
+
+            self.assertEqual(article.title + " modified", edited_article.title)
+            self.assertEqual(sorted(["tag", "modified"]), list(edited_article.tags.names()))
+
+            self.assertEqual(Step.objects.filter(article=article).count(), len(steps_to_compare))
+            for step_dict in steps_to_compare[:modify_amount_number]:
+                edited_step = Step.objects.get(id=step_dict['id'])
+                self.assertNotEqual(step_dict, edited_step.__dict__)
+
+                self.assertEqual(step_dict['title'] + " modified", Step.objects.get(id=step_dict['id']).title)
+                self.assertEqual(step_dict['description1'] + " modified",
+                                 Step.objects.get(id=step_dict['id']).description1)
+                self.assertEqual(step_dict['description2'] + " modified",
+                                 Step.objects.get(id=step_dict['id']).description2)
+
+            for step_ordinal_number in range(len(steps_to_compare), len(steps_to_compare) + modify_amount_number):
+                edited_step = Step.objects.get(article=article, ordinal_number=step_ordinal_number)
+                self.assertEqual(f"New step {step_ordinal_number} title", edited_step.title)
+                self.assertEqual(f"New step {step_ordinal_number} description1", edited_step.description1)
+                self.assertEqual(f"New step {step_ordinal_number} description2", edited_step.description2)
