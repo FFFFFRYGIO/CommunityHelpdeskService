@@ -203,7 +203,7 @@ class ReportsTests(AccessTestsBase):
         # 3. Editor1 can't see a report
         self.editor_can_see_the_report("new")
 
-    def test_new_report_after_creating_report(self):
+    def test_manual_report(self):
         # 1. User1 creates article
         self.user_create_article()
         # 2. User2 creates report
@@ -221,7 +221,7 @@ class ReportsTests(AccessTestsBase):
         self.editor_can_see_the_report("open")
 
     def test_assign_report(self):
-        self.test_new_report_after_creating_report()
+        self.test_manual_report()
         # 5. Master Editor assigns the report
         self.master_editor_assign_the_report()
         # 6. Editor1 sees a report, Editor2 can't
