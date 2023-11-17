@@ -25,8 +25,8 @@ class ArticleTests(TestCase):
                 created_at=datetime.now(), tags="tag", status="opened")
             for j in range(i):
                 Step.objects.create(
-                    article=article, ordinal_number=j+1,
-                    title=f"Step title {i}", description1=f"Step description1 {i}")
+                    article=article, ordinal_number=j+1, title=f"Step {i} title",
+                    description1=f"Step {i} description1", description2=f"Step {i} description2")
 
     def setUp(self):
         """setUp method for AccessTests"""
@@ -53,6 +53,7 @@ class ArticleTests(TestCase):
                 form_data[f'form-{i}-title'] = step.title
                 form_data[f'form-{i}-ordinal_number'] = step.ordinal_number
                 form_data[f'form-{i}-description1'] = step.description1
+                form_data[f'form-{i}-description2'] = step.description2
 
             step_form_set = StepFormSetCreate(form_data)
             self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
