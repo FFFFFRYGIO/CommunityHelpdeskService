@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
+from parameterized import parameterized
 
 from user_app.forms import StepFormSetCreate
 from user_app.models import Article, Step
@@ -36,6 +37,10 @@ class ArticleTests(TestCase):
     def tearDown(self):
         """tearDown method for AccessTestsBase"""
         self.client.logout()
+
+    def generate_form_data(self, article):
+
+        return form_data
 
     def test_edit_article_no_changes(self):
         for article in Article.objects.all():
@@ -140,8 +145,17 @@ class ArticleTests(TestCase):
             del article._state, edited_article._state
             self.assertNotEqual(article.__dict__, edited_article.__dict__)
 
-    def test_edit_article_remove_steps(self):
-        pass
+            self.assertEqual(article.title + " changed", edited_article.title)
+            self.assertEqual(["tag_changed"], list(edited_article.tags.names()))
+
+            self.assertEqual(Step.objects.filter(article=article).count(), steps.count())
+            for step in steps:
+                edited_step = Step.objects.get(id=step.id)
+                del step._state, edited_step._state
+                self.assertNotEqual(step.__dict__, edited_step.__dict__)
+
+                self.assertEqual(step.title + " changed", Step.objects.get(id=step.id).title)
+                self.assertEqual(step.description1 + " changed", Step.objects.get(id=step.id).description1)
 
     def test_edit_article_add_steps(self):
         pass
