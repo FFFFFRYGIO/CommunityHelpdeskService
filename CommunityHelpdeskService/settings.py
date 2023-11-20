@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'registration.apps.RegistrationConfig',
     'editor_app.apps.EditorAppConfig',
     'taggit',
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [
