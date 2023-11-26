@@ -52,8 +52,10 @@
     </ul>
 </nav>
 
-<h2>User: {{ user }}</h2>
-{% block content %}Empty Page Content{% endblock %}
+<div class="content">
+    <h2>User: {{ user }}</h2>
+    {% block content %}Empty Page Content{% endblock %}
+</div>
 
 <footer class="card-footer text-body-secondary fixed-bottom d-flex justify-content-between bg-dark">
     <div>Community Helpdesk Service</div>
