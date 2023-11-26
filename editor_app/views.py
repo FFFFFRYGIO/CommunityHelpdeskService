@@ -2,6 +2,8 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+
+from user_app.models import Article
 from .models import Report
 from registration.models import User
 
@@ -45,12 +47,26 @@ def manage_report_view(request, report_id):
     is_editor = request.user.groups.values_list('name', flat=True).filter(name='Editors')
     if is_master_editor or (is_editor and report.editor == request.user):
         if request.method == "POST":
-            if report.status == "changes applied":
-                report.status = "concluded"
-            elif report.status == "assigned":
-                report.status = "rejected"
+            article = Article.objects.get(id=report.article.id)
+            if 'reject_article' in request.POST:
+                article.status = 'rejected'
+                report.status = 'article rejected'
+
+            elif 'close_report' in request.POST:
+                if 'na' in report.status:
+                    report.status = 'concluded'
+                else:
+                    if report.status == 'changes applied':
+                        report.status = 'concluded'
+                    elif report.status == 'assigned':
+                        report.status = 'rejected'
+
+                article.status = 'approved'
+
             else:
                 return HttpResponse("HTTP Bad Request", status=400)
+
+            article.save()
             report.save()
 
             return redirect("home")
