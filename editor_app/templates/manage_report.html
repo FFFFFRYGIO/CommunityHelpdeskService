@@ -14,16 +14,22 @@
 
     </p>
     <p><strong>Status:</strong> {{ report.status }}</p>
-        <form method="get" action="{% url 'view_article' report.article.id %}">
-            <button type="submit" name="view_article">View Article</button>
-        </form>
-        <form method="get" action="{% url 'edit_article' report.article.id %}">
-            <button type="submit" name="edit_article">Edit Article</button>
-        </form>
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit" name="close_report">Close Report</button>
-        </form>
+    <form method="get" action="{% url 'view_article' report.article.id %}">
+        <button type="submit" name="view_article">View Article</button>
+    </form>
+    <form method="get" action="{% url 'edit_article' report.article.id %}">
+        <button type="submit" name="edit_article">Edit Article</button>
+    </form>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="reject_article">Reject Article</button>
+    </form>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="close_report">Close Report</button>
+    </form>
 
     {% if report.additional_file %}
         <p><strong>Additional File:</strong></p>
