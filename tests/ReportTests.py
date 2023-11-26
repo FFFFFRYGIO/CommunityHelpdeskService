@@ -113,7 +113,7 @@ class ReportsTests(AccessTestsBase):
 
             self.client.logout()
 
-    def user_create_report(self):
+    def user_report_article(self):
         """ Create the report about the existing article"""
         self.client.login(username=USERS[1]['username'], password=USERS[1]['password'])
 
