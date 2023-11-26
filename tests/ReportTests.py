@@ -1,12 +1,11 @@
 from datetime import datetime
 
 from django.contrib.auth.models import User
-from django.test import TestCase
 from django.urls import reverse
 
 from editor_app.forms import ReportForm
 from editor_app.models import Report
-from tests.AccessTestBase import AccessTestsBase, USERS, FORM_DATA
+from .MainTestBase import MainTestBase, USERS, FORM_DATA
 from user_app.forms import StepFormSetCreate
 from user_app.models import Article, Step
 
@@ -14,7 +13,7 @@ from user_app.models import Article, Step
 # Create your tests here.
 
 
-class ReportsTests(AccessTestsBase):
+class ReportsTests(MainTestBase):
     def user_create_article(self):
         """ Create article to be reported"""
         self.client.login(username=USERS[0]['username'], password=USERS[0]['password'])
