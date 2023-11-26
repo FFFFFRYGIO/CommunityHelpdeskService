@@ -25,11 +25,11 @@ def editor_panel_view(request):
 def master_editor_panel_view(request):
     """ master editor panel with all reports """
     if request.user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
-        if request.method == 'POST':
+        if request.method == 'POST' and 'editor_assign_id' in request.POST:
             report = Report.objects.get(id=request.POST.get('report_id'))
             new_editor = User.objects.get(id=request.POST.get('editor_assign_id'))
             report.editor = new_editor
-            report.status = "assigned"
+            report.status = report.status.replace('opened', 'assigned')
             report.save()
             return redirect("home")
         all_reports = Report.objects.all()

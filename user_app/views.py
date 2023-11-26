@@ -56,7 +56,7 @@ def create_article_view(request):
             new_article = form.save(commit=False)
             new_article.author = request.user
             new_article.created_at = datetime.now()
-            new_article.status = "unapproved"
+            new_article.status = 'unapproved'
             new_article.save()
 
             tags = request.POST.get('tags')
@@ -86,7 +86,7 @@ def create_article_view(request):
                 new_report.author = User.objects.get(username='system_automat')
                 new_report.created_at = datetime.now()
                 new_report.article = new_article
-                new_report.status = "new article"
+                new_report.status = "na opened"
                 new_report.save()
 
                 return redirect('home')
@@ -126,9 +126,13 @@ def edit_article_view(request, article_id):
                     step_data.article = article
                     step_data.save()
 
-                for report in reports:
-                    report.status = "changes applied"
-                    report.save()
+                if reports:
+                    article.status = 'changes during report'
+                    article.save()
+
+                    for report in reports:
+                        report.status = report.status.replace('assigned', 'changes applied')
+                        report.save()
                 return redirect('home')
             return HttpResponse("HTTP Bad Request", status=400)
         else:
