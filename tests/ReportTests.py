@@ -40,7 +40,7 @@ class ReportsTests(AccessTestsBase):
         if report_type == "new":
             self.assertContains(response, f'<td>Review new article &quot;{FORM_DATA["title"]}&quot;</td>')
             self.assertContains(response, '<td>system_automat</td>')
-            self.assertContains(response, '<td>new article</td>')
+            self.assertContains(response, '<td>na opened</td>')
         elif report_type == "open":
             self.assertContains(response, f'<td>New report about article &quot;{FORM_DATA["title"]}&quot;</td>')
             self.assertContains(response, f'<td>{USERS[1]["username"]}</td>')
@@ -159,7 +159,11 @@ class ReportsTests(AccessTestsBase):
 
         old_report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
 
-        response = self.client.post(reverse('manage_report', args=[old_report.id]))
+        close_report_data = {
+            'close_report': 'Close Report',
+        }
+
+        response = self.client.post(reverse('manage_report', args=[old_report.id]), data=close_report_data)
         self.assertRedirects(response, reverse('home'))
 
         report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')

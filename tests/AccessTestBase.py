@@ -89,9 +89,9 @@ class AccessTestsBase(TestCase):
             '<a class="nav-link" href="http://127.0.0.1:8000/registration/logout">Logout',
         ]
         footer_elements = [
-            '<div class="footer-left">Community Helpdesk Service</div>',
-            '<div class="footer-center">Author: Radosław Relidzyński</div>',
-            '<div class="footer-right">&copy; 2023</div>',
+            '<div>Community Helpdesk Service</div>',
+            '<div>Author: Radosław Relidzyński</div>',
+            '<div>&copy; 2023</div>',
         ]
         home_elements = [
             '<h5>Search articles <a href="/user_app/search">HERE</a></h5>',
@@ -144,7 +144,8 @@ class AccessTestsBase(TestCase):
         for element in navbar_elements:
             self.assertContains(response, element, count=1)
 
-        self.assertContains(response, '<footer class="footer text-center">', count=1)
+        self.assertContains(response, '<footer class="card-footer text-body-secondary '
+                                      'fixed-bottom d-flex justify-content-between bg-dark">', count=1)
         for element in footer_elements:
             self.assertContains(response, element, count=1)
 
@@ -155,18 +156,24 @@ class AccessTestsBase(TestCase):
         response = self.client.get(reverse('search'))
         self.assertEqual(response.status_code, 200)
 
-        self.assertContains(response, '<button type="submit" name="search_title">Search by Title</button>', count=1)
-        self.assertContains(response, '<button type="submit" name="search_tags">Search by Tags</button>', count=1)
+        self.assertContains(response, '<button type="submit" name="search_title" '
+                                      'class="btn btn-dark">Search by Title</button>', count=1)
+        self.assertContains(response, '<button type="submit" name="search_tags" '
+                                      'class="btn btn-dark">Search by Tags</button>', count=1)
 
         if self.client.session.get('_auth_user_id'):
-            self.assertContains(response, '<button type="submit" name="search_ownership">Search by Ownership</button>',
+            self.assertContains(response, '<button type="submit" name="search_ownership" '
+                                          'class="btn btn-dark">Search by Ownership</button>',
                                 count=1)
+        else:
+            self.assertNotContains(response, '<button type="submit" name="search_ownership" '
+                                             'class="btn btn-dark">Search by Ownership</button>',)
 
     def test_search_page_searching_by_title(self):
         response = self.client.post(reverse('search'),
                                     {'search_text': 'Test Article', 'search_title': 'Search by Title'})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Search Results:")
+        self.assertContains(response, "<h3>Search Results:</h3>")
         count_articles = Article.objects.filter(title__contains='Test Article').count()
         self.assertContains(response, 'Test Article', count=count_articles)
         self.assertContains(response, '<button type="submit" name="view_article">View</button>', count=count_articles)
