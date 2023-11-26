@@ -8,21 +8,21 @@
     <form method="post">
         {% csrf_token %}
         {{ search_name_form.as_p }}
-        <button type="submit" name="search_title">Search by Title</button>
+        <button type="submit" name="search_title" class="btn btn-dark">Search by Title</button>
     </form>
 
     <h3>Search by tags</h3>
     <form method="post">
         {% csrf_token %}
         {{ search_tags_form.as_p }}
-        <button type="submit" name="search_tags">Search by Tags</button>
+        <button type="submit" name="search_tags" class="btn btn-dark">Search by Tags</button>
     </form>
 
     {% if user.is_authenticated %}
         <h3>Search by ownership</h3>
         <form method="post">
             {% csrf_token %}
-            <button type="submit" name="search_ownership">Search by Ownership</button>
+            <button type="submit" name="search_ownership" class="btn btn-dark">Search by Ownership</button>
         </form>
     {% endif %}
 
