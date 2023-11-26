@@ -3,3 +3,11 @@ body {
     font-family: verdana, serif;
     color: darkolivegreen;
 }
+
+.content {
+    padding: 2vb;
+}
+
+.nav-link {
+    color: olive;
+}
