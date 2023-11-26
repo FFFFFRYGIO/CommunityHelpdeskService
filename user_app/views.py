@@ -28,7 +28,9 @@ def search_view(request):
             search_name_form = SearchByNameForm(request.POST)
             if search_name_form.is_valid():
                 search_text = search_name_form.cleaned_data['search_text']
-                search_result = Article.objects.filter(title__icontains=search_text)
+                search_permitted_statuses = ['approved', 'unapproved', 'changes requested', 'changes during report']
+                search_result = Article.objects.filter(
+                    title__icontains=search_text, status__in=search_permitted_statuses)
 
         if 'search_tags' in request.POST:
             search_tags_form = SearchByTagsForm(request.POST)

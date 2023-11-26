@@ -15,7 +15,8 @@ from registration.models import User
 def editor_panel_view(request):
     """ editor panel with the assigned reports """
     if request.user.groups.values_list('name', flat=True).filter(name='Editors'):
-        editor_reports = Report.objects.filter(editor=request.user, status='assigned')
+        editor_permitted_statuses = ['assigned', 'na assigned', 'changes applied', 'na changes applied']
+        editor_reports = Report.objects.filter(editor=request.user, status__in=editor_permitted_statuses)
         return render(request, 'editor_panel.html', {'editor_reports': editor_reports})
     else:
         return redirect("home")
