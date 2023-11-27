@@ -32,6 +32,10 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            is_master_editor = request.user.groups.values_list('name', flat=True).filter(name='MasterEditors').exists()
+            request.session['is_master_editor'] = bool(is_master_editor)
+            is_editor = request.user.groups.values_list('name', flat=True).filter(name='Editors').exists()
+            request.session['is_editor'] = bool(is_editor)
             return redirect("home")
         else:
             messages.append("Wrong username or password")

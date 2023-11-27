@@ -44,8 +44,9 @@ def master_editor_panel_view(request):
 def manage_report_view(request, report_id):
     """ view the content of the report and allow to manage it """
     report = Report.objects.get(id=report_id)
-    is_master_editor = request.user.groups.values_list('name', flat=True).filter(name='MasterEditors')
-    is_editor = request.user.groups.values_list('name', flat=True).filter(name='Editors')
+    is_master_editor = request.session.get('is_master_editor', False)
+    is_editor = request.session.get('is_editor', False)
+
     if is_master_editor or (is_editor and report.editor == request.user):
         if request.method == "POST":
             article = Article.objects.get(id=report.article.id)
