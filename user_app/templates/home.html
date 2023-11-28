@@ -4,13 +4,29 @@
 
 {% block content %}
     <h1>Home page</h1>
-    <h5>Search articles <a href="/user_app/search">HERE</a></h5>
+    <p>
+        <button type="button" class="btn btn-dark"><a href="/user_app/search">Search articles</a></button>
+    </p>
 
     {% if user.is_authenticated %}
-        <h5>Create article <a href="/user_app/create_article">HERE</a></h5>
-        <h5>Go to user panel <a href="/user_app/user_panel">HERE</a></h5>
-        <h5>Go to editor panel <a href="/editor_app/editor_panel">HERE</a></h5>
-        <h5>Go to master editor panel <a href="/editor_app/master_editor_panel">HERE</a></h5>
+        <p>
+            <button type="button" class="btn btn-dark"><a href="/user_app/create_article">Create article</a></button>
+        </p>
+        <p>
+            <button type="button" class="btn btn-dark"><a href="/user_app/user_panel">Go to user panel</a></button>
+        </p>
+        {% if request.session.is_editor %}
+            <p>
+                <button type="button" class="btn btn-dark">
+                    <a href="/editor_app/editor_panel">Go to editor panel</a></button>
+            </p>
+        {% endif %}
+        {% if request.session.is_master_editor %}
+            <p>
+                <button type="button" class="btn btn-dark">
+                    <a href="/editor_app/master_editor_panel">Go to master editor panel</a></button>
+            </p>
+        {% endif %}
     {% endif %}
 
 {% endblock %}
