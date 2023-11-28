@@ -1,6 +1,6 @@
 from django import forms
 from .models import Article, Step
-from taggit.forms import TagField
+from taggit.forms import TagField, TagWidget
 
 
 class ArticleForm(forms.ModelForm):
@@ -37,9 +37,11 @@ class StepForm(forms.ModelForm):
 StepFormSetCreate = forms.modelformset_factory(Step, form=StepForm)
 StepFormSetEdit = forms.modelformset_factory(Step, form=StepForm, extra=0)
 
+
 class SearchByNameForm(forms.Form):
-    search_text = forms.CharField(label='Search by Name', max_length=255)
+    search_title = forms.CharField(label='Search by Title', max_length=255, widget=forms.TextInput(
+        attrs={'required': True, 'class': 'form-control form-control-sm'}))
 
 
 class SearchByTagsForm(forms.Form):
-    tags = TagField()
+    tags = TagField(widget=TagWidget(attrs={'class': 'form-control form-control-sm'}))
