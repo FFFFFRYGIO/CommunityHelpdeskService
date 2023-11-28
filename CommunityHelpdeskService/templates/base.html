@@ -7,6 +7,7 @@
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% block css %}{% endblock %}">
     <title>{% block title %}Community Helpdesk Service{% endblock %}</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
