@@ -2,10 +2,14 @@ body {
     background-color: lightblue;
     font-family: verdana, serif;
     color: darkolivegreen;
+    align-content: center;
 }
 
 .content {
-    padding: 2vb;
+    padding: 20px;
+    min-width: 50%;
+    width: 300px;
+    margin: 0 auto;
 }
 
 .nav-link {
