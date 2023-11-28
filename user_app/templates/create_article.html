@@ -3,28 +3,26 @@
 {% block title %}Create Article Page{% endblock %}
 
 {% block content %}
-    <h1>Create Article page</h1>
+    <h1>Create Article</h1>
     {% if user.is_authenticated %}
-        <h3>Logged user content</h3>
-        <h3>Add Article:</h3>
         <form action="#" method="post" class="form-group" id="article-form">
             {% csrf_token %}
             {{ article_form.as_p }}
-            <br>
             {{ step_form_set.management_form }}
             {{ step_form_set.non_form_errors }}
             <div id="steps-formset">
                 {% for step_form in step_form_set %}
                     <div class="step-form">
-                        <h3>ANOTHER STEP</h3>
+                        <h4>Step 1</h4>
                         {{ step_form.as_p }}
                         <br>
                     </div>
                 {% endfor %}
             </div>
-            <p><a href="#" id="remove-step-button" class="btn btn-secondary remove-step-button">Remove Step</a></p>
-            <p><a href="#" id="add-step-button" class="btn btn-secondary add-step-button">Add Another Step</a></p>
-            <p><button type="submit" class="btn btn-success" value="Save">Save</button></p>
+            <a href="#" id="remove-step-button" class="btn btn-secondary remove-step-button">Remove Step</a>
+            <a href="#" id="add-step-button" class="btn btn-secondary add-step-button">Add Another Step</a>
+            <button type="submit" class="btn btn-success" value="Save">Save</button>
+
         </form>
     {% else %}
         <h3>User isn't authenticated, login <a href="/registration/login">HERE</a></h3>
@@ -41,8 +39,9 @@
                 e.preventDefault();
                 let newStepForm = stepForms[0].cloneNode(true);
                 newStepForm.innerHTML = newStepForm.innerHTML.replace(/form-0/g, "form-" + totalFormsInput.value);
-                stepsFormset.appendChild(newStepForm);
                 totalFormsInput.value = parseInt(totalFormsInput.value, 10) + 1;
+                newStepForm.innerHTML = newStepForm.innerHTML.replace(/Step 1/g, "Step " + totalFormsInput.value);
+                stepsFormset.appendChild(newStepForm);
             }
         });
         removeStepButton.addEventListener("click", function(e) {
@@ -51,8 +50,7 @@
                 if (totalFormsInput.value > 1) {
                     stepsFormset.removeChild(stepsFormset.lastChild);
                     totalFormsInput.value = parseInt(totalFormsInput.value, 10) - 1;
-                }
-                else {
+                } else {
                     alert("You have to have at least 1 step");
                 }
             }
