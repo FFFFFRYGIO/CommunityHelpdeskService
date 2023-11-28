@@ -21,6 +21,7 @@ def home_view(request):
 
 def search_view(request):
     """ search articles to view them """
+    searched_articles = []
     search_result = []
 
     if request.method == "POST":
@@ -29,7 +30,7 @@ def search_view(request):
             if search_name_form.is_valid():
                 search_text = search_name_form.cleaned_data['search_text']
                 search_permitted_statuses = ['approved', 'unapproved', 'changes requested', 'changes during report']
-                search_result = Article.objects.filter(
+                searched_articles = Article.objects.filter(
                     title__icontains=search_text, status__in=search_permitted_statuses)
 
         if 'search_tags' in request.POST:
@@ -37,13 +38,18 @@ def search_view(request):
             if search_tags_form.is_valid():
                 tags_to_search = search_tags_form.cleaned_data['tags']
                 tag_objects = Tag.objects.filter(name__in=tags_to_search)
-                search_result = Article.objects.filter(tags__in=tag_objects)
+                searched_articles = Article.objects.filter(tags__in=tag_objects)
 
         if 'search_ownership' in request.POST:
             if request.user.is_authenticated:
-                search_result = Article.objects.filter(Q(author=request.user))
+                searched_articles = Article.objects.filter(Q(author=request.user))
             else:
                 return HttpResponse("HTTP Unauthorized", status=401)
+
+        search_result = ({
+            'article': article,
+            'steps_amount': len(Step.objects.filter(article=article)),
+        } for article in searched_articles)
 
     return render(request, 'search.html', {
         'search_name_form': SearchByNameForm, 'search_tags_form': SearchByTagsForm, 'search_result': search_result})

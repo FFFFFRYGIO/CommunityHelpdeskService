@@ -28,38 +28,33 @@
 
     {% if search_result %}
         <h3>Search Results:</h3>
-        <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Created At</th>
-                <th>Tags</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for article in search_result %}
-                <tr>
-                    <td>{{ article.id }}</td>
-                    <td>{{ article.title }}</td>
-                    <td>{{ article.author }}</td>
-                    <td>{{ article.created_at }}</td>
-                    <td>
-                        {% for tag in article.tags.all %}
-                            {{ tag.name }}
-                            {% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        <form method="get" action="{% url 'view_article' article.id %}">
-                            <button type="submit" name="view_article">View</button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {% for result in search_result %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5 class="card-title">{{ result.article.title }}</h5>
+                            <p class="card-text">{{ result.article.author }}</p>
+                            <p class="card-text">
+                                {% for tag in result.article.tags.all %}
+                                    #{{ tag.name }}{% if not forloop.last %} {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="card-text text-end">Steps: {{ result.steps_amount }}</p>
+                            <form method="get" action="{% url 'view_article' result.article.id %}">
+                                <button type="submit" name="view_article" class="btn btn-dark view_article_button
+                                d-flex align-items-center justify-content-center position-absolute bottom-0 end-0">
+                                    <img class="rounded float-end" src="{% static 'img/view_article_icon.png' %}"
+                                         alt="view">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     {% endif %}
 
 {% endblock %}
