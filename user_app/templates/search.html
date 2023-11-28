@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block css %}{% static 'css/search.css' %}{% endblock %}
 {% block title %}Search Page{% endblock %}
 
 {% block content %}
@@ -26,7 +28,7 @@
             </button>
         </form>
     {% endif %}
-
+    <br>
     {% if search_result %}
         <h3>Search Results:</h3>
         {% for result in search_result %}
