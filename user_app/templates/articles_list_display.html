@@ -1,0 +1,29 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/articles_list_display.css' %}">
+
+<div class="col-lg-6 mb-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="card-text">
+                    <h5>{{ result.article.title }}</h5>
+                    <p class="card-text steps_display">Steps: {{ result.steps_amount }}</p>
+                </div>
+                <p class="card-text">{{ result.article.author }}</p>
+                <p class="card-text">
+                    {% for tag in result.article.tags.all %}
+                        #{{ tag.name }}{% if not forloop.last %} {% endif %}
+                    {% endfor %}
+                </p>
+                <form method="get" action="{% url 'view_article' result.article.id %}">
+                    <button type="submit" name="view_article"
+                            class="btn btn-dark view_article_button">
+                        <img class="rounded float-end"
+                             src="{% static 'img/view_article_icon.png' %}" alt="view">
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

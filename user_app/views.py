@@ -155,8 +155,11 @@ def edit_article_view(request, article_id):
 @login_required
 def user_panel_view(request):
     """ all user's articles and reports """
-    user_articles = Article.objects.filter(author=request.user)
+    user_articles = ({
+        'article': article, 'steps_amount': len(Step.objects.filter(article=article)),
+    } for article in Article.objects.filter(author=request.user))
     user_reports = Report.objects.filter(author=request.user)
+
     return render(request, 'user_panel.html', {'articles': user_articles, 'reports': user_reports})
 
 

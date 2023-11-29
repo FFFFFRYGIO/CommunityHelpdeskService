@@ -7,39 +7,11 @@
 
     {% if articles %}
         <h3>Your Articles:</h3>
-        <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Created At</th>
-                <th>Tags</th>
-                <th>Status</th>
-                <th>View Article</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for article in articles %}
-                <tr>
-                    <td>{{ article.id }}</td>
-                    <td>{{ article.title }}</td>
-                    <td>{{ article.created_at }}</td>
-                    <td>
-                        {% for tag in article.tags.all %}
-                            {{ tag.name }}
-                            {% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>{{ article.status }}</td>
-                    <td>
-                        <form method="get" action="{% url 'view_article' article.id %}">
-                            <button type="submit" name="view_article">View</button>
-                        </form>
-                    </td>
-                </tr>
+        <div class="row">
+            {% for result in articles %}
+                {% include 'articles_list_display.html' with result=result %}
             {% endfor %}
-            </tbody>
-        </table>
+        </div>
     {% else %}
         <p>You haven't authored any articles yet.</p>
     {% endif %}
