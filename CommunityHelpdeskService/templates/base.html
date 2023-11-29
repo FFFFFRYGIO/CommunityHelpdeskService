@@ -46,7 +46,8 @@
                 {% endif %}
                 {% if user.is_authenticated and request.session.is_master_editor %}
                     <li class="nav-item active">
-                        <a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">Master Editor Panel</a>
+                        <a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">
+                            Master Editor Panel</a>
                     </li>
                 {% endif %}
                 {% if not user.is_authenticated %}
