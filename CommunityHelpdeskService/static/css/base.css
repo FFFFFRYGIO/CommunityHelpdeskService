@@ -7,9 +7,10 @@ body {
 
 .content {
     padding: 20px;
-    min-width: 50%;
-    width: 300px;
-    margin: 0 auto;
+    min-width: 80%;
+    max-width: 100%;
+    width: 600px;
+    margin: 0 auto 60px;
 }
 
 .nav-link {
@@ -29,13 +30,18 @@ button {
 .navbar-brand-custom {
     color: olive;
     background-color: lightblue;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     border: 0;
     border-radius: 15px;
     margin-left: 10px;
     margin-right: 10px;
     padding: 5px 10px 5px 10px;
+}
+
+.navbar-brand-custom img {
+    width: auto;
+    height: 35px;
 }
 
 .navbar-nav .nav-link:hover {
