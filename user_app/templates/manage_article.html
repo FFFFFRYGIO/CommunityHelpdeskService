@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Create Article{% endblock %}
+{% block title %}{{ type }} Article{% endblock %}
 
-{% block heading %}Create Article{% endblock %}
+{% block heading %}{{ type }} Article{% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
         <form action="#" method="post" class="form-group" id="article-form">
             {% csrf_token %}
             {{ article_form.as_p }}
+            <br>
             {{ step_form_set.management_form }}
             {{ step_form_set.non_form_errors }}
             <div id="steps-formset">
@@ -21,10 +22,11 @@
                     </div>
                 {% endfor %}
             </div>
-            <a href="#" id="remove-step-button" class="btn btn-secondary remove-step-button">Remove Step</a>
-            <a href="#" id="add-step-button" class="btn btn-secondary add-step-button">Add Another Step</a>
-            <button type="submit" class="btn btn-success" value="Save">Save</button>
-
+            <p><a href="#" id="remove-step-button" class="btn btn-secondary remove-step-button">Remove Step</a></p>
+            <p><a href="#" id="add-step-button" class="btn btn-secondary add-step-button">Add Another Step</a></p>
+            <p>
+                <button type="submit" class="btn btn-success" value="Save">Save</button>
+            </p>
         </form>
     {% else %}
         <h3>User isn't authenticated, login <a href="/registration/login">HERE</a></h3>

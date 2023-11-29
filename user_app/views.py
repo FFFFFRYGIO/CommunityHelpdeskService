@@ -101,7 +101,8 @@ def create_article_view(request):
 
     article_form = ArticleForm()
     step_form_set = StepFormSetCreate(queryset=Step.objects.none())
-    return render(request, 'create_article.html', {'article_form': article_form, 'step_form_set': step_form_set})
+    return render(request, 'manage_article.html',
+                  {'article_form': article_form, 'step_form_set': step_form_set, 'type': 'Create'})
 
 
 def view_article_view(request, article_id):
@@ -146,8 +147,8 @@ def edit_article_view(request, article_id):
         else:
             article_form = ArticleForm(instance=article)
             step_form_set = StepFormSetEdit(queryset=Step.objects.filter(article=article))
-        return render(request, 'edit_article.html', {
-            'article': article, 'article_form': article_form, 'step_form_set': step_form_set})
+        return render(request, 'manage_article.html', {
+            'article': article, 'article_form': article_form, 'step_form_set': step_form_set, 'type': 'Edit'})
 
     return redirect('home')
 
