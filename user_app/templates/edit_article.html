@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Edit Article Page{% endblock %}
+{% block title %}Edit Article{% endblock %}
+
+{% block heading %}Edit Article{% endblock %}
 
 {% block content %}
-    <h1>Edit Article page</h1>
     {% if user.is_authenticated %}
         <h3>Logged user content</h3>
         <h3>Edit Article:</h3>

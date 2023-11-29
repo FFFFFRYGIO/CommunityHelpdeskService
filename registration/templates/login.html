@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Login Page{% endblock %}
+{% block title %}Login{% endblock %}
+
+{% block heading %}Login{% endblock %}
 
 {% block content %}
-    <h1>Login Page</h1>
     {% if user.is_authenticated %}
         <h3>User is logged, can't login</h3>
     {% else %}

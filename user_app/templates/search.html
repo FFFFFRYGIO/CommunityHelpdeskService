@@ -2,10 +2,12 @@
 {% load static %}
 
 {% block css %}{% static 'css/search.css' %}{% endblock %}
-{% block title %}Search Page{% endblock %}
+
+{% block title %}Search{% endblock %}
+
+{% block heading %}Search{% endblock %}
 
 {% block content %}
-    <h1>Search page</h1>
     <form method="post">
         {% csrf_token %}
         {{ search_name_form.as_p }}

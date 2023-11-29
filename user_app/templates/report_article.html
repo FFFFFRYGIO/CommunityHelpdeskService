@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Report Article Page{% endblock %}
+{% block title %}Report Article{% endblock %}
+
+{% block heading %}Report Article{% endblock %}
 
 {% block content %}
-    <h1>Report Article page</h1>
-
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ report_form.as_p }}
