@@ -1,0 +1,41 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/display_list_of_articles_or_reports.css' %}">
+
+<div class="col-lg-6 mb-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="card-text">
+                    <h5>{{ report.description }}</h5>
+                </div>
+                <p class="card-text">{{ report.author }}</p>
+                <p class="card-text">Status: {{ report.status }}</p>
+
+{#                TODO: if editor is assigned to the report#}
+                {% if user.is_authenticated and request.session.is_editor %}
+
+                    <form method="get" action="{% url 'manage_report' report.id %}">
+                        <button type="submit" name="manage_article"
+                                class="btn btn-dark image_button manage_report_button">
+                            <img class="rounded float-end"
+                                 src="{% static 'img/manage_report_icon.jpg' %}" alt="view">
+                        </button>
+                    </form>
+
+                {% else %}
+
+                    <form method="get" action="{% url 'view_report' report.id %}">
+                        <button type="submit" name="view_report"
+                                class="btn btn-dark image_button view_report_button">
+                            <img class="rounded float-end"
+                                 src="{% static 'img/view_report_icon.png' %}" alt="view">
+                        </button>
+                    </form>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>

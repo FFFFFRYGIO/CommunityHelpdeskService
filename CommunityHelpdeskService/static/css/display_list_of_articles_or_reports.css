@@ -13,8 +13,23 @@
     right: 10px;
 }
 
+.view_report_button {
+    bottom: 0;
+    right: 10px;
+}
+
 img {
     width: 35px;
+    height: auto;
+}
+
+.manage_report_button {
+    bottom: 0;
+    right: 10px;
+}
+
+.manage_report_button img {
+    width: 30px;
     height: auto;
 }
 

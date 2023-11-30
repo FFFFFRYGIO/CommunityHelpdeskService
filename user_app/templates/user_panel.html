@@ -5,10 +5,11 @@
 {% block heading %}User Panel{% endblock %}
 
 {% block content %}
-    {% if articles %}
+
+    {% if articles_with_steps %}
         <h3>Your Articles:</h3>
         <div class="row">
-            {% for result in articles %}
+            {% for result in articles_with_steps %}
                 {% include 'articles_list_display.html' with result=result %}
             {% endfor %}
         </div>
@@ -18,40 +19,11 @@
 
     {% if reports %}
         <h3>Your Reports:</h3>
-        <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Created At</th>
-                <th>Additional File</th>
-                <th>Status</th>
-                <th>View Report</th>
-            </tr>
-            </thead>
-            <tbody>
+        <div class="row">
             {% for report in reports %}
-                <tr>
-                    <td>{{ report.id }}</td>
-                    <td>{{ report.title }}</td>
-                    <td>{{ report.description }}</td>
-                    <td>{{ report.created_at }}</td>
-                    {% if report.additional_file %}
-                        <td><a href="{{ report.additional_file.url }}" target="_blank">Download File</a></td>
-                    {% else %}
-                        <td>No additional file</td>
-                    {% endif %}
-                    <td>{{ report.status }}</td>
-                    <td>
-                        <form method="get" action="{% url 'view_report' report.id %}">
-                            <button type="submit" name="view_report">View</button>
-                        </form>
-                    </td>
-                </tr>
+                {% include 'reports_list_display.html' with report=report %}
             {% endfor %}
-            </tbody>
-        </table>
+        </div>
     {% else %}
         <p>You haven't authored any reports yet.</p>
     {% endif %}
