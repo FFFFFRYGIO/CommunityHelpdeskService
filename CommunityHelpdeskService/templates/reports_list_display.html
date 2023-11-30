@@ -12,8 +12,7 @@
                 <p class="card-text">{{ report.author }}</p>
                 <p class="card-text">Status: {{ report.status }}</p>
 
-{#                TODO: if editor is assigned to the report#}
-                {% if user.is_authenticated and request.session.is_editor %}
+                {% if report.editor == user or request.session.is_master_editor %}
 
                     <form method="get" action="{% url 'manage_report' report.id %}">
                         <button type="submit" name="manage_article"
