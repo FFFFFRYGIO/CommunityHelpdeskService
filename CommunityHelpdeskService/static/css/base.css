@@ -62,3 +62,11 @@ h1 span {
     padding: 10px;
     width: 450px;
 }
+
+form {
+    margin: 0;
+}
+
+button {
+    margin: 10px 0 10px;
+}

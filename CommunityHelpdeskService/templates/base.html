@@ -15,7 +15,7 @@
 
 <nav class="navbar navbar-expand-sm bg-dark">
     <div class="container-fluid">
-        <button class="navbar-brand-custom" disabled><img src="{% static 'img/favicon.png' %}" alt="main_image"> CHS
+        <button class="navbar-brand-custom" disabled><img src="{% static 'img/favicon.png' %}" alt="main_image">CHS
         </button>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,6 +73,7 @@
 <div class="content">
     <h2>User: {{ user }}</h2>
     <h1><span>{% block heading %}Base{% endblock %}</span></h1>
+    <br>
     {% block content %}Base Page Content{% endblock %}
 </div>
 
