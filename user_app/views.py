@@ -161,7 +161,7 @@ def user_panel_view(request):
     } for article in Article.objects.filter(author=request.user))
     user_reports = Report.objects.filter(author=request.user)
 
-    return render(request, 'user_panel.html', {'articles': user_articles, 'reports': user_reports})
+    return render(request, 'user_panel.html', {'articles_with_steps': user_articles, 'reports': user_reports})
 
 
 @login_required
