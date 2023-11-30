@@ -1,3 +1,9 @@
+.list_element {
+    border-radius: 20px;
+    border: 3px solid black;
+    background-color: #f8f8f8;
+}
+
 .image_button {
     width: 40px;
     height: 40px;
@@ -6,6 +12,7 @@
     align-items: center;
     justify-content: center;
     position: absolute;
+    border-radius: 10px;
 }
 
 .view_article_button {
@@ -29,7 +36,7 @@ img {
 }
 
 .manage_report_button img {
-    width: 30px;
+    width: 28px;
     height: auto;
 }
 
