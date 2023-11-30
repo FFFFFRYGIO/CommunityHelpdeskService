@@ -1,0 +1,13 @@
+.home_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form {
+    width: 50%;
+}
+
+button {
+    margin: 5px;
+}

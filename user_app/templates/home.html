@@ -1,35 +1,55 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css %}{% static 'css/home.css' %}{% endblock %}
 
 {% block title %}Home{% endblock %}
 
 {% block heading %}Home{% endblock %}
 
 {% block content %}
-    <div class="d-flex flex-column align-items-center justify-content-center">
-        <p>
-            <button type="button" class="btn btn-dark"><a href="/user_app/search">Search articles</a></button>
-        </p>
+
+    <div class="home_content">
+
+        <form method="post" action="{% url 'search' %}">
+            <button type="submit" class="btn btn-dark form-control form-control-sm">
+                Search articles
+            </button>
+        </form>
 
         {% if user.is_authenticated %}
-            <p>
-                <button type="button" class="btn btn-dark"><a href="/user_app/create_article">Create article</a></button>
-            </p>
-            <p>
-                <button type="button" class="btn btn-dark"><a href="/user_app/user_panel">Go to user panel</a></button>
-            </p>
+
+            <form method="post" action="{% url 'create_article' %}">
+                <button type="submit" class="btn btn-dark form-control form-control-sm">
+                    Create article
+                </button>
+            </form>
+
+            <form method="post" action="{% url 'user_panel' %}">
+                <button type="submit" class="btn btn-dark form-control form-control-sm">
+                    User panel
+                </button>
+            </form>
+
             {% if request.session.is_editor %}
-                <p>
-                    <button type="button" class="btn btn-dark">
-                        <a href="/editor_app/editor_panel">Go to editor panel</a></button>
-                </p>
+
+                <form method="post" action="{% url 'editor_panel' %}">
+                    <button type="submit" class="btn btn-dark form-control form-control-sm">
+                        Go to editor panel
+                    </button>
+                </form>
+
             {% endif %}
             {% if request.session.is_master_editor %}
-                <p>
-                    <button type="button" class="btn btn-dark">
-                        <a href="/editor_app/master_editor_panel">Go to master editor panel</a></button>
-                </p>
+
+                <form method="post" action="{% url 'master_editor_panel' %}">
+                    <button type="submit" class="btn btn-dark form-control form-control-sm">
+                        Go to master editor panel
+                    </button>
+                </form>
             {% endif %}
         {% endif %}
+
     </div>
 
 {% endblock %}
