@@ -26,16 +26,8 @@ def editor_panel_view(request):
 def master_editor_panel_view(request):
     """ master editor panel with all reports """
     if request.user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
-        if request.method == 'POST' and 'editor_assign_id' in request.POST:
-            report = Report.objects.get(id=request.POST.get('report_id'))
-            new_editor = User.objects.get(id=request.POST.get('editor_assign_id'))
-            report.editor = new_editor
-            report.status = report.status.replace('opened', 'assigned')
-            report.save()
-            return redirect("home")
         all_reports = Report.objects.all()
-        editors = Group.objects.get(name='Editors').user_set.all()
-        return render(request, 'master_editor_panel.html', {'all_reports': all_reports, 'editors': editors})
+        return render(request, 'master_editor_panel.html', {'all_reports': all_reports})
     else:
         return redirect("home")
 
@@ -46,6 +38,14 @@ def manage_report_view(request, report_id):
     report = Report.objects.get(id=report_id)
     is_master_editor = request.session.get('is_master_editor', False)
     is_editor = request.session.get('is_editor', False)
+
+    if request.method == 'POST' and 'editor_assign_id' in request.POST:
+        report = Report.objects.get(id=request.POST.get('report_id'))
+        new_editor = User.objects.get(id=request.POST.get('editor_assign_id'))
+        report.editor = new_editor
+        report.status = report.status.replace('opened', 'assigned')
+        report.save()
+        return redirect("home")
 
     if is_master_editor or (is_editor and report.editor == request.user):
         if request.method == "POST":
@@ -73,7 +73,9 @@ def manage_report_view(request, report_id):
 
             return redirect("home")
 
-        return render(request, 'manage_report.html', {'report': report})
+        editors = Group.objects.get(name='Editors').user_set.all()
+
+        return render(request, 'manage_report.html', {'report': report, 'editors': editors})
 
     else:
         return redirect("home")

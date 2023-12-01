@@ -36,4 +36,20 @@
         <img src="{{ report.additional_file.url }}" alt="Report Image">
     {% endif %}
 
+    {% if request.session.is_master_editor %}
+        <form method="post">
+            {% csrf_token %}
+            <label>
+                <select name="editor_assign_id">
+                    <option value="">Choose an editor</option>
+                    {% for editor in editors %}
+                        <option value="{{ editor.id }}">{{ editor.username }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <input type="hidden" name="report_id" value="{{ report.id }}">
+            <button type="submit">Assign</button>
+        </form>
+    {% endif %}
+
 {% endblock %}
