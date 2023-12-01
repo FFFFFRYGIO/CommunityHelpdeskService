@@ -11,8 +11,7 @@
     <p>Status: {{ article.status }}</p>
     <p>Tags:
         {% for tag in article.tags.all %}
-            {{ tag.name }}
-            {% if not forloop.last %}, {% endif %}
+            {{ tag.name }}{% if not forloop.last %}, {% endif %}
         {% endfor %}
     </p>
     <p>Steps:
