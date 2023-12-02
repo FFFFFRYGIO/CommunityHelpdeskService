@@ -59,7 +59,7 @@ def search_view(request):
 def create_article_view(request):
     """ a form to create an article """
     if request.method == "POST":
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
             new_article = form.save(commit=False)
             new_article.author = request.user
@@ -72,7 +72,7 @@ def create_article_view(request):
                 tag_list = [tag.strip() for tag in tags.split(',')]
                 new_article.tags.set(tag_list)
 
-            step_form_set = StepFormSetCreate(request.POST)
+            step_form_set = StepFormSetCreate(request.POST, request.FILES)
             if step_form_set.is_valid():
                 ordinal_number = 1
                 for step_form in step_form_set:
