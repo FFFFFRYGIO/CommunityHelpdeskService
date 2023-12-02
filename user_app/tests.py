@@ -121,6 +121,10 @@ class ArticleTests(TestCase):
     def test_edit_article_remove_steps(self, modify_amount_number):
         modification = ' modified'
         for article in Article.objects.all():
+
+            if Step.objects.filter(article=article).count() + modify_amount_number <= 0:
+                continue
+
             steps_to_compare = [step.__dict__.copy() for step in Step.objects.filter(
                 article=article).order_by('ordinal_number')]
             form_data = self.generate_form_data(article, modify_amount_number, modification=modification)
@@ -135,7 +139,7 @@ class ArticleTests(TestCase):
             self.assertEqual(article.title + modification, edited_article.title)
             self.assertEqual(sorted(["tag", modification.strip()]), list(edited_article.tags.names()))
 
-            self.assertEqual(Step.objects.filter(article=article).count(), len(steps_to_compare))
+            self.assertEqual(Step.objects.filter(article=article).count(), len(steps_to_compare) + modify_amount_number)
             for step_dict in steps_to_compare[:modify_amount_number]:
                 edited_step = Step.objects.get(id=step_dict['id'])
                 self.assertNotEqual(step_dict, edited_step.__dict__)
@@ -168,7 +172,7 @@ class ArticleTests(TestCase):
             self.assertEqual(article.title + modification, edited_article.title)
             self.assertEqual(sorted(["tag", modification.strip()]), list(edited_article.tags.names()))
 
-            self.assertEqual(Step.objects.filter(article=article).count(), len(steps_to_compare))
+            self.assertEqual(Step.objects.filter(article=article).count(), len(steps_to_compare) + modify_amount_number)
             for step_dict in steps_to_compare[:modify_amount_number]:
                 edited_step = Step.objects.get(id=step_dict['id'])
                 self.assertNotEqual(step_dict, edited_step.__dict__)
