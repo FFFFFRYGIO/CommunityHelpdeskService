@@ -1,13 +1,12 @@
 let addStepButton = document.getElementById("add-step-button");
 let removeStepButton = document.getElementById("remove-step-button");
 let stepsFormset = document.getElementById("steps-formset");
-let stepForms = document.querySelectorAll(".step-form");
 let totalFormsInput = document.querySelector('input[name$="TOTAL_FORMS"]');
 
 addStepButton.addEventListener("click", function (e) {
     if (e.target && e.target.classList.contains("add-step-button")) {
         e.preventDefault();
-        let newStepForm = stepForms[0].cloneNode(true);
+        let newStepForm = stepsFormset.lastElementChild.cloneNode(true);
         newStepForm.innerHTML = newStepForm.innerHTML.replace(/form-\d+/g, "form-" + totalFormsInput.value);
         totalFormsInput.value = parseInt(totalFormsInput.value, 10) + 1;
         newStepForm.innerHTML = newStepForm.innerHTML.replace(/Step \d+/g, "Step " + totalFormsInput.value);
