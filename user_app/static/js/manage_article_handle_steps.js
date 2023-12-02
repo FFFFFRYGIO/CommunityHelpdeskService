@@ -8,9 +8,9 @@ addStepButton.addEventListener("click", function (e) {
     if (e.target && e.target.classList.contains("add-step-button")) {
         e.preventDefault();
         let newStepForm = stepForms[0].cloneNode(true);
-        newStepForm.innerHTML = newStepForm.innerHTML.replace(/form-0/g, "form-" + totalFormsInput.value);
+        newStepForm.innerHTML = newStepForm.innerHTML.replace(/form-\d+/g, "form-" + totalFormsInput.value);
         totalFormsInput.value = parseInt(totalFormsInput.value, 10) + 1;
-        newStepForm.innerHTML = newStepForm.innerHTML.replace(/Step 1/g, "Step " + totalFormsInput.value);
+        newStepForm.innerHTML = newStepForm.innerHTML.replace(/Step \d+/g, "Step " + totalFormsInput.value);
         stepsFormset.appendChild(newStepForm);
     }
 });
