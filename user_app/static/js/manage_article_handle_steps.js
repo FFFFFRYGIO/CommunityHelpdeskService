@@ -4,7 +4,7 @@ let stepsFormset = document.getElementById("steps-formset");
 let stepForms = document.querySelectorAll(".step-form");
 let totalFormsInput = document.querySelector('input[name$="TOTAL_FORMS"]');
 
-addStepButton.addEventListener("click", function(e) {
+addStepButton.addEventListener("click", function (e) {
     if (e.target && e.target.classList.contains("add-step-button")) {
         e.preventDefault();
         let newStepForm = stepForms[0].cloneNode(true);
@@ -14,7 +14,8 @@ addStepButton.addEventListener("click", function(e) {
         stepsFormset.appendChild(newStepForm);
     }
 });
-removeStepButton.addEventListener("click", function(e) {
+
+removeStepButton.addEventListener("click", function (e) {
     if (e.target && e.target.classList.contains("remove-step-button")) {
         e.preventDefault();
         if (totalFormsInput.value > 1) {
