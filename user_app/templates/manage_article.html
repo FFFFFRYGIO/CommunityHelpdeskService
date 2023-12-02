@@ -7,7 +7,7 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <form action="#" method="post" class="form-group" id="article-form">
+        <form action="#" method="post" class="form-group" id="article-form" enctype="multipart/form-data">
             {% csrf_token %}
             {{ article_form.as_p }}
             <br>
@@ -16,8 +16,8 @@
             <div id="steps-formset">
                 {% for step_form in step_form_set %}
                     <div class="step-form">
-                        <h4>Step 1</h4>
-                        {{ step_form.as_p }}
+                        <h4>Step {{ forloop.counter }}</h4>
+                        {{ step_form.as_p|safe }}
                         <br>
                     </div>
                 {% endfor %}
