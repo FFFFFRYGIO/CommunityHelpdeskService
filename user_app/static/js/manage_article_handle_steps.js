@@ -7,9 +7,16 @@ addStepButton.addEventListener("click", function (e) {
     if (e.target && e.target.classList.contains("add-step-button")) {
         e.preventDefault();
         let newStepForm = stepsFormset.lastElementChild.cloneNode(true);
+
+        for (const newStepFormElement of newStepForm.querySelectorAll('input, textarea')) {
+            newStepFormElement.value = '';
+            newStepFormElement.defaultValue = '';
+        }
+
         newStepForm.innerHTML = newStepForm.innerHTML.replace(/form-\d+/g, "form-" + totalFormsInput.value);
         totalFormsInput.value = parseInt(totalFormsInput.value, 10) + 1;
         newStepForm.innerHTML = newStepForm.innerHTML.replace(/Step \d+/g, "Step " + totalFormsInput.value);
+
         stepsFormset.appendChild(newStepForm);
     }
 });
