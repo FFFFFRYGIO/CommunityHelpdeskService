@@ -123,10 +123,16 @@ def edit_article_view(request, article_id):
             if article_form.is_valid():
                 article_form.save()
 
+                ordinal_number = 1
                 for step_form in step_form_set:
-                    step_data = step_form.save(commit=False)
-                    step_data.article = article
-                    step_data.save()
+                    step = step_form.save(commit=False)
+                    step.article = article
+                    step.ordinal_number = ordinal_number
+                    step.save()
+                    ordinal_number += 1
+
+                steps_to_delete = Step.objects.filter(article=article, ordinal_number__gte=ordinal_number)
+                steps_to_delete.delete()
 
                 if reports:
                     article.status = 'changes during report'
