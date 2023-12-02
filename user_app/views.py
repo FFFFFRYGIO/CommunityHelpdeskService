@@ -76,18 +76,11 @@ def create_article_view(request):
             if step_form_set.is_valid():
                 ordinal_number = 1
                 for step_form in step_form_set:
-                    step_data = step_form.save(commit=False)
-                    if step_data.title:
-                        step = Step()
-                        step.article = new_article
-                        step.ordinal_number = ordinal_number
-                        step.title = step_data.title
-                        step.description1 = step_data.description1
-                        step.file1 = step_data.file1
-                        step.description2 = step_data.description2
-                        step.file2 = step_data.file2
-                        step.save()
-                        ordinal_number += 1
+                    step = step_form.save(commit=False)
+                    step.article = new_article
+                    step.ordinal_number = ordinal_number
+                    step.save()
+                    ordinal_number += 1
 
                 new_report = Report()
                 new_report.description = f'Review new article "{new_article.title}"'
