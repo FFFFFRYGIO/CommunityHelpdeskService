@@ -14,12 +14,18 @@ from user_app.models import Article, Step
 
 
 class AccessTestsBase(MainTestBase):
+
+    def __init__(self, methodName: str = ...):
+        super().__init__(methodName)
+        self.user = None
+
     def get_home_page_contents(self):
         """ generate lists of contents for navbar, footer and home page """
 
         navbar_elements = [
             '<a class="nav-link" href="http://127.0.0.1:8000/user_app/home">Home',
             '<a class="nav-link" href="http://127.0.0.1:8000/user_app/search">Search',
+            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/create_article">Create article</a>',
             '<a class="nav-link" href="http://127.0.0.1:8000/user_app/user_panel">User Panel',
             '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel',
             '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">Master Editor Panel',
@@ -31,16 +37,16 @@ class AccessTestsBase(MainTestBase):
             '<div>&copy; 2023</div>',
         ]
         home_elements = [
-            '<h5>Search articles <a href="/user_app/search">HERE</a></h5>',
-            '<h5>Create article <a href="/user_app/create_article">HERE</a></h5>',
-            '<h5>Go to user panel <a href="/user_app/user_panel">HERE</a></h5>',
-            '<h5>Go to editor panel <a href="/editor_app/editor_panel">HERE</a></h5>',
-            '<h5>Go to master editor panel <a href="/editor_app/master_editor_panel">HERE</a></h5>',
+            'Search articles',
+            'Create new article',
+            'Go to user panel',
+            'Go to editor panel',
+            'Go to master editor panel',
         ]
 
-        try:
-            user = User.objects.get(id=self.client.session.get('_auth_user_id'))
-        except User.DoesNotExist:
+        if not self.user:
+            navbar_elements.remove(
+                '<a class="nav-link" href="http://127.0.0.1:8000/user_app/create_article">Create article</a>')
             navbar_elements.remove('<a class="nav-link" href="http://127.0.0.1:8000/user_app/user_panel">User Panel')
             navbar_elements.remove(
                 '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel')
@@ -49,24 +55,22 @@ class AccessTestsBase(MainTestBase):
             navbar_elements.remove('<a class="nav-link" href="http://127.0.0.1:8000/registration/logout">Logout')
             navbar_elements.append('<a class="nav-link" href="http://127.0.0.1:8000/registration/register">Register')
             navbar_elements.append('<a class="nav-link" href="http://127.0.0.1:8000/registration/login">Login')
-            home_elements.remove('<h5>Create article <a href="/user_app/create_article">HERE</a></h5>')
-            home_elements.remove('<h5>Go to user panel <a href="/user_app/user_panel">HERE</a></h5>')
-            home_elements.remove('<h5>Go to editor panel <a href="/editor_app/editor_panel">HERE</a></h5>')
-            home_elements.remove(
-                '<h5>Go to master editor panel <a href="/editor_app/master_editor_panel">HERE</a></h5>')
+            home_elements.remove('Create new article')
+            home_elements.remove('Go to user panel')
+            home_elements.remove('Go to editor panel')
+            home_elements.remove('Go to master editor panel')
             return navbar_elements, footer_elements, home_elements
 
-        if not user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
+        if not self.user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
             navbar_elements.remove(
                 '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel')
-            home_elements.remove('<h5>Go to editor panel <a href="/editor_app/editor_panel">HERE</a></h5>')
+            home_elements.remove('Go to editor panel')
 
-            if not user.groups.values_list('name', flat=True).filter(name='Editors'):
+            if not self.user.groups.values_list('name', flat=True).filter(name='Editors'):
                 navbar_elements.remove(
                     '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">'
                     'Master Editor Panel')
-                home_elements.remove(
-                    '<h5>Go to master editor panel <a href="/editor_app/master_editor_panel">HERE</a></h5>')
+                home_elements.remove('Go to master editor panel')
 
         return navbar_elements, footer_elements, home_elements
 
@@ -93,32 +97,27 @@ class AccessTestsBase(MainTestBase):
         response = self.client.get(reverse('search'))
         self.assertEqual(response.status_code, 200)
 
-        self.assertContains(response, '<button type="submit" name="search_title" '
-                                      'class="btn btn-dark">Search by Title</button>', count=1)
-        self.assertContains(response, '<button type="submit" name="search_tags" '
-                                      'class="btn btn-dark">Search by Tags</button>', count=1)
+        self.assertContains(response, 'Search by Title', count=2)
+        self.assertContains(response, 'Search by Tags', count=2)
 
         if self.client.session.get('_auth_user_id'):
-            self.assertContains(response, '<button type="submit" name="search_ownership" '
-                                          'class="btn btn-dark">Search by Ownership</button>',
-                                count=1)
+            self.assertContains(response, 'Search by Ownership', count=1)
         else:
-            self.assertNotContains(response, '<button type="submit" name="search_ownership" '
-                                             'class="btn btn-dark">Search by Ownership</button>',)
+            self.assertNotContains(response, 'Search by Ownership')
 
     def test_search_page_searching_by_title(self):
         response = self.client.post(reverse('search'),
-                                    {'search_text': 'Test Article', 'search_title': 'Search by Title'})
+                                    {'search_title': 'Test Article', 'search_by_title': 'Search by Title'})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<h3>Search Results:</h3>")
         count_articles = Article.objects.filter(title__contains='Test Article').count()
         self.assertContains(response, 'Test Article', count=count_articles)
-        self.assertContains(response, '<button type="submit" name="view_article">View</button>', count=count_articles)
+        self.assertContains(response, '<button type="submit" name="view_article"', count=count_articles)
 
     @parameterized.expand(['tag2', 'tag0', 'tag1', 'tag2, tag0', 'tag2, tag1', 'tag3'])
     def test_search_page_searching_by_tags(self, tags_to_search):
         response = self.client.post(reverse('search'),
-                                    {'tags': tags_to_search, 'search_tags': 'Search by Tags'})
+                                    {'search_tags': tags_to_search, 'search_by_tags': 'Search by Tags'})
         self.assertEqual(response.status_code, 200)
 
         if len(Article.objects.filter(tags__name__in=tags_to_search.split(', '))) > 0:
@@ -128,14 +127,14 @@ class AccessTestsBase(MainTestBase):
             self.assertContains(response, article.title)
 
     def test_search_page_searching_by_ownership(self):
-        response = self.client.post(reverse('search'), {'search_ownership': 'Search by Ownership'})
+        response = self.client.post(reverse('search'), {'search_by_ownership': 'Search by Ownership'})
 
         if self.client.session.get('_auth_user_id'):
             self.assertEqual(response.status_code, 200)
             user_articles = Article.objects.filter(author_id=self.client.session.get('_auth_user_id'))
             if len(user_articles) > 0:
                 self.assertContains(response, "Search Results:")
-                self.assertContains(response, '<button type="submit" name="view_article">View</button>',
+                self.assertContains(response, '<button type="submit" name="view_article"',
                                     count=len(user_articles))
             for user_article in user_articles:
                 self.assertContains(response, user_article.title)
@@ -177,7 +176,8 @@ class AccessTestsBase(MainTestBase):
 
         if self.client.session.get('_auth_user_id'):
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, '<form action="#" method="post" class="form-group" id="article-form">')
+            self.assertContains(response, '<form action="#" method="post" class="form-group" '
+                                          'id="article-form" enctype="multipart/form-data">')
 
             initial_article_count = Article.objects.count()
             initial_step_count = Step.objects.count()
@@ -244,7 +244,7 @@ class AccessTestsBase(MainTestBase):
 
             if self.client.session.get('_auth_user_id'):
                 self.assertEqual(response.status_code, 200)
-                self.assertContains(response, "<h1>Report Article page</h1>")
+                self.assertContains(response, "<h1><span>Report Article</span></h1>")
                 self.assertContains(response, article.title)
             else:
                 self.assertRedirects(response,
