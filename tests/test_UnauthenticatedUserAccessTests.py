@@ -6,3 +6,6 @@ from tests.AccessTestBase import AccessTestsBase
 
 class UnauthenticatedUserAccessTests(AccessTestsBase):
     pass
+
+
+del AccessTestsBase

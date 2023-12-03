@@ -19,3 +19,6 @@ class AuthenticatedUserAccessTests(AccessTestsBase):
     def tearDown(self):
         response = self.client.post(reverse('logout'))
         self.assertRedirects(response, reverse('login'))
+
+
+del AccessTestsBase
