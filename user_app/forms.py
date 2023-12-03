@@ -43,4 +43,4 @@ class SearchByNameForm(forms.Form):
 
 
 class SearchByTagsForm(forms.Form):
-    tags = TagField(widget=TagWidget(attrs={'class': 'form-control form-control-sm'}))
+    tags = TagField(label='Search by Title', widget=TagWidget(attrs={'class': 'form-control form-control-sm'}))
