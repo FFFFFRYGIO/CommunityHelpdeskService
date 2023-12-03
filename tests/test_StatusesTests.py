@@ -14,7 +14,9 @@ from user_app.models import Article, Step
 class StatusesTests(MainTestBase):
     def user_create_article(self):
         """ Create article to be reported"""
-        self.client.login(username=USERS[0]['username'], password=USERS[0]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[0]['username'], 'password': USERS[0]['password']})
+        self.assertRedirects(response, reverse('home'))
 
         step_form_set = StepFormSetCreate(FORM_DATA)
         self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
@@ -25,7 +27,8 @@ class StatusesTests(MainTestBase):
         self.assertEqual(len(articles), 1)
         self.assertEqual(len(Step.objects.filter(article=articles[0])), 2)
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
         report = Report.objects.get(article__title=FORM_DATA['title'])
         self.assertEqual(report.status, 'na opened')
@@ -33,7 +36,9 @@ class StatusesTests(MainTestBase):
 
     def user_report_article(self):
         """ Create the report about the existing article"""
-        self.client.login(username=USERS[1]['username'], password=USERS[1]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[1]['username'], 'password': USERS[1]['password']})
+        self.assertRedirects(response, reverse('home'))
 
         articles = Article.objects.filter(title=FORM_DATA['title'])
         self.assertEqual(len(articles), 1)
@@ -51,14 +56,17 @@ class StatusesTests(MainTestBase):
         reports = Report.objects.filter(description=report_data['description'])
         self.assertEqual(len(reports), 1)
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
         self.assertEqual(reports[0].status, 'opened')
         self.assertEqual(reports[0].article.status, 'changes requested')
 
     def master_editor_assign_the_report(self, report_type):
         """ Assign the report to the editor """
-        self.client.login(username=USERS[4]['username'], password=USERS[4]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[4]['username'], 'password': USERS[4]['password']})
+        self.assertRedirects(response, reverse('home'))
 
         old_report = None
         if report_type == 'new':
@@ -73,7 +81,7 @@ class StatusesTests(MainTestBase):
             'editor_assign_id': User.objects.get(username=USERS[2]['username']).id,
         }
 
-        response = self.client.post(reverse('master_editor_panel'), data=assign_data)
+        response = self.client.post(reverse('manage_report', args=[old_report.id]), data=assign_data)
         self.assertRedirects(response, reverse('home'))
 
         report = None
@@ -84,7 +92,8 @@ class StatusesTests(MainTestBase):
 
         self.assertEqual(report.editor.username, USERS[2]['username'])
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
         if report_type == 'new':
             self.assertEqual(report.status, 'na assigned')
@@ -95,7 +104,9 @@ class StatusesTests(MainTestBase):
 
     def editor_editing_article(self, report_type):
         """ Edit article by assigned editor """
-        self.client.login(username=USERS[2]['username'], password=USERS[2]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[2]['username'], 'password': USERS[2]['password']})
+        self.assertRedirects(response, reverse('home'))
 
         report = None
         if report_type == 'new':
@@ -124,7 +135,8 @@ class StatusesTests(MainTestBase):
         elif report_type == 'open':
             edited_report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
         if report_type == 'new':
             self.assertEqual(edited_report.status, 'na changes applied')
@@ -135,7 +147,9 @@ class StatusesTests(MainTestBase):
 
     def editor_closes_report(self, report_type):
         """ Close the report by editor """
-        self.client.login(username=USERS[2]['username'], password=USERS[2]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[2]['username'], 'password': USERS[2]['password']})
+        self.assertRedirects(response, reverse('home'))
 
         old_report = None
         if report_type == 'new':
@@ -156,7 +170,8 @@ class StatusesTests(MainTestBase):
         elif report_type == 'open':
             report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
         if report_type == 'new':
             if old_report.status == "na changes applied" or old_report.status == "na assigned":
@@ -175,7 +190,9 @@ class StatusesTests(MainTestBase):
 
     def editor_rejects_report(self, report_type):
         """ Close the report by editor """
-        self.client.login(username=USERS[2]['username'], password=USERS[2]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[2]['username'], 'password': USERS[2]['password']})
+        self.assertRedirects(response, reverse('home'))
 
         old_report = None
         if report_type == 'new':
@@ -190,7 +207,8 @@ class StatusesTests(MainTestBase):
         response = self.client.post(reverse('manage_report', args=[old_report.id]), data=reject_article_data)
         self.assertRedirects(response, reverse('home'))
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
         report = None
         if report_type == 'new':
