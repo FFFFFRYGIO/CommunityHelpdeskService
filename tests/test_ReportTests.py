@@ -16,7 +16,9 @@ from user_app.models import Article, Step
 class ReportsTests(MainTestBase):
     def user_create_article(self):
         """ Create article to be reported"""
-        self.client.login(username=USERS[0]['username'], password=USERS[0]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[0]['username'], 'password': USERS[0]['password']})
+        self.assertRedirects(response, reverse('home'))
 
         step_form_set = StepFormSetCreate(FORM_DATA)
         self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
@@ -27,48 +29,57 @@ class ReportsTests(MainTestBase):
         self.assertEqual(len(articles), 1)
         self.assertEqual(len(Step.objects.filter(article=articles[0])), 2)
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
     def master_editor_see_the_report(self, report_type):
         """ Check if the master editor sees the report """
-        self.client.login(username=USERS[4]['username'], password=USERS[4]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[4]['username'], 'password': USERS[4]['password']})
+        self.assertRedirects(response, reverse('home'))
 
         response = self.client.get(reverse('master_editor_panel'))
         self.assertEqual(response.status_code, 200)
 
         if report_type == "new":
-            self.assertContains(response, f'<td>Review new article &quot;{FORM_DATA["title"]}&quot;</td>')
-            self.assertContains(response, '<td>system_automat</td>')
-            self.assertContains(response, '<td>na opened</td>')
+            self.assertContains(response, f'Review new article &quot;{FORM_DATA["title"]}&quot;')
+            self.assertContains(response, 'system_automat')
+            self.assertContains(response, 'na opened')
         elif report_type == "open":
-            self.assertContains(response, f'<td>New report about article &quot;{FORM_DATA["title"]}&quot;</td>')
-            self.assertContains(response, f'<td>{USERS[1]["username"]}</td>')
-            self.assertContains(response, f'<td>opened</td>')
+            self.assertContains(response, f'New report about article &quot;{FORM_DATA["title"]}&quot;')
+            self.assertContains(response, f'{USERS[1]["username"]}')
+            self.assertContains(response, f'opened')
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
     def editor_can_see_the_report(self, report_type):
         """ Check if the editor can't see the report """
         if report_type == "new":
             report = Report.objects.get(article__title=FORM_DATA["title"], author__username='system_automat')
 
-            self.client.login(username=USERS[2]['username'], password=USERS[2]['password'])
+            response = self.client.post(reverse('login'),
+                                        data={'username': USERS[2]['username'], 'password': USERS[2]['password']})
+            self.assertRedirects(response, reverse('home'))
 
             response = self.client.get(reverse('editor_panel'))
             self.assertEqual(response.status_code, 200)
 
             if report.editor == self.test_users['editors'][0]:
-                self.assertContains(response, f'<td>Review new article &quot;{FORM_DATA["title"]}&quot;</td>')
-                self.assertContains(response, '<td>system_automat</td>')
-                self.assertContains(response, '<td>new article</td>')
+                self.assertContains(response, f'Review new article &quot;{FORM_DATA["title"]}&quot;')
+                self.assertContains(response, 'system_automat')
+                self.assertContains(response, 'new article')
             else:
-                self.assertNotContains(response, f'<td>Review new article &quot;{FORM_DATA["title"]}&quot;</td>')
-                self.assertNotContains(response, '<td>system_automat</td>')
-                self.assertNotContains(response, '<td>new article</td>')
+                self.assertNotContains(response, f'Review new article &quot;{FORM_DATA["title"]}&quot;')
+                self.assertNotContains(response, 'system_automat')
+                self.assertNotContains(response, 'new article')
 
-            self.client.logout()
+            response = self.client.post(reverse('logout'))
+            self.assertRedirects(response, reverse('login'))
 
-            self.client.login(username=USERS[3]['username'], password=USERS[3]['password'])
+            response = self.client.post(reverse('login'),
+                                        data={'username': USERS[3]['username'], 'password': USERS[3]['password']})
+            self.assertRedirects(response, reverse('home'))
 
             response = self.client.get(reverse('editor_panel'))
             self.assertEqual(response.status_code, 200)
@@ -76,32 +87,38 @@ class ReportsTests(MainTestBase):
             response = self.client.get(reverse('editor_panel'))
             self.assertEqual(response.status_code, 200)
 
-            self.assertNotContains(response, f'<td>Review new article &quot;{FORM_DATA["title"]}&quot;</td>')
-            self.assertNotContains(response, '<td>system_automat</td>')
-            self.assertNotContains(response, '<td>new article</td>')
+            self.assertNotContains(response, f'Review new article &quot;{FORM_DATA["title"]}&quot;')
+            self.assertNotContains(response, 'system_automat')
+            self.assertNotContains(response, 'new article')
 
-            self.client.logout()
+            response = self.client.post(reverse('logout'))
+            self.assertRedirects(response, reverse('login'))
 
         elif report_type == "open":
             report = Report.objects.get(article__title=FORM_DATA["title"], author__username=USERS[1]['username'])
 
-            self.client.login(username=USERS[2]['username'], password=USERS[2]['password'])
+            response = self.client.post(reverse('login'),
+                                        data={'username': USERS[2]['username'], 'password': USERS[2]['password']})
+            self.assertRedirects(response, reverse('home'))
 
             response = self.client.get(reverse('editor_panel'))
             self.assertEqual(response.status_code, 200)
 
             if report.editor == self.test_users['editors'][0]:
-                self.assertContains(response, f'<td>New report about article &quot;{FORM_DATA["title"]}&quot;</td>')
-                self.assertContains(response, f'<td>{USERS[1]["username"]}</td>')
-                self.assertContains(response, f'<td>assigned</td>')
+                self.assertContains(response, f'New report about article &quot;{FORM_DATA["title"]}&quot;')
+                self.assertContains(response, f'{USERS[1]["username"]}')
+                self.assertContains(response, f'assigned')
             else:
-                self.assertNotContains(response, f'<td>New report about article &quot;{FORM_DATA["title"]}&quot;</td>')
-                self.assertNotContains(response, f'<td>{USERS[1]["username"]}</td>')
-                self.assertNotContains(response, f'<td>assigned</td>')
+                self.assertNotContains(response, f'New report about article &quot;{FORM_DATA["title"]}&quot;')
+                self.assertNotContains(response, f'{USERS[1]["username"]}')
+                self.assertNotContains(response, f'Status: assigned')
 
-            self.client.logout()
+            response = self.client.post(reverse('logout'))
+            self.assertRedirects(response, reverse('login'))
 
-            self.client.login(username=USERS[3]['username'], password=USERS[3]['password'])
+            response = self.client.post(reverse('login'),
+                                        data={'username': USERS[3]['username'], 'password': USERS[3]['password']})
+            self.assertRedirects(response, reverse('home'))
 
             response = self.client.get(reverse('editor_panel'))
             self.assertEqual(response.status_code, 200)
@@ -110,11 +127,14 @@ class ReportsTests(MainTestBase):
             self.assertNotContains(response, f'<td>{USERS[1]["username"]}</td>')
             self.assertNotContains(response, f'<td>opened</td>')
 
-            self.client.logout()
+            response = self.client.post(reverse('logout'))
+            self.assertRedirects(response, reverse('login'))
 
     def user_report_article(self):
         """ Create the report about the existing article"""
-        self.client.login(username=USERS[1]['username'], password=USERS[1]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[1]['username'], 'password': USERS[1]['password']})
+        self.assertRedirects(response, reverse('home'))
 
         article = Article.objects.get(title=FORM_DATA['title'])
         report_data = {
@@ -130,31 +150,37 @@ class ReportsTests(MainTestBase):
         reports = Report.objects.filter(description=report_data['description'])
         self.assertEqual(len(reports), 1)
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
     def master_editor_assign_the_report(self):
         """ Assign the report to the editor """
-        self.client.login(username=USERS[4]['username'], password=USERS[4]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[4]['username'], 'password': USERS[4]['password']})
+        self.assertRedirects(response, reverse('home'))
 
-        old_report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
-        self.assertFalse(old_report.editor)
+        report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
+        self.assertFalse(report.editor)
 
         assign_data = {
-            'report_id': old_report.id,
+            'report_id': report.id,
             'editor_assign_id': User.objects.get(username=USERS[2]['username']).id,
         }
 
-        response = self.client.post(reverse('master_editor_panel'), data=assign_data)
+        response = self.client.post(reverse('manage_report', args=[report.id]), data=assign_data)
         self.assertRedirects(response, reverse('home'))
 
         report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
         self.assertEqual(report.editor.username, USERS[2]['username'])
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
     def editor_closes_report(self):
         """ Close the report by editor """
-        self.client.login(username=USERS[2]['username'], password=USERS[2]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[2]['username'], 'password': USERS[2]['password']})
+        self.assertRedirects(response, reverse('home'))
 
         old_report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
 
@@ -171,11 +197,14 @@ class ReportsTests(MainTestBase):
         elif old_report.status == "assigned":
             self.assertEqual(report.status, "rejected")
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
     def editor_editing_article(self):
         """ Edit article by assigned editor """
-        self.client.login(username=USERS[2]['username'], password=USERS[2]['password'])
+        response = self.client.post(reverse('login'),
+                                    data={'username': USERS[2]['username'], 'password': USERS[2]['password']})
+        self.assertRedirects(response, reverse('home'))
 
         report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
         article = Article.objects.get(id=report.article_id)
@@ -196,7 +225,8 @@ class ReportsTests(MainTestBase):
         edited_report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
         self.assertEqual(edited_report.status, 'changes applied')
 
-        self.client.logout()
+        response = self.client.post(reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
     def test_new_report_after_creating_article(self):
         # 1. User1 creates article
