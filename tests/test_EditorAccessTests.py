@@ -1,4 +1,4 @@
-from .AccessTestBase import AccessTestsBase
+from tests.AccessTestBase import AccessTestsBase
 
 
 # Create your tests here.

@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from editor_app.forms import ReportForm
 from editor_app.models import Report
-from .MainTestBase import MainTestBase, USERS, FORM_DATA
+from tests.MainTestBase import MainTestBase, USERS, FORM_DATA
 from user_app.forms import StepFormSetCreate
 from user_app.models import Article, Step
 
