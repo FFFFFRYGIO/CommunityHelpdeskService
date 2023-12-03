@@ -25,22 +25,26 @@ def search_view(request):
     search_result = []
 
     if request.method == "POST":
-        if 'search_title' in request.POST:
+        if 'search_by_title' in request.POST:
             search_name_form = SearchByNameForm(request.POST)
             if search_name_form.is_valid():
-                search_text = search_name_form.cleaned_data['search_text']
+                search_text = search_name_form.cleaned_data['search_title']
                 search_permitted_statuses = ['approved', 'unapproved', 'changes requested', 'changes during report']
                 searched_articles = Article.objects.filter(
                     title__icontains=search_text, status__in=search_permitted_statuses)
+            else:
+                return HttpResponse("HTTP Bad Request", status=400)
 
-        if 'search_tags' in request.POST:
+        if 'search_by_tags' in request.POST:
             search_tags_form = SearchByTagsForm(request.POST)
             if search_tags_form.is_valid():
-                tags_to_search = search_tags_form.cleaned_data['tags']
+                tags_to_search = search_tags_form.cleaned_data['search_tags']
                 tag_objects = Tag.objects.filter(name__in=tags_to_search)
                 searched_articles = Article.objects.filter(tags__in=tag_objects)
+            else:
+                return HttpResponse("HTTP Bad Request", status=400)
 
-        if 'search_ownership' in request.POST:
+        if 'search_by_ownership' in request.POST:
             if request.user.is_authenticated:
                 searched_articles = Article.objects.filter(Q(author=request.user))
             else:
