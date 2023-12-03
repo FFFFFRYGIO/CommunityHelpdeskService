@@ -23,13 +23,13 @@ class AccessTestsBase(MainTestBase):
         """ generate lists of contents for navbar, footer and home page """
 
         navbar_elements = [
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/home">Home',
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/search">Search',
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/create_article">Create article</a>',
-            '<a class="nav-link" href="http://127.0.0.1:8000/user_app/user_panel">User Panel',
-            '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel',
-            '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">Master Editor Panel',
-            '<a class="nav-link" href="http://127.0.0.1:8000/registration/logout">Logout',
+            '<a class="nav-link" href="/user_app/home">Home',
+            '<a class="nav-link" href="/user_app/search">Search',
+            '<a class="nav-link" href="/user_app/create_article">Create article</a>',
+            '<a class="nav-link" href="/user_app/user_panel">User Panel',
+            '<a class="nav-link" href="/editor_app/editor_panel">Editor Panel',
+            '<a class="nav-link" href="/editor_app/master_editor_panel">Master Editor Panel',
+            '<a class="nav-link" href="/registration/logout">Logout',
         ]
         footer_elements = [
             '<div>Community Helpdesk Service</div>',
@@ -46,15 +46,15 @@ class AccessTestsBase(MainTestBase):
 
         if not self.user:
             navbar_elements.remove(
-                '<a class="nav-link" href="http://127.0.0.1:8000/user_app/create_article">Create article</a>')
-            navbar_elements.remove('<a class="nav-link" href="http://127.0.0.1:8000/user_app/user_panel">User Panel')
+                '<a class="nav-link" href="/user_app/create_article">Create article</a>')
+            navbar_elements.remove('<a class="nav-link" href="/user_app/user_panel">User Panel')
             navbar_elements.remove(
-                '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel')
+                '<a class="nav-link" href="/editor_app/editor_panel">Editor Panel')
             navbar_elements.remove(
-                '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">Master Editor Panel')
-            navbar_elements.remove('<a class="nav-link" href="http://127.0.0.1:8000/registration/logout">Logout')
-            navbar_elements.append('<a class="nav-link" href="http://127.0.0.1:8000/registration/register">Register')
-            navbar_elements.append('<a class="nav-link" href="http://127.0.0.1:8000/registration/login">Login')
+                '<a class="nav-link" href="/editor_app/master_editor_panel">Master Editor Panel')
+            navbar_elements.remove('<a class="nav-link" href="/registration/logout">Logout')
+            navbar_elements.append('<a class="nav-link" href="/registration/register">Register')
+            navbar_elements.append('<a class="nav-link" href="/registration/login">Login')
             home_elements.remove('Create new article')
             home_elements.remove('Go to user panel')
             home_elements.remove('Go to editor panel')
@@ -63,14 +63,13 @@ class AccessTestsBase(MainTestBase):
 
         if not self.user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
             navbar_elements.remove(
-                '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/editor_panel">Editor Panel')
-            home_elements.remove('Go to editor panel')
+                '<a class="nav-link" href="/editor_app/master_editor_panel">Master Editor Panel')
+            home_elements.remove('Go to master editor panel')
 
             if not self.user.groups.values_list('name', flat=True).filter(name='Editors'):
                 navbar_elements.remove(
-                    '<a class="nav-link" href="http://127.0.0.1:8000/editor_app/master_editor_panel">'
-                    'Master Editor Panel')
-                home_elements.remove('Go to master editor panel')
+                    '<a class="nav-link" href="/editor_app/editor_panel">Editor Panel')
+                home_elements.remove('Go to editor panel')
 
         return navbar_elements, footer_elements, home_elements
 
@@ -82,11 +81,13 @@ class AccessTestsBase(MainTestBase):
 
         self.assertContains(response, '<li class="nav-item active">', count=len(navbar_elements))
         self.assertContains(response, '<li class="nav-item active">', count=len(navbar_elements))
+
         for element in navbar_elements:
             self.assertContains(response, element, count=1)
 
         self.assertContains(response, '<footer class="card-footer text-body-secondary '
                                       'fixed-bottom d-flex justify-content-between bg-dark">', count=1)
+
         for element in footer_elements:
             self.assertContains(response, element, count=1)
 
@@ -309,4 +310,3 @@ class AccessTestsBase(MainTestBase):
 
             else:
                 self.assertRedirects(response, reverse('home'))
-
