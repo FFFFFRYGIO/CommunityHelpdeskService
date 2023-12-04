@@ -9,6 +9,7 @@ from django.db.models import Q
 from editor_app.models import Report
 from editor_app.forms import ReportForm
 from registration.models import User
+from CommunityHelpdeskService.utils import save_files
 
 
 # In your views.py
@@ -65,6 +66,7 @@ def create_article_view(request):
     if request.method == "POST":
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
+            save_files(request.FILES)
             new_article = form.save(commit=False)
             new_article.author = request.user
             new_article.created_at = datetime.now()
@@ -175,6 +177,7 @@ def report_article_view(request, article_id):
     if request.method == 'POST':
         report_form = ReportForm(request.POST, request.FILES)
         if report_form.is_valid():
+            save_files(request.FILES)
             report = report_form.save(commit=False)
             report.author = request.user
             report.article = article
