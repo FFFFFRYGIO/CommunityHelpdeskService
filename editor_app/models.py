@@ -14,7 +14,7 @@ class Report(models.Model):
     created_at = models.DateTimeField()
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     editor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='report_editor')
-    additional_file = models.FileField(null=True)
+    additional_file = models.FileField()
     status = models.CharField(max_length=50)
 
     def __str__(self):
