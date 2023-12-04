@@ -6,8 +6,14 @@
 
     <div class="left">
         <div class="left-image">
-            <img src="{{ report.additional_file.url }}" alt="Report Image">
+            <a href="#img1">
+                <img src="{{ report.additional_file.url }}" alt="Report Image">
+            </a>
+            <a href="#" class="lightbox" id="img1">
+                <span style="background-image: url('{{ report.additional_file.url }}');"></span>
+            </a>
         </div>
+
         <div class="left-text">
             <strong>Created At:</strong> {{ report.created_at }}
         </div>
