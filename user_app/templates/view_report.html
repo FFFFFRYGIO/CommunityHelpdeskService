@@ -5,21 +5,7 @@
 {% block heading %}View Report{% endblock %}
 
 {% block content %}
-    <h2>{{ report.title }}</h2>
-    <p><strong>Author:</strong> {{ report.author }}</p>
-    <p><strong>Created At:</strong> {{ report.created_at }}</p>
-    <p><strong>Description:</strong> {{ report.description }}</p>
-    <p>
-        <strong>Article:</strong> {{ report.article }}
-    <form method="get" action="{% url 'view_article' report.article.id %}">
-        <button type="submit" name="view_article">View Article</button>
-    </form>
-    </p>
-    <p><strong>Status:</strong> {{ report.status }}</p>
 
-    {% if report.additional_file %}
-        <p><strong>Additional File:</strong></p>
-        <img src="{{ report.additional_file.url }}" alt="Report Image">
-    {% endif %}
+    {% include 'display_report.html' with report=report %}
 
 {% endblock %}
