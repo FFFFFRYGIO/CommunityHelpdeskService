@@ -180,6 +180,7 @@ def report_article_view(request, article_id):
         if report_form.is_valid():
             save_files(request.FILES)
             report = report_form.save(commit=False)
+            report.title = generate_report_title(report.description)
             report.author = request.user
             report.article = article
             report.created_at = datetime.now()
