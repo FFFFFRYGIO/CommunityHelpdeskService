@@ -55,7 +55,7 @@
                     {% endif %}
                     <li>
                         <form method="get" action="{% url 'view_article' report.article.id %}">
-                            <button type="submit" class="btn btn-dark image_button hov_view" name="view_article">
+                            <button type="submit" class="btn btn-dark image_button" name="view_article">
                                 <img src="{% static 'img/view_article_icon.png' %}" alt="view_article_icon"/>
                                 <span class="hover_text">view reported article</span>
                             </button>
@@ -64,7 +64,7 @@
                     <li>
                         <form method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-dark image_button hov_reject" name="reject_article">
+                            <button type="submit" class="btn btn-dark image_button" name="reject_article">
                                 <img src="{% static 'img/reject_article_icon.png' %}" alt="reject_article_icon"/>
                                 <span class="hover_text">reject an article</span>
                             </button>
@@ -73,7 +73,7 @@
                     <li>
                         <form method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-dark image_button hov_close" name="close_report">
+                            <button type="submit" class="btn btn-dark image_button" name="close_report">
                                 <img src="{% static 'img/close_report_button.png' %}" alt="close_report_button"/>
                                 <span class="hover_text">close the report</span>
                             </button>
