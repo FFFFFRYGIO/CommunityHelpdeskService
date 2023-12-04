@@ -1,55 +1,93 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css %}{% static 'css/manage_report.css' %}{% endblock %}
 
 {% block title %}Mange Report{% endblock %}
 
 {% block heading %}Mange Report{% endblock %}
 
 {% block content %}
-    <h2>{{ report.title }}</h2>
-    <p><strong>Author:</strong> {{ report.author }}</p>
-    <p><strong>Created At:</strong> {{ report.created_at }}</p>
-    <p><strong>Description:</strong> {{ report.description }}</p>
-    <p>
-        <strong>Article:</strong> {{ report.article.title }}
 
-    </p>
-    <p><strong>Status:</strong> {{ report.status }}</p>
-    <form method="get" action="{% url 'view_article' report.article.id %}">
-        <button type="submit" name="view_article">View Article</button>
-    </form>
-    <form method="get" action="{% url 'edit_article' report.article.id %}">
-        <button type="submit" name="edit_article">Edit Article</button>
-    </form>
+    <div class="card">
+        <div class="left">
+            <div class="left-image">
+                <img src="{{ report.additional_file.url }}" alt="Report Image">
+            </div>
 
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" name="reject_article">Reject Article</button>
-    </form>
+            <div class="left-text">
+                <p><strong>Created At:</strong> {{ report.created_at }}</p>
+            </div>
+            <div class="left-text">
+                <p><strong>Status:</strong> {{ report.status }}</p>
+            </div>
+        </div>
 
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" name="close_report">Close Report</button>
-    </form>
+        <div class="right">
+            <h2>INSERT REPORT TITLE</h2>
+            <div class="author"><img src="{% static 'img/favicon.png' %}" alt="user_icon"/>{{ report.author }}</div>
+            <div class="separator"></div>
+            <p><strong>Article:</strong> {{ report.article.title }}</p>
+            <div class="separator"></div>
+            <p>{{ report.description }}</p>
 
-    {% if report.additional_file %}
-        <p><strong>Additional File:</strong></p>
-        <img src="{{ report.additional_file.url }}" alt="Report Image">
-    {% endif %}
 
-    {% if request.session.is_master_editor %}
-        <form method="post">
-            {% csrf_token %}
-            <label>
-                <select name="editor_assign_id">
-                    <option value="">Choose an editor</option>
-                    {% for editor in editors %}
-                        <option value="{{ editor.id }}">{{ editor.username }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-            <input type="hidden" name="report_id" value="{{ report.id }}">
-            <button type="submit">Assign</button>
-        </form>
-    {% endif %}
+            <div class="right-buttons">
+                <ul>
+                    {% if request.session.is_master_editor %}
+                        <li class="assign_form">
+                            <form method="post">
+                                {% csrf_token %}
+                                <label>
+                                    <select name="editor_assign_id">
+                                        <option value="">Choose an editor</option>
+                                        {% for editor in editors %}
+                                            <option value="{{ editor.id }}">{{ editor.username }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                                <input type="hidden" name="report_id" value="{{ report.id }}">
+                                <button type="submit" class="btn btn-dark image_button" name="assign_report">
+                                    <img src="{% static 'img/assign_report_icon.png' %}" alt="assign_report_icon"/>
+                                    <span class="hover_text">assign a report to chosen editor</span>
+                                </button>
+                            </form>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <form method="get" action="{% url 'view_article' report.article.id %}">
+                            <button type="submit" class="btn btn-dark image_button hov_view" name="view_article">
+                                <img src="{% static 'img/view_article_icon.png' %}" alt="view_article_icon"/>
+                                <span class="hover_text">view reported article</span>
+                            </button>
+                        </form>
+                    </li>
+                    <li>
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark image_button hov_reject" name="reject_article">
+                                <img src="{% static 'img/reject_article_icon.png' %}" alt="reject_article_icon"/>
+                                <span class="hover_text">reject an article</span>
+                            </button>
+                        </form>
+                    </li>
+                    <li>
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark image_button hov_close" name="close_report">
+                                <img src="{% static 'img/close_report_button.png' %}" alt="close_report_button"/>
+                                <span class="hover_text">close the report</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
+
+https://codepen.io/IMarty/pen/zrdYGe
+https://codepen.io/gschier/pen/kyRXVx
+https://codebeautify.org/sass-to-css-converter
+https://pughtml.com/

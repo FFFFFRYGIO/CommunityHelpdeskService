@@ -1,0 +1,159 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+/* The card */
+.card {
+    min-width: 600px;
+    height: auto;
+    width: 100%;
+    margin: 50px;
+    background-color: #FFF;
+    box-shadow: 10px 10px 93px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.left {
+    float: left;
+    width: 30%;
+    height: 100%;
+}
+
+.left-image {
+    float: left;
+    position: relative;
+    left: 30px;
+    top: -30px;
+    height: 300px;
+    width: 100%;
+    box-shadow: 5px 5px 50px 15px rgba(0, 0, 0, 0.75);
+    background-color: #C3C3C3;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.left-image img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.left-text {
+    padding-left: 20px;
+}
+
+.right {
+    float: right;
+    width: 70%;
+    padding: 30px 30px 0 70px;
+}
+
+.author {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #9ECAFF;
+    height: 40px;
+    border-radius: 20px;
+    font-size: 20px;
+    color: #4B4B4B;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.author img {
+    height: 80%;
+    width: auto;
+    padding-bottom: 2px;
+}
+
+.separator {
+    margin-top: 10px;
+    border: 1px solid #C3C3C3;
+}
+
+p {
+    text-align: justify;
+    padding-top: 10px;
+    font-size: 0.95rem;
+    line-height: 150%;
+    color: #4B4B4B;
+}
+
+.right-buttons {
+    float: right;
+    height: 40px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.right-buttons ul {
+    list-style: none;
+    width: 100%;
+    display: flex;
+    padding: 0;
+}
+
+.right-buttons li {
+    min-width: 40px;
+    width: auto;
+    height: 40px;
+    margin-left: 5px;
+}
+
+.assign_form {
+    display: flex;
+    width: auto;
+}
+
+.assign_form form {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.assign_form form button {
+    float: right;
+}
+
+.assign_form form label {
+    padding-right: 50px;
+}
+
+.image_button {
+    width: 40px;
+    height: 40px;
+    background-color: dimgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    border-radius: 10px;
+    margin: 0;
+}
+
+.image_button img {
+    width: 35px;
+    height: auto;
+}
+
+.hover_text {
+    visibility: hidden;
+    width: 200px;
+    background-color: grey;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    z-index: 1;
+}
+
+.image_button:hover .hover_text {
+    transition-delay: 1s;
+    visibility: visible;
+}
