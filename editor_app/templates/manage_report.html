@@ -10,11 +10,11 @@
 {% block content %}
 
     <div class="card">
+
         <div class="left">
             <div class="left-image">
                 <img src="{{ report.additional_file.url }}" alt="Report Image">
             </div>
-
             <div class="left-text">
                 <p><strong>Created At:</strong> {{ report.created_at }}</p>
             </div>
@@ -27,10 +27,9 @@
             <h2>INSERT REPORT TITLE</h2>
             <div class="author"><img src="{% static 'img/favicon.png' %}" alt="user_icon"/>{{ report.author }}</div>
             <div class="separator"></div>
-            <p><strong>Article:</strong> {{ report.article.title }}</p>
+            <p><strong>About Article:</strong> {{ report.article.title }}</p>
             <div class="separator"></div>
             <p>{{ report.description }}</p>
-
 
             <div class="right-buttons">
                 <ul>
@@ -82,12 +81,9 @@
                     </li>
                 </ul>
             </div>
+
         </div>
+
     </div>
 
 {% endblock %}
-
-https://codepen.io/IMarty/pen/zrdYGe
-https://codepen.io/gschier/pen/kyRXVx
-https://codebeautify.org/sass-to-css-converter
-https://pughtml.com/
