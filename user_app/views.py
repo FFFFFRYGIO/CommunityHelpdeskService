@@ -9,7 +9,7 @@ from django.db.models import Q
 from editor_app.models import Report
 from editor_app.forms import ReportForm
 from registration.models import User
-from CommunityHelpdeskService.utils import save_files
+from CommunityHelpdeskService.utils import save_files, generate_report_title
 
 
 # In your views.py
@@ -89,6 +89,7 @@ def create_article_view(request):
                     ordinal_number += 1
 
                 new_report = Report()
+                new_report.title = f'Review "{new_article.title}"'
                 new_report.description = f'Review new article "{new_article.title}"'
                 new_report.author = User.objects.get(username='system_automat')
                 new_report.created_at = datetime.now()
