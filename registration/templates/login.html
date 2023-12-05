@@ -6,7 +6,7 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <h3>User is logged, can't login</h3>
+        <h3>User is logged, can't log in</h3>
     {% else %}
         <form action="#" method="post" class="form-group">
             {% csrf_token %}
