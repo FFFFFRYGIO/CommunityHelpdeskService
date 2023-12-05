@@ -103,6 +103,7 @@ button {
 .separator {
     margin-top: 10px;
     border: 1px solid #C3C3C3;
+    width: 100%;
 }
 
 .image_button {
