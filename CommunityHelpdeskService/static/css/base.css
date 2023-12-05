@@ -99,3 +99,47 @@ button {
     background-repeat: no-repeat;
     background-size: contain;
 }
+
+.separator {
+    margin-top: 10px;
+    border: 1px solid #C3C3C3;
+}
+
+.image_button {
+    width: 40px;
+    height: 40px;
+    background-color: dimgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.image_button img {
+    width: 35px;
+    height: auto;
+}
+
+.hover_text {
+    visibility: hidden;
+    white-space: nowrap;
+    width: auto;
+    background-color: grey;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    z-index: 1;
+}
+
+.image_button:hover .hover_text {
+    transition-delay: 1s;
+    visibility: visible;
+}

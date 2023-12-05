@@ -4,17 +4,6 @@
     background-color: #f8f8f8;
 }
 
-.image_button {
-    width: 40px;
-    height: 40px;
-    background-color: dimgray;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    border-radius: 10px;
-}
-
 .view_article_button {
     bottom: 0;
     right: 10px;
@@ -23,11 +12,6 @@
 .view_report_button {
     bottom: 0;
     right: 10px;
-}
-
-img {
-    width: 35px;
-    height: auto;
 }
 
 .manage_report_button {
@@ -44,25 +28,4 @@ img {
     position: absolute;
     top: 15px;
     right: 15px;
-}
-
-.hover_text {
-    visibility: hidden;
-    white-space: nowrap;
-    width: auto;
-    background-color: grey;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding-left: 5px;
-    padding-right: 5px;
-    position: absolute;
-    top: 35px;
-    left: 35px;
-    z-index: 1;
-}
-
-.image_button:hover .hover_text {
-    transition-delay: 1s;
-    visibility: visible;
 }
