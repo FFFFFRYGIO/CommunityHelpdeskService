@@ -76,19 +76,23 @@ p {
     color: #4B4B4B;
 }
 
-.right-buttons {
-    width: 100%;
-    height: 60px;
+.bottom-buttons {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
-.right-buttons ul {
+.bottom-buttons ul {
     float: right;
     list-style: none;
     display: flex;
     padding: 0;
+    margin: 0;
 }
 
-.right-buttons li {
+.bottom-buttons li {
     min-width: 40px;
     width: auto;
     height: 40px;
