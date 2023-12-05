@@ -174,6 +174,7 @@ def user_panel_view(request):
 def report_article_view(request, article_id):
     """ a form to create a report about specified article """
     article = Article.objects.get(id=article_id)
+    steps = Step.objects.filter(article=article).order_by('ordinal_number')
 
     if request.method == 'POST':
         report_form = ReportForm(request.POST, request.FILES)
@@ -194,7 +195,7 @@ def report_article_view(request, article_id):
 
     else:
         report_form = ReportForm(initial={'article': article})
-        return render(request, 'report_article.html', {'article': article, 'report_form': report_form})
+        return render(request, 'report_article.html', {'report_form': report_form, 'article': article, 'steps': steps})
 
 
 @login_required

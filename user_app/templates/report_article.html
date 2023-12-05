@@ -1,14 +1,50 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css %}{% static 'css/report_article.css' %}{% endblock %}
 
 {% block title %}Report Article{% endblock %}
 
 {% block heading %}Report Article{% endblock %}
 
 {% block content %}
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ report_form.as_p }}
-        <p>Article: {{ article.title }}</p>
-        <button type="submit">Submit Report</button>
-    </form>
+    <div class="report_article_content">
+
+        <form class="report_form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ report_form.as_p }}
+            <button type="submit" class="btn btn-dark image_button submit_report_i_b" name="submit_report">
+                <img src="{% static 'img/submit_report_icon.png' %}" alt="submit_report"/>
+                <span class="hover_text">submit report</span>
+            </button>
+        </form>
+
+        <div class="article_preview">
+            <h1>Article preview</h1>
+            <div class="separator"></div>
+
+            <form method="get" action="{% url 'view_article' article.id %}">
+                <button type="submit" class="btn btn-dark image_button" name="view_article">
+                    <img src="{% static 'img/view_article_icon.png' %}" alt="view_article_icon"/>
+                    <span class="hover_text">view reported article</span>
+                </button>
+            </form>
+            <h5><strong>Title:</strong> {{ article.title }}</h5>
+            <h5><strong>Tags:</strong>{% for tag in article.tags.all %} #{{ tag.name }}{% endfor %}</h5>
+            <h5><strong>Steps:</strong></h5>
+            <ul>
+                {% for step in steps %}
+                    <li>
+                        Step {{ step.ordinal_number }}. {{ step.title }}
+                        <ul>
+                            <li>{{ step.description1 }}</li>
+                            <li>{{ step.description2 }}</li>
+                        </ul>
+                    </li>
+                    {% if not forloop.last %}<br>{% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
 {% endblock %}

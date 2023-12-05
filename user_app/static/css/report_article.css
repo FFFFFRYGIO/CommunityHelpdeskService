@@ -1,0 +1,52 @@
+.report_article_content {
+    width: 75%;
+    display: flex;
+    flex-wrap: wrap;
+    align-self: center;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.report_article_content > * {
+    width: 100%;
+}
+
+.report_form {
+    background-color: #cecece;
+    box-shadow: 10px 10px 93px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 10px;
+    padding: 20px 20px 70px;
+    margin-bottom: 50px;
+}
+
+.report_form button {
+
+}
+
+.article_preview {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 20px;
+    height: auto;
+    position: relative;
+    background-color: #cecece;
+    box-shadow: 10px 10px 93px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 10px;
+    padding: 20px 20px 0;
+}
+
+.article_preview > * {
+    width: 100%;
+}
+
+.article_preview .separator {
+    border-color: dimgrey;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.article_preview form button {
+    margin: 0;
+    left: 20px;
+    top: 20px;
+}
