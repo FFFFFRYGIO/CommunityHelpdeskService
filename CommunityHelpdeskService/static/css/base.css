@@ -140,7 +140,7 @@ button {
     z-index: 1;
 }
 
-.image_button:hover .hover_text {
+.let_hover:hover .hover_text {
     transition-delay: 1s;
     visibility: visible;
 }
@@ -163,9 +163,4 @@ button {
     height: 80%;
     width: auto;
     padding-bottom: 2px;
-}
-
-.author:hover .hover_text {
-    transition-delay: 1s;
-    visibility: visible;
 }

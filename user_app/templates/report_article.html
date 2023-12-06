@@ -13,7 +13,7 @@
         <form class="report_form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ report_form.as_p }}
-            <button type="submit" class="btn btn-dark image_button submit_report_i_b" name="submit_report">
+            <button type="submit" class="btn btn-dark image_button submit_report_i_b let_hover" name="submit_report">
                 <img src="{% static 'img/submit_report_icon.png' %}" alt="submit_report"/>
                 <span class="hover_text">submit report</span>
             </button>
@@ -24,7 +24,7 @@
             <div class="separator"></div>
 
             <form method="get" action="{% url 'view_article' article.id %}">
-                <button type="submit" class="btn btn-dark image_button" name="view_article">
+                <button type="submit" class="btn btn-dark image_button let_hover" name="view_article">
                     <img src="{% static 'img/view_article_icon.png' %}" alt="view_article_icon"/>
                     <span class="hover_text">view reported article</span>
                 </button>

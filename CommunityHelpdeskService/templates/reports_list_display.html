@@ -16,7 +16,7 @@
 
                     <form method="get" action="{% url 'manage_report' report.id %}">
                         <button type="submit" name="manage_article"
-                                class="btn btn-dark image_button manage_report_button">
+                                class="btn btn-dark image_button manage_report_button let_hover">
                             <img class="rounded float-end"
                                  src="{% static 'img/manage_report_icon.jpg' %}" alt="view">
                             <span class="hover_text">manage report</span>
@@ -27,7 +27,7 @@
 
                     <form method="get" action="{% url 'view_report' report.id %}">
                         <button type="submit" name="view_report"
-                                class="btn btn-dark image_button view_report_button">
+                                class="btn btn-dark image_button view_report_button let_hover">
                             <img class="rounded float-end"
                                  src="{% static 'img/view_report_icon.png' %}" alt="view">
                             <span class="hover_text">view report</span>
