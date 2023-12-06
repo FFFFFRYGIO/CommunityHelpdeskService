@@ -1,0 +1,41 @@
+.main-box {
+    display: flex;
+    align-self: center;
+    margin: 0 auto;
+    flex-direction: column;
+    width: 400px;
+    padding: 40px;
+    background: darkolivegreen;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+    border-radius: 10px;
+}
+
+.main-box p {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.main-box ul {
+    color: white;
+}
+
+.main-box .registration_button {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.main-box h6 {
+    margin-bottom: 0;
+    text-align: right;
+}
+
+.main-box h6 a {
+    color: #fff;
+}
+
+.main-box .helptext {
+    color: white;
+}
