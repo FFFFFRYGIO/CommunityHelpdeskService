@@ -1,0 +1,118 @@
+.article_view {
+    background-color: #FFF;
+    box-shadow: 10px 10px 93px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.separator {
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.subtitle > * {
+    position: static;
+}
+
+.author {
+    position: relative;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 0, 0, 0.5);
+    height: 40px;
+    border-radius: 20px;
+    font-size: 20px;
+    color: #4B4B4B;
+    padding-left: 8px;
+    padding-right: 8px;
+    position: relative;
+}
+
+.approved {
+    background-color: rgba(0, 255, 4, 0.5);
+}
+
+.created_at {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(139, 69, 19, 0.5);
+    height: 40px;
+    border-radius: 20px;
+    font-size: 20px;
+    color: #4B4B4B;
+    padding-left: 8px;
+    padding-right: 8px;
+    position: relative;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-left: 10px;
+}
+
+.tags > * {
+    margin-right: 10px;
+    margin-bottom: 0;
+    margin-top: 0;
+    background-color: grey;
+    padding: 3px 10px;
+    border-radius: 10px;
+    color: white;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    height: 100%;
+    width: 100px;
+}
+
+.buttons > * {
+    float: right;
+    margin-right: 10px;
+}
+
+.buttons .image_button {
+    position: relative;
+    margin: 0;
+}
+
+.edit_article_button img {
+    padding-left: 5px;
+}
+
+.step_content_display {
+    display: flex;
+    justify-content: space-around;
+}
+
+.step_content_display img {
+    max-height: 100px;
+}
+
+.step_image {
+    height: 300px;
+    width: 100%;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.5);
+    background-color: #e1e1e1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
