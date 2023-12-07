@@ -11,9 +11,10 @@ def save_files(requested_files):
         fs.save(file.name, file)
 
 
-def generate_report_title(description, language='pl'):
+def generate_report_title(description):
     """ generate report title with chatGPT help """
     client = OpenAI(api_key=config('OPENAI_API_KEY'))
+    language = config('SYS_LANG')
     if language == 'pl':
         chat_content = (f'Stwórz tytuł do zgłoszenia o takim opisie: "{description}".'
                         f'Tytuł ma być zwięzły, kilkusłowny oraz pragmatyczny, bez upiększeń')
