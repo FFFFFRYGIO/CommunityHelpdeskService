@@ -37,8 +37,12 @@
                     <li>
                         Step {{ step.ordinal_number }}. {{ step.title }}
                         <ul>
-                            <li>{{ step.description1 }}</li>
-                            <li>{{ step.description2 }}</li>
+                            {% if step.description1 %}
+                                <li>{{ step.description1 }}</li>
+                            {% endif %}
+                            {% if step.description2 %}
+                                <li>{{ step.description2 }}</li>
+                            {% endif %}
                         </ul>
                     </li>
                     {% if not forloop.last %}<br>{% endif %}
