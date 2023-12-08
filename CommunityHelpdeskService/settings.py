@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'CommunityHelpdeskService.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': config("PG_DB_ENGINE"),
+        'ENGINE': config("PG_DB_ENGINE", default='django.db.backends.postgresql'),
         'NAME': config("PG_DB_NAME"),
         'USER': config("PG_DB_USER", default='postgres'),
         'PASSWORD': config("PG_DB_PASSWORD"),
