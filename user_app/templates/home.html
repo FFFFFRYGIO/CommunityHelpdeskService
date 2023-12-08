@@ -19,13 +19,13 @@
 
         {% if user.is_authenticated %}
 
-            <form method="post" action="{% url 'create_article' %}">
+            <form method="get" action="{% url 'create_article' %}">
                 <button type="submit" class="btn btn-dark form-control form-control-sm">
                     Create new article
                 </button>
             </form>
 
-            <form method="post" action="{% url 'user_panel' %}">
+            <form method="get" action="{% url 'user_panel' %}">
                 <button type="submit" class="btn btn-dark form-control form-control-sm">
                     Go to user panel
                 </button>
@@ -33,7 +33,7 @@
 
             {% if request.session.is_editor %}
 
-                <form method="post" action="{% url 'editor_panel' %}">
+                <form method="get" action="{% url 'editor_panel' %}">
                     <button type="submit" class="btn btn-dark form-control form-control-sm">
                         Go to editor panel
                     </button>
@@ -42,7 +42,7 @@
             {% endif %}
             {% if request.session.is_master_editor %}
 
-                <form method="post" action="{% url 'master_editor_panel' %}">
+                <form method="get" action="{% url 'master_editor_panel' %}">
                     <button type="submit" class="btn btn-dark form-control form-control-sm">
                         Go to master editor panel
                     </button>
