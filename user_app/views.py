@@ -6,6 +6,8 @@ from datetime import datetime
 from taggit.models import Tag
 from django.http import HttpResponse
 from django.db.models import Q
+from django.core.files import File
+from django.core.files.base import ContentFile
 from editor_app.models import Report
 from editor_app.forms import ReportForm
 from registration.models import User
@@ -95,6 +97,8 @@ def create_article_view(request):
                 new_report.created_at = datetime.now()
                 new_report.article = new_article
                 new_report.status = "na opened"
+                with open('CommunityHelpdeskService/static/img/favicon.png', 'rb') as image:
+                    new_report.additional_file.save('favicon.png', ContentFile(image.read()))
                 new_report.save()
 
                 return redirect('home')
