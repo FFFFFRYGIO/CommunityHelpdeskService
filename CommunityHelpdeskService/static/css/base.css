@@ -28,6 +28,9 @@ button {
 }
 
 .navbar-brand-custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: olive;
     background-color: lightblue;
     font-size: 22px;
