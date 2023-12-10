@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, include
 from django.views.generic import RedirectView
 
 urlpatterns = [
@@ -25,7 +25,7 @@ urlpatterns = [
     path("registration/", include("registration.urls")),
     path("user_app/", include("user_app.urls")),
     path("editor_app/", include("editor_app.urls")),
-    re_path('', RedirectView.as_view(url='/user_app/home', permanent=False)),
+    path("", RedirectView.as_view(pattern_name="home", permanent=False)),
 ]
 
 if settings.DEBUG:
