@@ -17,7 +17,7 @@
                 {% for step_form in step_form_set %}
                     <div class="step-form">
                         <h4>Step {{ forloop.counter }}</h4>
-                        {{ step_form.as_p|safe }}
+                        {{ step_form.as_p }}
                         <br>
                     </div>
                 {% endfor %}
