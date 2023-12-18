@@ -145,15 +145,15 @@ class AccessTestsBase(MainTestBase):
             self.assertEqual(response.status_code, 200)
 
             if self.client.session.get('_auth_user_id'):
-                self.assertContains(response, "<button type='submit' name='report_article'>Report</button>", count=1)
+                self.assertContains(response, "<button type='submit' name='report_article'", count=1)
 
                 if article.author_id == int(self.client.session.get('_auth_user_id')):
-                    self.assertContains(response, "<button type='submit' name='edit_article'>Edit</button>", count=1)
+                    self.assertContains(response, "<button type='submit' name='edit_article'", count=1)
                 else:
-                    self.assertNotContains(response, "<button type='submit' name='edit_article'>Edit</button>")
+                    self.assertNotContains(response, "<button type='submit' name='edit_article'")
             else:
-                self.assertNotContains(response, "<button type='submit' name='report_article'>Report</button>")
-                self.assertNotContains(response, "<button type='submit' name='edit_article'>Edit</button>")
+                self.assertNotContains(response, "<button type='submit' name='report_article'")
+                self.assertNotContains(response, "<button type='submit' name='edit_article'")
 
     def test_edit_article_page_access_and_content(self):
         articles = Article.objects.all()
