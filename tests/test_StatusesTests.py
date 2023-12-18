@@ -10,6 +10,10 @@ from tests.MainTestBase import MainTestBase, USERS, FORM_DATA
 from user_app.forms import StepFormSetCreate
 from user_app.models import Article, Step
 
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+# Create your tests here.
+
 
 class StatusesTests(MainTestBase):
     def user_create_article(self):
@@ -43,14 +47,25 @@ class StatusesTests(MainTestBase):
         articles = Article.objects.filter(title=FORM_DATA['title'])
         self.assertEqual(len(articles), 1)
         article = articles[0]
+
+        file_path = 'tests/test_sources/test_image.png'
+        with open(file_path, 'rb') as file:
+            file_content = file.read()
+            file_name = 'test_image.png'
+            file_data = SimpleUploadedFile(file_name, file_content, content_type='image/png')
+
         report_data = {
             'description': f'New report about article "{FORM_DATA["title"]}"',
             'article': article,
+            'additional_file': file_data,
         }
 
-        report_form = ReportForm(report_data)
+        report_files = {'additional_file': file_data}
+        report_form = ReportForm(report_data, report_files)
         self.assertTrue(report_form.is_valid(), f'report_form not valid: {report_form.errors}')
-        response = self.client.post(reverse('report_article', args=[article.id]), data=report_data)  # !!!
+
+        response = self.client.post(reverse('report_article', args=[article.id]),
+                                    data=report_data, multipart=True)
 
         self.assertRedirects(response, reverse('home'))
         reports = Report.objects.filter(description=report_data['description'])
