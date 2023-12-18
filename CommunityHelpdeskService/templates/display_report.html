@@ -1,86 +1,86 @@
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/display_report.css' %}">
+<link rel='stylesheet' type='text/css' href='{% static 'css/display_report.css' %}'>
 
-<div class="card">
+<div class='card'>
 
-    <div class="left">
-        <div class="left-image">
-            <a href="#img1">
-                <img src="{{ report.additional_file.url }}" alt="Report Image">
+    <div class='left'>
+        <div class='left-image'>
+            <a href='#img1'>
+                <img src='{{ report.additional_file.url }}' alt='Report Image'>
             </a>
-            <a href="#" class="lightbox" id="img1">
-                <span style="background-image: url('{{ report.additional_file.url }}');"></span>
+            <a href='#' class='lightbox' id='img1'>
+                <span style='background-image: url("{{ report.additional_file.url }}");'></span>
             </a>
         </div>
 
-        <div class="left-text">
-            <strong>Created At:</strong> {{ report.created_at|date:"d.m.Y" }}
+        <div class='left-text'>
+            <strong>Created At:</strong> {{ report.created_at|date:'d.m.Y' }}
         </div>
-        <div class="left-text">
+        <div class='left-text'>
             <strong>Status:</strong> {{ report.status }}
         </div>
     </div>
 
-    <div class="right">
+    <div class='right'>
         <h2>{{ report.title }}</h2>
-        <div class="author let_hover">
-            <img src="{% static 'img/favicon.png' %}" alt="user_icon"/>
+        <div class='author let_hover'>
+            <img src='{% static 'img/favicon.png' %}' alt='user_icon'/>
             {{ report.author }}
-            <span class="hover_text">author</span>
+            <span class='hover_text'>author</span>
         </div>
-        <div class="separator"></div>
+        <div class='separator'></div>
         <p><strong>About Article:</strong> {{ report.article.title }}</p>
-        <div class="separator"></div>
+        <div class='separator'></div>
         <p>{{ report.description }}</p>
     </div>
 
-    <div class="bottom-buttons">
+    <div class='bottom-buttons'>
         <ul>
             {% if request.session.is_master_editor %}
-                <li class="assign_form">
-                    <form method="post">
+                <li class='assign_form'>
+                    <form method='post'>
                         {% csrf_token %}
                         <label>
-                            <select name="editor_assign_id">
-                                <option value="">Choose an editor</option>
+                            <select name='editor_assign_id'>
+                                <option value=''>Choose an editor</option>
                                 {% for editor in editors %}
-                                    <option value="{{ editor.id }}">{{ editor.username }}</option>
+                                    <option value='{{ editor.id }}'>{{ editor.username }}</option>
                                 {% endfor %}
                             </select>
                         </label>
-                        <input type="hidden" name="report_id" value="{{ report.id }}">
-                        <button type="submit" class="btn btn-dark image_button let_hover" name="assign_report">
-                            <img src="{% static 'img/assign_report_icon.png' %}" alt="assign_report_icon"/>
-                            <span class="hover_text">assign a report to chosen editor</span>
+                        <input type='hidden' name='report_id' value='{{ report.id }}'>
+                        <button type='submit' class='btn btn-dark image_button let_hover' name='assign_report'>
+                            <img src='{% static 'img/assign_report_icon.png' %}' alt='assign_report_icon'/>
+                            <span class='hover_text'>assign a report to chosen editor</span>
                         </button>
                     </form>
                 </li>
             {% endif %}
             <li>
-                <form method="get" action="{% url 'view_article' report.article.id %}">
-                    <button type="submit" class="btn btn-dark image_button let_hover" name="view_article">
-                        <img src="{% static 'img/view_article_icon.png' %}" alt="view_article_icon"/>
-                        <span class="hover_text">view reported article</span>
+                <form method='get' action='{% url 'view_article' report.article.id %}'>
+                    <button type='submit' class='btn btn-dark image_button let_hover' name='view_article'>
+                        <img src='{% static 'img/view_article_icon.png' %}' alt='view_article_icon'/>
+                        <span class='hover_text'>view reported article</span>
                     </button>
                 </form>
             </li>
             {% if request.session.is_editor %}
                 <li>
-                    <form method="post">
+                    <form method='post'>
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-dark image_button let_hover" name="reject_article">
-                            <img src="{% static 'img/reject_article_icon.png' %}" alt="reject_article_icon"/>
-                            <span class="hover_text">reject an article</span>
+                        <button type='submit' class='btn btn-dark image_button let_hover' name='reject_article'>
+                            <img src='{% static 'img/reject_article_icon.png' %}' alt='reject_article_icon'/>
+                            <span class='hover_text'>reject an article</span>
                         </button>
                     </form>
                 </li>
                 <li>
-                    <form method="post">
+                    <form method='post'>
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-dark image_button let_hover" name="close_report">
-                            <img src="{% static 'img/close_report_icon.png' %}" alt="close_report_icon"/>
-                            <span class="hover_text">close the report</span>
+                        <button type='submit' class='btn btn-dark image_button let_hover' name='close_report'>
+                            <img src='{% static 'img/close_report_icon.png' %}' alt='close_report_icon'/>
+                            <span class='hover_text'>close the report</span>
                         </button>
                     </form>
                 </li>

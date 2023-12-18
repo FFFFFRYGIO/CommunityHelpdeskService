@@ -22,12 +22,12 @@ class ArticleTests(TestCase):
 
         for i in range(1, 5):
             article = Article.objects.create(
-                title=f"Test title {i}", author=cls.user,
-                created_at=datetime.now(), tags="tag", status="opened")
+                title=f'Test title {i}', author=cls.user,
+                created_at=datetime.now(), tags='tag', status='opened')
             for j in range(i):
                 Step.objects.create(
-                    article=article, ordinal_number=j+1, title=f"Step {i} title",
-                    description1=f"Step {i} description1", description2=f"Step {i} description2")
+                    article=article, ordinal_number=j+1, title=f'Step {i} title',
+                    description1=f'Step {i} description1', description2=f'Step {i} description2')
 
     def setUp(self):
         """setUp method for AccessTests"""
@@ -47,16 +47,16 @@ class ArticleTests(TestCase):
             'form-TOTAL_FORMS': str(steps.count() + modify_amount_number),
             'form-INITIAL_FORMS': str(steps.count()),
             'title': article.title + modification,
-            'tags': "tag" + modification,
+            'tags': 'tag' + modification,
         }
 
         for i in range(steps.count() + modify_amount_number):
             if i < steps.count():
                 step = steps[i]
             else:
-                step = Step(title=f"New step {i + 1} title", ordinal_number=i + 1,
-                            description1=f"New step {i + 1} description1",
-                            description2=f"New step {i + 1} description2")
+                step = Step(title=f'New step {i + 1} title', ordinal_number=i + 1,
+                            description1=f'New step {i + 1} description1',
+                            description2=f'New step {i + 1} description2')
 
             form_data[f'form-{i}-id'] = step.id if step.id else ''
             form_data[f'form-{i}-ordinal_number'] = step.ordinal_number
@@ -65,7 +65,7 @@ class ArticleTests(TestCase):
             form_data[f'form-{i}-description2'] = step.description2 + modification
 
         step_form_set = StepFormSetCreate(form_data)
-        self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
+        self.assertTrue(step_form_set.is_valid(), f'step_form_set not valid: {step_form_set.errors}')
 
         return form_data
 
@@ -185,8 +185,8 @@ class ArticleTests(TestCase):
 
             for step_ordinal_number in range(len(steps_to_compare) + 1, len(steps_to_compare) + modify_amount_number):
                 edited_step = Step.objects.get(article=article, ordinal_number=step_ordinal_number)
-                self.assertEqual(f"New step {step_ordinal_number} title" + modification, edited_step.title)
-                self.assertEqual(f"New step {step_ordinal_number} description1" + modification,
+                self.assertEqual(f'New step {step_ordinal_number} title' + modification, edited_step.title)
+                self.assertEqual(f'New step {step_ordinal_number} description1' + modification,
                                  edited_step.description1)
-                self.assertEqual(f"New step {step_ordinal_number} description2" + modification,
+                self.assertEqual(f'New step {step_ordinal_number} description2' + modification,
                                  edited_step.description2)

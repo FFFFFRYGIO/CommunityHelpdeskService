@@ -8,55 +8,55 @@
 {% block heading %}View Article{% endblock %}
 
 {% block content %}
-    <div class="article_view">
+    <div class='article_view'>
 
         <h1>{{ article.title }}</h1>
 
-        <div class="separator"></div>
+        <div class='separator'></div>
 
-        <div class="subtitle">
-            <div class="author let_hover">
-                <img src="{% static 'img/favicon.png' %}" alt="user_icon"/>
+        <div class='subtitle'>
+            <div class='author let_hover'>
+                <img src='{% static 'img/favicon.png' %}' alt='user_icon'/>
                 {{ article.author }}
-                <span class="hover_text">author</span>
+                <span class='hover_text'>author</span>
             </div>
 
-            <div class="status {{ article.status }} let_hover">
+            <div class='status {{ article.status }} let_hover'>
                 {{ article.status }}
-                <span class="hover_text">status</span>
+                <span class='hover_text'>status</span>
             </div>
 
-            <div class="created_at let_hover">
-                {{ article.created_at|date:"d.m.Y" }}
-                <span class="hover_text">creation date</span>
+            <div class='created_at let_hover'>
+                {{ article.created_at|date:'d.m.Y' }}
+                <span class='hover_text'>creation date</span>
             </div>
         </div>
 
-        <div class="subtitle">
-            <div class="tags">
+        <div class='subtitle'>
+            <div class='tags'>
                 {% for tag in article.tags.all %}
                     <p>#{{ tag.name }}</p>
                 {% endfor %}
             </div>
-            <div class="buttons">
+            <div class='buttons'>
                 {% if user.is_authenticated %}
                     {% if can_edit %}
-                        <form method="get" action="{% url 'edit_article' article.id %}">
-                            <button type="submit" name="edit_article"
-                                    class="btn btn-dark image_button edit_article_button let_hover">
-                                <img class="rounded float-end"
-                                     src="{% static 'img/edit_article_icon.png' %}" alt="view">
-                                <span class="hover_text">edit article</span>
+                        <form method='get' action='{% url 'edit_article' article.id %}'>
+                            <button type='submit' name='edit_article'
+                                    class='btn btn-dark image_button edit_article_button let_hover'>
+                                <img class='rounded float-end'
+                                     src='{% static 'img/edit_article_icon.png' %}' alt='view'>
+                                <span class='hover_text'>edit article</span>
                             </button>
                         </form>
                     {% endif %}
 
-                    <form method="get" action="{% url 'report_article' article.id %}">
-                        <button type="submit" name="report_article"
-                                class="btn btn-dark image_button let_hover">
-                            <img class="rounded float-end"
-                                 src="{% static 'img/submit_report_icon.png' %}" alt="view">
-                            <span class="hover_text">report article</span>
+                    <form method='get' action='{% url 'report_article' article.id %}'>
+                        <button type='submit' name='report_article'
+                                class='btn btn-dark image_button let_hover'>
+                            <img class='rounded float-end'
+                                 src='{% static 'img/submit_report_icon.png' %}' alt='view'>
+                            <span class='hover_text'>report article</span>
                         </button>
                     </form>
 
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <div class="separator"></div>
+        <div class='separator'></div>
 
         {% for step in steps %}
 
@@ -72,51 +72,51 @@
 
             {% if step.description1 or step.description2 %}
                 {% if step.description1 and step.description2 %}
-                    <div class="step_content_display both_display">
-                        <p class="description">{{ step.description1 }}</p>
-                        <p class="description">{{ step.description2 }}</p>
+                    <div class='step_content_display both_display'>
+                        <p class='description'>{{ step.description1 }}</p>
+                        <p class='description'>{{ step.description2 }}</p>
                     </div>
                 {% else %}
-                    <div class="step_content_display one_display">
-                        <p class="description">{{ step.description1 }}{{ step.description2 }}</p>
+                    <div class='step_content_display one_display'>
+                        <p class='description'>{{ step.description1 }}{{ step.description2 }}</p>
                     </div>
                 {% endif %}
             {% endif %}
 
             {% if step.file1 or step.file2 %}
                 {% if step.file1 and step.file2 %}
-                    <div class="step_content_display both_display">
-                        <a href="#img{{ step.id }}1">
-                            <img src="{{ step.file1.url }}" alt="Step1 Image" class="step_image">
+                    <div class='step_content_display both_display'>
+                        <a href='#img{{ step.id }}1'>
+                            <img src='{{ step.file1.url }}' alt='Step1 Image' class='step_image'>
                         </a>
-                        <a href="#" class="lightbox" id="img{{ step.id }}1">
-                            <span style="background-image: url('{{ step.file1.url }}');"></span>
+                        <a href='#' class='lightbox' id='img{{ step.id }}1'>
+                            <span style='background-image: url("{{ step.file1.url }}");'></span>
                         </a>
-                        <a href="#img{{ step.id }}2">
-                            <img src="{{ step.file2.url }}" alt="Step2 Image" class="step_image">
+                        <a href='#img{{ step.id }}2'>
+                            <img src='{{ step.file2.url }}' alt='Step2 Image' class='step_image'>
                         </a>
-                        <a href="#" class="lightbox" id="img{{ step.id }}2">
-                            <span style="background-image: url('{{ step.file2.url }}');"></span>
+                        <a href='#' class='lightbox' id='img{{ step.id }}2'>
+                            <span style='background-image: url("{{ step.file2.url }}");'></span>
                         </a>
                     </div>
                 {% else %}
-                    <div class="step_content_display one_display">
+                    <div class='step_content_display one_display'>
                         {% if step.file1 %}
-                            <p class="file">
-                                <a href="#img{{ step.id }}1">
-                                    <img src="{{ step.file1.url }}" alt="Step1 Image" class="step_image">
+                            <p class='file'>
+                                <a href='#img{{ step.id }}1'>
+                                    <img src='{{ step.file1.url }}' alt='Step1 Image' class='step_image'>
                                 </a>
-                                <a href="#" class="lightbox" id="img{{ step.id }}1">
-                                    <span style="background-image: url('{{ step.file1.url }}');"></span>
+                                <a href='#' class='lightbox' id='img{{ step.id }}1'>
+                                    <span style='background-image: url("{{ step.file1.url }}");'></span>
                                 </a>
                             </p>
                         {% elif step.file2 %}
-                            <p class="file">
-                                <a href="#img{{ step.id }}2">
-                                    <img src="{{ step.file2.url }}" alt="Step2 Image" class="step_image">
+                            <p class='file'>
+                                <a href='#img{{ step.id }}2'>
+                                    <img src='{{ step.file2.url }}' alt='Step2 Image' class='step_image'>
                                 </a>
-                                <a href="#" class="lightbox" id="img{{ step.id }}2">
-                                    <span style="background-image: url('{{ step.file2.url }}');"></span>
+                                <a href='#' class='lightbox' id='img{{ step.id }}2'>
+                                    <span style='background-image: url("{{ step.file2.url }}");'></span>
                                 </a>
                             </p>
                         {% endif %}

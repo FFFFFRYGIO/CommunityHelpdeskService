@@ -26,7 +26,7 @@ def search_view(request):
     searched_articles = []
     search_result = []
 
-    if request.method == "POST":
+    if request.method == 'POST':
         if 'search_by_title' in request.POST:
             search_name_form = SearchByNameForm(request.POST)
             if search_name_form.is_valid():
@@ -35,7 +35,7 @@ def search_view(request):
                 searched_articles = Article.objects.filter(
                     title__icontains=search_text, status__in=search_permitted_statuses)
             else:
-                return HttpResponse("HTTP Bad Request", status=400)
+                return HttpResponse('HTTP Bad Request', status=400)
 
         if 'search_by_tags' in request.POST:
             search_tags_form = SearchByTagsForm(request.POST)
@@ -44,13 +44,13 @@ def search_view(request):
                 tag_objects = Tag.objects.filter(name__in=tags_to_search)
                 searched_articles = Article.objects.filter(tags__in=tag_objects)
             else:
-                return HttpResponse("HTTP Bad Request", status=400)
+                return HttpResponse('HTTP Bad Request', status=400)
 
         if 'search_by_ownership' in request.POST:
             if request.user.is_authenticated:
                 searched_articles = Article.objects.filter(Q(author=request.user))
             else:
-                return HttpResponse("HTTP Unauthorized", status=401)
+                return HttpResponse('HTTP Unauthorized', status=401)
 
         search_result = ({
             'article': article,
@@ -64,7 +64,7 @@ def search_view(request):
 @login_required
 def create_article_view(request):
     """ a form to create an article """
-    if request.method == "POST":
+    if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
             save_files(request.FILES)
@@ -95,7 +95,7 @@ def create_article_view(request):
                 new_report.author = User.objects.get(username='system_automat')
                 new_report.created_at = datetime.now()
                 new_report.article = new_article
-                new_report.status = "na opened"
+                new_report.status = 'na opened'
                 with open('CommunityHelpdeskService/static/img/favicon.png', 'rb') as image:
                     content_file = ContentFile(image.read())
                     new_report.additional_file.save('favicon.png', content_file)
@@ -153,7 +153,7 @@ def edit_article_view(request, article_id):
                         report.status = report.status.replace('assigned', 'changes applied')
                         report.save()
                 return redirect('home')
-            return HttpResponse("HTTP Bad Request", status=400)
+            return HttpResponse('HTTP Bad Request', status=400)
         else:
             article_form = ArticleForm(instance=article)
             step_form_set = StepFormSetEdit(queryset=Step.objects.filter(article=article))
@@ -189,10 +189,10 @@ def report_article_view(request, article_id):
             report.author = request.user
             report.article = article
             report.created_at = datetime.now()
-            report.status = "opened"
+            report.status = 'opened'
             report.save()
 
-            article.status = "changes requested"
+            article.status = 'changes requested'
             article.save()
 
             return redirect('home')
@@ -211,4 +211,4 @@ def view_report_view(request, report_id):
         return render(request, 'view_report.html', {'report': report})
 
     else:
-        return redirect("home")
+        return redirect('home')

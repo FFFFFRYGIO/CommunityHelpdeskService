@@ -19,4 +19,4 @@ class Report(models.Model):
     status = models.CharField(max_length=50)
 
     def __str__(self):
-        return f"{self.description} created by {self.author.username}"
+        return f'{self.description} created by {self.author.username}'

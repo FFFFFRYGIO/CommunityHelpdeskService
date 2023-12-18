@@ -8,24 +8,24 @@
 {% block heading %}Search{% endblock %}
 
 {% block content %}
-    <form method="post">
+    <form method='post'>
         {% csrf_token %}
         {{ search_name_form.as_p }}
-        <button type="submit" name="search_by_title" class="btn btn-dark form-control form-control-sm">Search by Title
+        <button type='submit' name='search_by_title' class='btn btn-dark form-control form-control-sm'>Search by Title
         </button>
     </form>
 
-    <form method="post">
+    <form method='post'>
         {% csrf_token %}
         {{ search_tags_form.as_p }}
-        <button type="submit" name="search_by_tags" class="btn btn-dark form-control form-control-sm">Search by Tags
+        <button type='submit' name='search_by_tags' class='btn btn-dark form-control form-control-sm'>Search by Tags
         </button>
     </form>
 
     {% if user.is_authenticated %}
-        <form method="post">
+        <form method='post'>
             {% csrf_token %}
-            <button type="submit" name="search_by_ownership" class="btn btn-dark form-control form-control-sm">
+            <button type='submit' name='search_by_ownership' class='btn btn-dark form-control form-control-sm'>
                 Search by Ownership
             </button>
         </form>
@@ -33,7 +33,7 @@
     <br>
     {% if search_result %}
         <h3>Search Results:</h3>
-        <div class="row">
+        <div class='row'>
             {% for result in search_result %}
                 {% include 'articles_list_display.html' with result=result %}
             {% endfor %}

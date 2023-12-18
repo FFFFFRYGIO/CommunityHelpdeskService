@@ -21,7 +21,7 @@ class ReportsTests(MainTestBase):
         self.assertRedirects(response, reverse('home'))
 
         step_form_set = StepFormSetCreate(FORM_DATA)
-        self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
+        self.assertTrue(step_form_set.is_valid(), f'step_form_set not valid: {step_form_set.errors}')
         response = self.client.post(reverse('create_article'), data=FORM_DATA)
 
         self.assertRedirects(response, reverse('home'))
@@ -41,11 +41,11 @@ class ReportsTests(MainTestBase):
         response = self.client.get(reverse('master_editor_panel'))
         self.assertEqual(response.status_code, 200)
 
-        if report_type == "new":
+        if report_type == 'new':
             self.assertContains(response, f'Review new article &quot;{FORM_DATA["title"]}&quot;')
             self.assertContains(response, 'system_automat')
             self.assertContains(response, 'na opened')
-        elif report_type == "open":
+        elif report_type == 'open':
             self.assertContains(response, f'New report about article &quot;{FORM_DATA["title"]}&quot;')
             self.assertContains(response, f'{USERS[1]["username"]}')
             self.assertContains(response, f'opened')
@@ -56,7 +56,7 @@ class ReportsTests(MainTestBase):
     def editor_can_see_the_report(self, report_type):
         """ Check if the editor can't see the report """
         if report_type == "new":
-            report = Report.objects.get(article__title=FORM_DATA["title"], author__username='system_automat')
+            report = Report.objects.get(article__title=FORM_DATA['title'], author__username='system_automat')
 
             response = self.client.post(reverse('login'),
                                         data={'username': USERS[2]['username'], 'password': USERS[2]['password']})
@@ -94,8 +94,8 @@ class ReportsTests(MainTestBase):
             response = self.client.post(reverse('logout'))
             self.assertRedirects(response, reverse('login'))
 
-        elif report_type == "open":
-            report = Report.objects.get(article__title=FORM_DATA["title"], author__username=USERS[1]['username'])
+        elif report_type == 'open':
+            report = Report.objects.get(article__title=FORM_DATA['title'], author__username=USERS[1]['username'])
 
             response = self.client.post(reverse('login'),
                                         data={'username': USERS[2]['username'], 'password': USERS[2]['password']})
@@ -143,7 +143,7 @@ class ReportsTests(MainTestBase):
         }
 
         report_form = ReportForm(report_data)
-        self.assertTrue(report_form.is_valid(), f"report_form not valid: {report_form.errors}")
+        self.assertTrue(report_form.is_valid(), f'report_form not valid: {report_form.errors}')
         response = self.client.post(reverse('report_article', args=[article.id]), data=report_form)
 
         self.assertRedirects(response, reverse('home'))
@@ -192,10 +192,10 @@ class ReportsTests(MainTestBase):
         self.assertRedirects(response, reverse('home'))
 
         report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
-        if old_report.status == "changes applied":
-            self.assertEqual(report.status, "concluded")
-        elif old_report.status == "assigned":
-            self.assertEqual(report.status, "rejected")
+        if old_report.status == 'changes applied':
+            self.assertEqual(report.status, 'concluded')
+        elif old_report.status == 'assigned':
+            self.assertEqual(report.status, 'rejected')
 
         response = self.client.post(reverse('logout'))
         self.assertRedirects(response, reverse('login'))
@@ -232,9 +232,9 @@ class ReportsTests(MainTestBase):
         # 1. User1 creates article
         self.user_create_article()
         # 2. Master Editor see the report
-        self.master_editor_see_the_report("new")
+        self.master_editor_see_the_report('new')
         # 3. Editor1 can't see a report
-        self.editor_can_see_the_report("new")
+        self.editor_can_see_the_report('new')
 
     def test_manual_report(self):
         # 1. User1 creates article
@@ -249,16 +249,16 @@ class ReportsTests(MainTestBase):
         report.status = 'opened'
         report.save()
         # 3. Master Editor see the report
-        self.master_editor_see_the_report("open")
+        self.master_editor_see_the_report('open')
         # 4. Editor1 and Editor2 can't see a report
-        self.editor_can_see_the_report("open")
+        self.editor_can_see_the_report('open')
 
     def test_assign_report(self):
         self.test_manual_report()
         # 5. Master Editor assigns the report
         self.master_editor_assign_the_report()
         # 6. Editor1 sees a report, Editor2 can't
-        self.editor_can_see_the_report("open")
+        self.editor_can_see_the_report('open')
 
     def test_reject_report(self):
         self.test_assign_report()

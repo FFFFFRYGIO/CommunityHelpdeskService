@@ -8,25 +8,25 @@
 {% block heading %}Report Article{% endblock %}
 
 {% block content %}
-    <div class="report_article_content">
+    <div class='report_article_content'>
 
-        <form class="report_form" method="post" enctype="multipart/form-data">
+        <form class='report_form' method='post' enctype='multipart/form-data'>
             {% csrf_token %}
             {{ report_form.as_p }}
-            <button type="submit" class="btn btn-dark image_button submit_report_i_b let_hover" name="submit_report">
-                <img src="{% static 'img/submit_report_icon.png' %}" alt="submit_report"/>
-                <span class="hover_text">submit report</span>
+            <button type='submit' class='btn btn-dark image_button submit_report_i_b let_hover' name='submit_report'>
+                <img src='{% static 'img/submit_report_icon.png' %}' alt='submit_report'/>
+                <span class='hover_text'>submit report</span>
             </button>
         </form>
 
-        <div class="article_preview">
+        <div class='article_preview'>
             <h1>Article preview</h1>
-            <div class="separator"></div>
+            <div class='separator'></div>
 
-            <form method="get" action="{% url 'view_article' article.id %}">
-                <button type="submit" class="btn btn-dark image_button let_hover" name="view_article">
-                    <img src="{% static 'img/view_article_icon.png' %}" alt="view_article_icon"/>
-                    <span class="hover_text">view reported article</span>
+            <form method='get' action='{% url 'view_article' article.id %}'>
+                <button type='submit' class='btn btn-dark image_button let_hover' name='view_article'>
+                    <img src='{% static 'img/view_article_icon.png' %}' alt='view_article_icon'/>
+                    <span class='hover_text'>view reported article</span>
                 </button>
             </form>
             <h5><strong>Title:</strong> {{ article.title }}</h5>

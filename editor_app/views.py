@@ -19,7 +19,7 @@ def editor_panel_view(request):
         editor_reports = Report.objects.filter(editor=request.user, status__in=editor_permitted_statuses)
         return render(request, 'editor_panel.html', {'editor_reports': editor_reports})
     else:
-        return redirect("home")
+        return redirect('home')
 
 
 @login_required
@@ -29,7 +29,7 @@ def master_editor_panel_view(request):
         all_reports = Report.objects.all()
         return render(request, 'master_editor_panel.html', {'all_reports': all_reports})
     else:
-        return redirect("home")
+        return redirect('home')
 
 
 @login_required
@@ -45,10 +45,10 @@ def manage_report_view(request, report_id):
         report.editor = new_editor
         report.status = report.status.replace('opened', 'assigned')
         report.save()
-        return redirect("home")
+        return redirect('home')
 
     if is_master_editor or (is_editor and report.editor == request.user):
-        if request.method == "POST":
+        if request.method == 'POST':
             article = Article.objects.get(id=report.article.id)
             if 'reject_article' in request.POST:
                 article.status = 'rejected'
@@ -66,16 +66,16 @@ def manage_report_view(request, report_id):
                 article.status = 'approved'
 
             else:
-                return HttpResponse("HTTP Bad Request", status=400)
+                return HttpResponse('HTTP Bad Request', status=400)
 
             article.save()
             report.save()
 
-            return redirect("home")
+            return redirect('home')
 
         editors = Group.objects.get(name='Editors').user_set.all()
 
         return render(request, 'manage_report.html', {'report': report, 'editors': editors})
 
     else:
-        return redirect("home")
+        return redirect('home')

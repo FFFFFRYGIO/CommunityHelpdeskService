@@ -19,7 +19,7 @@ class StatusesTests(MainTestBase):
         self.assertRedirects(response, reverse('home'))
 
         step_form_set = StepFormSetCreate(FORM_DATA)
-        self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
+        self.assertTrue(step_form_set.is_valid(), f'step_form_set not valid: {step_form_set.errors}')
         response = self.client.post(reverse('create_article'), data=FORM_DATA)
 
         self.assertRedirects(response, reverse('home'))
@@ -49,7 +49,7 @@ class StatusesTests(MainTestBase):
         }
 
         report_form = ReportForm(report_data)
-        self.assertTrue(report_form.is_valid(), f"report_form not valid: {report_form.errors}")
+        self.assertTrue(report_form.is_valid(), f'report_form not valid: {report_form.errors}')
         response = self.client.post(reverse('report_article', args=[article.id]), data=report_data)  # !!!
 
         self.assertRedirects(response, reverse('home'))
@@ -174,19 +174,19 @@ class StatusesTests(MainTestBase):
         self.assertRedirects(response, reverse('login'))
 
         if report_type == 'new':
-            if old_report.status == "na changes applied" or old_report.status == "na assigned":
-                self.assertEqual(report.status, "concluded")
+            if old_report.status == 'na changes applied' or old_report.status == 'na assigned':
+                self.assertEqual(report.status, 'concluded')
             else:
                 raise ValueError(f'unexpected report status: {old_report.status}')
         elif report_type == 'open':
-            if old_report.status == "changes applied":
-                self.assertEqual(report.status, "concluded")
-            elif old_report.status == "assigned":
-                self.assertEqual(report.status, "rejected")
+            if old_report.status == 'changes applied':
+                self.assertEqual(report.status, 'concluded')
+            elif old_report.status == 'assigned':
+                self.assertEqual(report.status, 'rejected')
             else:
                 raise ValueError(f'unexpected report status: {old_report.status}')
 
-        self.assertEqual(report.article.status, "approved")
+        self.assertEqual(report.article.status, 'approved')
 
     def editor_rejects_report(self, report_type):
         """ Close the report by editor """
@@ -216,8 +216,8 @@ class StatusesTests(MainTestBase):
         elif report_type == 'open':
             report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
 
-        self.assertEqual(report.status, "article rejected")
-        self.assertEqual(report.article.status, "rejected")
+        self.assertEqual(report.status, 'article rejected')
+        self.assertEqual(report.article.status, 'rejected')
 
     @parameterized.expand(['reject', 'edit reject', 'close', 'edit close'])
     def test_statuses_new_article(self, editor_behavior):

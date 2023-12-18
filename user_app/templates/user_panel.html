@@ -8,7 +8,7 @@
 
     {% if articles_with_steps %}
         <h3>Your Articles:</h3>
-        <div class="row">
+        <div class='row'>
             {% for result in articles_with_steps %}
                 {% include 'articles_list_display.html' with result=result %}
             {% endfor %}
@@ -19,7 +19,7 @@
 
     {% if reports %}
         <h3>Your Reports:</h3>
-        <div class="row">
+        <div class='row'>
             {% for report in reports %}
                 {% include 'reports_list_display.html' with report=report %}
             {% endfor %}

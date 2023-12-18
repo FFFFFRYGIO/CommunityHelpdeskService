@@ -9,32 +9,32 @@
 
 {% block content %}
 
-    <div class="home_content">
+    <div class='home_content'>
 
-        <form method="get" action="{% url 'search' %}">
-            <button type="submit" class="btn btn-dark form-control form-control-sm">
+        <form method='get' action='{% url 'search' %}'>
+            <button type='submit' class='btn btn-dark form-control form-control-sm'>
                 Search articles
             </button>
         </form>
 
         {% if user.is_authenticated %}
 
-            <form method="get" action="{% url 'create_article' %}">
-                <button type="submit" class="btn btn-dark form-control form-control-sm">
+            <form method='get' action='{% url 'create_article' %}'>
+                <button type='submit' class='btn btn-dark form-control form-control-sm'>
                     Create new article
                 </button>
             </form>
 
-            <form method="get" action="{% url 'user_panel' %}">
-                <button type="submit" class="btn btn-dark form-control form-control-sm">
+            <form method='get' action='{% url 'user_panel' %}'>
+                <button type='submit' class='btn btn-dark form-control form-control-sm'>
                     Go to user panel
                 </button>
             </form>
 
             {% if request.session.is_editor %}
 
-                <form method="get" action="{% url 'editor_panel' %}">
-                    <button type="submit" class="btn btn-dark form-control form-control-sm">
+                <form method='get' action='{% url 'editor_panel' %}'>
+                    <button type='submit' class='btn btn-dark form-control form-control-sm'>
                         Go to editor panel
                     </button>
                 </form>
@@ -42,8 +42,8 @@
             {% endif %}
             {% if request.session.is_master_editor %}
 
-                <form method="get" action="{% url 'master_editor_panel' %}">
-                    <button type="submit" class="btn btn-dark form-control form-control-sm">
+                <form method='get' action='{% url 'master_editor_panel' %}'>
+                    <button type='submit' class='btn btn-dark form-control form-control-sm'>
                         Go to master editor panel
                     </button>
                 </form>

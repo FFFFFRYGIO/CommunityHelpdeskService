@@ -25,8 +25,8 @@ def generate_report_title(description):
         raise ValueError(f'Language "{language}" not supported')
 
     chat_completion = client.chat.completions.create(
-        messages=[{"role": "user", "content": chat_content}],
-        model="gpt-3.5-turbo",
+        messages=[{'role': 'user', 'content': chat_content}],
+        model='gpt-3.5-turbo',
     )
 
     response = chat_completion.choices[0].message.content

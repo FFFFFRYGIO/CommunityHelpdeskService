@@ -7,29 +7,29 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <form action="#" method="post" class="form-group" id="article-form" enctype="multipart/form-data">
+        <form action='#' method='post' class='form-group' id='article-form' enctype='multipart/form-data'>
             {% csrf_token %}
             {{ article_form.as_p }}
             <br>
             {{ step_form_set.management_form }}
             {{ step_form_set.non_form_errors }}
-            <div id="steps-formset">
+            <div id='steps-formset'>
                 {% for step_form in step_form_set %}
-                    <div class="step-form">
+                    <div class='step-form'>
                         <h4>Step {{ forloop.counter }}</h4>
                         {{ step_form.as_p }}
                         <br>
                     </div>
                 {% endfor %}
             </div>
-            <p><a href="#" id="remove-step-button" class="btn btn-secondary remove-step-button">Remove Step</a></p>
-            <p><a href="#" id="add-step-button" class="btn btn-secondary add-step-button">Add Another Step</a></p>
+            <p><a href='#' id='remove-step-button' class='btn btn-secondary remove-step-button'>Remove Step</a></p>
+            <p><a href='#' id='add-step-button' class='btn btn-secondary add-step-button'>Add Another Step</a></p>
             <p>
-                <button type="submit" class="btn btn-success" value="Save">Save</button>
+                <button type='submit' class='btn btn-success' value='Save'>Save</button>
             </p>
         </form>
     {% else %}
-        <h3>User isn't authenticated, login <a href="/registration/login">HERE</a></h3>
+        <h3>User isn't authenticated, login <a href='/registration/login'>HERE</a></h3>
     {% endif %}
-    <script src="{% static 'js/manage_article_handle_steps.js' %}"></script>
+    <script src='{% static 'js/manage_article_handle_steps.js' %}'></script>
 {% endblock %}

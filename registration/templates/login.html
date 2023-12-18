@@ -11,13 +11,13 @@
     {% if user.is_authenticated %}
         <h3>User is logged, can't log in</h3>
     {% else %}
-        <div class="main-box">
-            <form action="#" method="post" class="form-group">
+        <div class='main-box'>
+            <form action='#' method='post' class='form-group'>
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="btn btn-dark registration_button">Login</button>
+                <button type='submit' class='btn btn-dark registration_button'>Login</button>
             </form>
-            <h6><a href="/registration/register">Don't have an account?</a></h6>
+            <h6><a href='/registration/register'>Don't have an account?</a></h6>
         </div>
     {% endif %}
 {% endblock %}

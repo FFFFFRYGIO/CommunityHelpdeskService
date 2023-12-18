@@ -16,7 +16,7 @@ class Article(models.Model):
     status = models.CharField(max_length=50)
 
     def __str__(self):
-        return f"{self.title} created by {self.author.username}"
+        return f'{self.title} created by {self.author.username}'
 
 
 class Step(models.Model):
@@ -31,4 +31,4 @@ class Step(models.Model):
     file2 = models.FileField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.title} from {self.article.title}"
+        return f'{self.title} from {self.article.title}'

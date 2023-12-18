@@ -23,13 +23,13 @@ class AccessTestsBase(MainTestBase):
         """ generate lists of contents for navbar, footer and home page """
 
         navbar_elements = [
-            '<a class="nav-link" href="/user_app/home">Home',
-            '<a class="nav-link" href="/user_app/search">Search',
-            '<a class="nav-link" href="/user_app/create_article">Create article</a>',
-            '<a class="nav-link" href="/user_app/user_panel">User Panel',
-            '<a class="nav-link" href="/editor_app/editor_panel">Editor Panel',
-            '<a class="nav-link" href="/editor_app/master_editor_panel">Master Editor Panel',
-            '<a class="nav-link" href="/registration/logout">Logout',
+            "<a class='nav-link' href='/user_app/home'>Home</a>",
+            "<a class='nav-link' href='/user_app/search'>Search</a>",
+            "<a class='nav-link' href='/user_app/create_article'>Create article</a>",
+            "<a class='nav-link' href='/user_app/user_panel'>User Panel</a>",
+            "<a class='nav-link' href='/editor_app/editor_panel'>Editor Panel</a>",
+            "<a class='nav-link' href='/editor_app/master_editor_panel'>Master Editor Panel</a>",
+            "<a class='nav-link' href='/registration/logout'>Logout</a>",
         ]
         footer_elements = [
             '<div>Community Helpdesk Service</div>',
@@ -46,15 +46,13 @@ class AccessTestsBase(MainTestBase):
 
         if not self.user:
             navbar_elements.remove(
-                '<a class="nav-link" href="/user_app/create_article">Create article</a>')
-            navbar_elements.remove('<a class="nav-link" href="/user_app/user_panel">User Panel')
-            navbar_elements.remove(
-                '<a class="nav-link" href="/editor_app/editor_panel">Editor Panel')
-            navbar_elements.remove(
-                '<a class="nav-link" href="/editor_app/master_editor_panel">Master Editor Panel')
-            navbar_elements.remove('<a class="nav-link" href="/registration/logout">Logout')
-            navbar_elements.append('<a class="nav-link" href="/registration/register">Register')
-            navbar_elements.append('<a class="nav-link" href="/registration/login">Login')
+                "<a class='nav-link' href='/user_app/create_article'>Create article</a>")
+            navbar_elements.remove("<a class='nav-link' href='/user_app/user_panel'>User Panel</a>")
+            navbar_elements.remove("<a class='nav-link' href='/editor_app/editor_panel'>Editor Panel</a>")
+            navbar_elements.remove("<a class='nav-link' href='/editor_app/master_editor_panel'>Master Editor Panel</a>")
+            navbar_elements.remove("<a class='nav-link' href='/registration/logout'>Logout</a>")
+            navbar_elements.append("<a class='nav-link' href='/registration/register'>Register")
+            navbar_elements.append("<a class='nav-link' href='/registration/login'>Login")
             home_elements.remove('Create new article')
             home_elements.remove('Go to user panel')
             home_elements.remove('Go to editor panel')
@@ -62,13 +60,11 @@ class AccessTestsBase(MainTestBase):
             return navbar_elements, footer_elements, home_elements
 
         if not self.user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
-            navbar_elements.remove(
-                '<a class="nav-link" href="/editor_app/master_editor_panel">Master Editor Panel')
+            navbar_elements.remove("<a class='nav-link' href='/editor_app/master_editor_panel'>Master Editor Panel</a>")
             home_elements.remove('Go to master editor panel')
 
             if not self.user.groups.values_list('name', flat=True).filter(name='Editors'):
-                navbar_elements.remove(
-                    '<a class="nav-link" href="/editor_app/editor_panel">Editor Panel')
+                navbar_elements.remove("<a class='nav-link' href='/editor_app/editor_panel'>Editor Panel</a>")
                 home_elements.remove('Go to editor panel')
 
         return navbar_elements, footer_elements, home_elements
@@ -79,14 +75,14 @@ class AccessTestsBase(MainTestBase):
 
         navbar_elements, footer_elements, home_elements = self.get_home_page_contents()
 
-        self.assertContains(response, '<li class="nav-item active">', count=len(navbar_elements))
-        self.assertContains(response, '<li class="nav-item active">', count=len(navbar_elements))
+        self.assertContains(response, "<li class='nav-item active'>", count=len(navbar_elements))
+        self.assertContains(response, "<li class='nav-item active'>", count=len(navbar_elements))
 
         for element in navbar_elements:
             self.assertContains(response, element, count=1)
 
-        self.assertContains(response, '<footer class="card-footer text-body-secondary '
-                                      'fixed-bottom d-flex justify-content-between bg-dark">', count=1)
+        self.assertContains(response, "<footer class='card-footer text-body-secondary "
+                                      "fixed-bottom d-flex justify-content-between bg-dark'>", count=1)
 
         for element in footer_elements:
             self.assertContains(response, element, count=1)
@@ -110,10 +106,10 @@ class AccessTestsBase(MainTestBase):
         response = self.client.post(reverse('search'),
                                     {'search_title': 'Test Article', 'search_by_title': 'Search by Title'})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "<h3>Search Results:</h3>")
+        self.assertContains(response, '<h3>Search Results:</h3>')
         count_articles = Article.objects.filter(title__contains='Test Article').count()
         self.assertContains(response, 'Test Article', count=count_articles)
-        self.assertContains(response, '<button type="submit" name="view_article"', count=count_articles)
+        self.assertContains(response, "<button type='submit' name='view_article", count=count_articles)
 
     @parameterized.expand(['tag2', 'tag0', 'tag1', 'tag2, tag0', 'tag2, tag1', 'tag3'])
     def test_search_page_searching_by_tags(self, tags_to_search):
@@ -122,7 +118,7 @@ class AccessTestsBase(MainTestBase):
         self.assertEqual(response.status_code, 200)
 
         if len(Article.objects.filter(tags__name__in=tags_to_search.split(', '))) > 0:
-            self.assertContains(response, "Search Results:")
+            self.assertContains(response, 'Search Results:')
 
         for article in Article.objects.filter(tags__name__in=tags_to_search.split(', ')):
             self.assertContains(response, article.title)
@@ -134,8 +130,8 @@ class AccessTestsBase(MainTestBase):
             self.assertEqual(response.status_code, 200)
             user_articles = Article.objects.filter(author_id=self.client.session.get('_auth_user_id'))
             if len(user_articles) > 0:
-                self.assertContains(response, "Search Results:")
-                self.assertContains(response, '<button type="submit" name="view_article"',
+                self.assertContains(response, 'Search Results:')
+                self.assertContains(response, "<button type='submit' name='view_article'",
                                     count=len(user_articles))
             for user_article in user_articles:
                 self.assertContains(response, user_article.title)
@@ -149,15 +145,15 @@ class AccessTestsBase(MainTestBase):
             self.assertEqual(response.status_code, 200)
 
             if self.client.session.get('_auth_user_id'):
-                self.assertContains(response, '<button type="submit" name="report_article">Report</button>', count=1)
+                self.assertContains(response, "<button type='submit' name='report_article'>Report</button>", count=1)
 
                 if article.author_id == int(self.client.session.get('_auth_user_id')):
-                    self.assertContains(response, '<button type="submit" name="edit_article">Edit</button>', count=1)
+                    self.assertContains(response, "<button type='submit' name='edit_article'>Edit</button>", count=1)
                 else:
-                    self.assertNotContains(response, '<button type="submit" name="edit_article">Edit</button>')
+                    self.assertNotContains(response, "<button type='submit' name='edit_article'>Edit</button>")
             else:
-                self.assertNotContains(response, '<button type="submit" name="report_article">Report</button>')
-                self.assertNotContains(response, '<button type="submit" name="edit_article">Edit</button>')
+                self.assertNotContains(response, "<button type='submit' name='report_article'>Report</button>")
+                self.assertNotContains(response, "<button type='submit' name='edit_article'>Edit</button>")
 
     def test_edit_article_page_access_and_content(self):
         articles = Article.objects.all()
@@ -170,21 +166,21 @@ class AccessTestsBase(MainTestBase):
                 else:
                     self.assertRedirects(response, reverse('home'))
             else:
-                self.assertRedirects(response, reverse('login') + "?next=" + reverse('edit_article', args=[article.id]))
+                self.assertRedirects(response, reverse('login') + '?next=' + reverse('edit_article', args=[article.id]))
 
     def test_create_article_page_access_and_content(self):
         response = self.client.get(reverse('create_article'))
 
         if self.client.session.get('_auth_user_id'):
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, '<form action="#" method="post" class="form-group" '
-                                          'id="article-form" enctype="multipart/form-data">')
+            self.assertContains(response, "<form action='#' method='post' class='form-group' "
+                                          "id='article-form' enctype='multipart/form-data'>")
 
             initial_article_count = Article.objects.count()
             initial_step_count = Step.objects.count()
 
             step_form_set = StepFormSetCreate(FORM_DATA)
-            self.assertTrue(step_form_set.is_valid(), f"step_form_set not valid: {step_form_set.errors}")
+            self.assertTrue(step_form_set.is_valid(), f'step_form_set not valid: {step_form_set.errors}')
 
             response = self.client.post(reverse('create_article'), data=FORM_DATA)
 
@@ -192,7 +188,7 @@ class AccessTestsBase(MainTestBase):
 
             self.assertEqual(Article.objects.count(), initial_article_count + 1)
             self.assertEqual(Article.objects.latest('id').title, FORM_DATA['title'])
-            self.assertEqual(Article.objects.latest('id').tags.count(), len(FORM_DATA['tags'].split(",")))
+            self.assertEqual(Article.objects.latest('id').tags.count(), len(FORM_DATA['tags'].split(',')))
 
             self.assertEqual(Step.objects.count(), initial_step_count + 2)
             self.assertEqual(
@@ -202,7 +198,7 @@ class AccessTestsBase(MainTestBase):
 
 
         else:
-            self.assertRedirects(response, reverse('login') + "?next=" + reverse('create_article'))
+            self.assertRedirects(response, reverse('login') + '?next=' + reverse('create_article'))
 
     def test_user_panel_page_access_and_content(self):
         response = self.client.get(reverse('user_panel'))
@@ -236,7 +232,7 @@ class AccessTestsBase(MainTestBase):
                 self.assertNotContains(response, report.title)
 
         else:
-            self.assertRedirects(response, reverse('login') + "?next=" + reverse('user_panel'))
+            self.assertRedirects(response, reverse('login') + '?next=' + reverse('user_panel'))
 
     def test_report_article_page_access_and_content(self):
         articles = Article.objects.all()
@@ -245,11 +241,11 @@ class AccessTestsBase(MainTestBase):
 
             if self.client.session.get('_auth_user_id'):
                 self.assertEqual(response.status_code, 200)
-                self.assertContains(response, "<h1><span>Report Article</span></h1>")
+                self.assertContains(response, '<h1><span>Report Article</span></h1>')
                 self.assertContains(response, article.title)
             else:
                 self.assertRedirects(response,
-                                     reverse('login') + "?next=" + reverse('report_article', args=[article.id]))
+                                     reverse('login') + '?next=' + reverse('report_article', args=[article.id]))
 
     def test_view_report_page_access_and_content(self):
         reports = Report.objects.all()
@@ -259,13 +255,13 @@ class AccessTestsBase(MainTestBase):
             if self.client.session.get('_auth_user_id'):
                 if report.author_id == self.client.session.get('_auth_user_id'):
                     self.assertEqual(response.status_code, 200)
-                    self.assertContains(response, "<h1>View Report Page</h1>")
+                    self.assertContains(response, '<h1>View Report Page</h1>')
                     self.assertContains(response, report.title)
                 else:
                     self.assertRedirects(response, reverse('home'))
             else:
                 self.assertRedirects(response,
-                                     reverse('login') + "?next=" + reverse('view_report', args=[report.id]))
+                                     reverse('login') + '?next=' + reverse('view_report', args=[report.id]))
 
     def test_editor_panel_page_access_and_content(self):
         response = self.client.get(reverse('editor_panel'))
@@ -284,7 +280,7 @@ class AccessTestsBase(MainTestBase):
                     for report in editor_reports:
                         self.assertContains(response, report.title)
                 else:
-                    self.assertContains(response, "<p>You have no reports assigned for now</p>")
+                    self.assertContains(response, '<p>You have no reports assigned for now</p>')
 
             else:
                 self.assertRedirects(response, reverse('home'))
@@ -306,7 +302,7 @@ class AccessTestsBase(MainTestBase):
                     for report in editor_reports:
                         self.assertContains(response, report.title)
                 else:
-                    self.assertContains(response, "<p>There are no reports to manage</p>")
+                    self.assertContains(response, '<p>There are no reports to manage</p>')
 
             else:
                 self.assertRedirects(response, reverse('home'))

@@ -22,10 +22,10 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("registration/", include("registration.urls")),
-    path("user_app/", include("user_app.urls")),
-    path("editor_app/", include("editor_app.urls")),
-    path("", RedirectView.as_view(pattern_name="home", permanent=False)),
+    path('registration/', include('registration.urls')),
+    path('user_app/', include('user_app.urls')),
+    path('editor_app/', include('editor_app.urls')),
+    path('', RedirectView.as_view(pattern_name='home', permanent=False)),
 ]
 
 if settings.DEBUG:

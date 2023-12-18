@@ -1,36 +1,36 @@
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/display_list_of_articles_or_reports.css' %}">
+<link rel='stylesheet' type='text/css' href='{% static 'css/display_list_of_articles_or_reports.css' %}'>
 
-<div class="col-lg-6 mb-4">
-    <div class="card list_element">
-        <div class="card-body">
-            <div class="row">
-                <div class="card-text">
+<div class='col-lg-6 mb-4'>
+    <div class='card list_element'>
+        <div class='card-body'>
+            <div class='row'>
+                <div class='card-text'>
                     <h5>{{ report.title }}</h5>
                 </div>
-                <p class="card-text">{{ report.author }}</p>
-                <p class="card-text">Status: {{ report.status }}</p>
+                <p class='card-text'>{{ report.author }}</p>
+                <p class='card-text'>Status: {{ report.status }}</p>
 
                 {% if report.editor == user or request.session.is_master_editor %}
 
-                    <form method="get" action="{% url 'manage_report' report.id %}">
-                        <button type="submit" name="manage_article"
-                                class="btn btn-dark image_button manage_report_button let_hover">
-                            <img class="rounded float-end"
-                                 src="{% static 'img/manage_report_icon.jpg' %}" alt="view">
-                            <span class="hover_text">manage report</span>
+                    <form method='get' action='{% url 'manage_report' report.id %}'>
+                        <button type='submit' name='manage_article'
+                                class='btn btn-dark image_button manage_report_button let_hover'>
+                            <img class='rounded float-end'
+                                 src='{% static 'img/manage_report_icon.jpg' %}' alt='view'>
+                            <span class='hover_text'>manage report</span>
                         </button>
                     </form>
 
                 {% else %}
 
-                    <form method="get" action="{% url 'view_report' report.id %}">
-                        <button type="submit" name="view_report"
-                                class="btn btn-dark image_button view_report_button let_hover">
-                            <img class="rounded float-end"
-                                 src="{% static 'img/view_report_icon.png' %}" alt="view">
-                            <span class="hover_text">view report</span>
+                    <form method='get' action='{% url 'view_report' report.id %}'>
+                        <button type='submit' name='view_report'
+                                class='btn btn-dark image_button view_report_button let_hover'>
+                            <img class='rounded float-end'
+                                 src='{% static 'img/view_report_icon.png' %}' alt='view'>
+                            <span class='hover_text'>view report</span>
                         </button>
                     </form>
 
