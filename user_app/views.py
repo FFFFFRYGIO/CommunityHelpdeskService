@@ -70,7 +70,6 @@ def create_article_view(request):
             save_files(request.FILES)
             new_article = form.save(commit=False)
             new_article.author = request.user
-            new_article.created_at = datetime.now()
             new_article.status = 'unapproved'
             new_article.save()
 
@@ -93,7 +92,6 @@ def create_article_view(request):
                 new_report.title = f'Review "{new_article.title}"'
                 new_report.description = f'Review new article "{new_article.title}"'
                 new_report.author = User.objects.get(username='system_automat')
-                new_report.created_at = datetime.now()
                 new_report.article = new_article
                 new_report.status = 'na opened'
                 with open('CommunityHelpdeskService/static/img/favicon.png', 'rb') as image:
@@ -188,7 +186,6 @@ def report_article_view(request, article_id):
             report.title = generate_report_title(report.description)
             report.author = request.user
             report.article = article
-            report.created_at = datetime.now()
             report.status = 'opened'
             report.save()
 
