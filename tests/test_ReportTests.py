@@ -42,11 +42,12 @@ class ReportsTests(MainTestBase):
         self.assertEqual(response.status_code, 200)
 
         if report_type == 'new':
-            self.assertContains(response, f'Review new article &quot;{FORM_DATA["title"]}&quot;')
+            self.assertContains(response, f'Review &quot;{FORM_DATA["title"]}&quot;')
             self.assertContains(response, 'system_automat')
             self.assertContains(response, 'na opened')
         elif report_type == 'open':
-            self.assertContains(response, f'New report about article &quot;{FORM_DATA["title"]}&quot;')
+            report_title = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"').title
+            self.assertContains(response, report_title.replace('"', '&quot;').replace("'", '&#x27;'))
             self.assertContains(response, f'{USERS[1]["username"]}')
             self.assertContains(response, f'opened')
 
@@ -105,11 +106,13 @@ class ReportsTests(MainTestBase):
             self.assertEqual(response.status_code, 200)
 
             if report.editor == self.test_users['editors'][0]:
-                self.assertContains(response, f'New report about article &quot;{FORM_DATA["title"]}&quot;')
+                report_title = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"').title
+                self.assertContains(response, report_title.replace('"', '&quot;').replace("'", '&#x27;'))
                 self.assertContains(response, f'{USERS[1]["username"]}')
                 self.assertContains(response, f'assigned')
             else:
-                self.assertNotContains(response, f'New report about article &quot;{FORM_DATA["title"]}&quot;')
+                report_title = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"').title
+                self.assertNotContains(response, report_title.replace('"', '&quot;').replace("'", '&#x27;'))
                 self.assertNotContains(response, f'{USERS[1]["username"]}')
                 self.assertNotContains(response, f'Status: assigned')
 
