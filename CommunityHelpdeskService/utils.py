@@ -31,10 +31,7 @@ def generate_report_title(description):
 
     response = chat_completion.choices[0].message.content
 
-    if response[0] == '"':
-        response = response[1:]
-
-    if response[-1] == '"':
-        response = response[:-1]
+    if response[0] == '"' and response[-1] == '"':
+        response = response[1:-1]
 
     return response
