@@ -197,6 +197,9 @@ def report_article_view(request, article_id):
 
             return redirect('home')
 
+        else:
+            return HttpResponse('HTTP Bad Request', status=400)
+
     else:
         report_form = ReportForm(initial={'article': article})
         return render(request, 'report_article.html', {'report_form': report_form, 'article': article, 'steps': steps})
