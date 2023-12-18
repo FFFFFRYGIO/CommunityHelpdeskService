@@ -170,6 +170,9 @@ class ReportsTests(MainTestBase):
         response = self.client.post(reverse('logout'))
         self.assertRedirects(response, reverse('login'))
 
+        self.assertEqual(reports[0].status, 'opened')
+        self.assertEqual(reports[0].article.status, 'changes requested')
+
     def master_editor_assign_the_report(self):
         """ Assign the report to the editor """
         response = self.client.post(reverse('login'),
