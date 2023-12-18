@@ -9,6 +9,7 @@ from tests.MainTestBase import MainTestBase, USERS, FORM_DATA
 from user_app.forms import StepFormSetCreate
 from user_app.models import Article, Step
 
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 # Create your tests here.
 
@@ -139,15 +140,28 @@ class ReportsTests(MainTestBase):
                                     data={'username': USERS[1]['username'], 'password': USERS[1]['password']})
         self.assertRedirects(response, reverse('home'))
 
-        article = Article.objects.get(title=FORM_DATA['title'])
+        articles = Article.objects.filter(title=FORM_DATA['title'])
+        self.assertEqual(len(articles), 1)
+        article = articles[0]
+
+        file_path = 'tests/test_sources/test_image.png'
+        with open(file_path, 'rb') as file:
+            file_content = file.read()
+            file_name = 'test_image.png'
+            file_data = SimpleUploadedFile(file_name, file_content, content_type='image/png')
+
         report_data = {
             'description': f'New report about article "{FORM_DATA["title"]}"',
             'article': article,
+            'additional_file': file_data,
         }
 
-        report_form = ReportForm(report_data)
+        report_files = {'additional_file': file_data}
+        report_form = ReportForm(report_data, report_files)
         self.assertTrue(report_form.is_valid(), f'report_form not valid: {report_form.errors}')
-        response = self.client.post(reverse('report_article', args=[article.id]), data=report_form)
+
+        response = self.client.post(reverse('report_article', args=[article.id]),
+                                    data=report_data, multipart=True)
 
         self.assertRedirects(response, reverse('home'))
         reports = Report.objects.filter(description=report_data['description'])
@@ -243,14 +257,7 @@ class ReportsTests(MainTestBase):
         # 1. User1 creates article
         self.user_create_article()
         # 2. User2 creates report
-        # self.user_create_report()
-        report = Report()
-        report.description = f'New report about article "{FORM_DATA["title"]}"'
-        report.author = self.test_users['users'][1]
-        report.created_at = datetime.now()
-        report.article = Article.objects.get(title=FORM_DATA["title"])
-        report.status = 'opened'
-        report.save()
+        self.user_report_article()
         # 3. Master Editor see the report
         self.master_editor_see_the_report('open')
         # 4. Editor1 and Editor2 can't see a report
