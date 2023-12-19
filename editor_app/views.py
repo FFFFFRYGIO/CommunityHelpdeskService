@@ -16,8 +16,26 @@ def editor_panel_view(request):
     """ editor panel with the assigned reports """
     if request.user.groups.values_list('name', flat=True).filter(name='Editors'):
         editor_permitted_statuses = ['assigned', 'na assigned', 'changes applied', 'na changes applied']
-        editor_reports = Report.objects.filter(editor=request.user, status__in=editor_permitted_statuses)
-        return render(request, 'editor_panel.html', {'editor_reports': editor_reports})
+        filters_applied = {}
+        reports = Report.objects.filter(editor=request.user, status__in=editor_permitted_statuses)
+        authors = User.objects.filter(report_author__in=reports).distinct()
+        statuses = Report.objects.values_list('status', flat=True).distinct()
+
+        if 'author_filter' in request.POST:
+            author_id = request.POST.get('author_filter')
+            print('author_id ', author_id)
+            if author_id:
+                reports = reports.filter(author_id=author_id)
+                filters_applied['author'] = User.objects.get(id=author_id).username
+
+        if 'status_filter' in request.POST:
+            status = request.POST.get('status_filter')
+            if status:
+                reports = reports.filter(status=status)
+                filters_applied['status'] = status
+
+        return render(request, 'editor_panel.html', {
+            'reports': reports, 'authors': authors, 'statuses': statuses, 'filters_applied': filters_applied})
     else:
         return redirect('home')
 
