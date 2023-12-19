@@ -22,6 +22,10 @@
     margin-right: 10%;
 }
 
+.filter_manager form select {
+    width: 160px;
+}
+
 .filter_manager form > * {
     padding-right: 10px;
 }
