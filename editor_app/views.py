@@ -19,7 +19,7 @@ def editor_panel_view(request):
         filters_applied = {}
         reports = Report.objects.filter(editor=request.user, status__in=editor_permitted_statuses)
         authors = User.objects.filter(report_author__in=reports).distinct()
-        statuses = Report.objects.values_list('status', flat=True).distinct()
+        statuses = reports.values_list('status', flat=True).distinct()
 
         if 'author_filter' in request.POST:
             author_id = request.POST.get('author_filter')
@@ -47,7 +47,7 @@ def master_editor_panel_view(request):
         filters_applied = {}
         reports = Report.objects.all()
         authors = User.objects.filter(report_author__in=reports).distinct()
-        statuses = Report.objects.values_list('status', flat=True).distinct()
+        statuses = reports.values_list('status', flat=True).distinct()
 
         if 'author_filter' in request.POST:
             author_id = request.POST.get('author_filter')
