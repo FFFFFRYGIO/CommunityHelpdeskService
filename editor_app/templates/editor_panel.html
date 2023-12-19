@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css %}{% static 'css/editors_panel.css' %}{% endblock %}
 
 {% block title %}Editor Panel{% endblock %}
 
@@ -6,15 +9,58 @@
 
 {% block content %}
 
-    {% if editor_reports %}
-        <h3>Your Reports to resolve:</h3>
+    <div class="filter_manager">
+
+        <form method='post'>
+            {% csrf_token %}
+            <label>
+                <select name='author_filter'>
+                    <option value=''>filter author</option>
+                    {% for author in authors %}
+                        <option value='{{ author.id }}'>{{ author.username }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                <select name='status_filter'>
+                    <option value=''>filter status</option>
+                    {% for status in statuses %}
+                        <option value='{{ status }}'>{{ status }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <button type='submit' class='btn btn-dark image_button let_hover' name='filter_reports'>
+                <img src='{% static 'img/filter_icon.png' %}' alt='filter_icon'/>
+                <span class='hover_text'>filter by chosen status</span>
+            </button>
+
+        </form>
+
+        <div class="filters_applied">
+            {% if filters_applied %}
+                {% for key, value in filters_applied.items %}
+                    <p>{{ key }}: {{ value }}</p>
+                {% endfor %}
+            {% else %}
+                <p>No filters</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+    {% if reports %}
+
+        <h3>Reports:</h3>
         <div class='row'>
-            {% for report in editor_reports %}
+            {% for report in reports %}
                 {% include 'reports_list_display.html' with report=report %}
             {% endfor %}
         </div>
+
     {% else %}
-        <p>You have no reports assigned for now</p>
+        <p>No reports</p>
     {% endif %}
 
 {% endblock %}
