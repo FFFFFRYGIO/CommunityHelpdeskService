@@ -13,7 +13,7 @@ from registration.models import User
 
 def standardized_editors_panel_view(req, editor_type):
     """ function for editor_panel_view and master_editor_panel_view """
-    if req.user.groups.values_list('name', flat=True).filter(name=editor_type):
+    if req.user.groups.filter(name=editor_type).exists():
         filters_applied = {}
         if editor_type == 'Editors':
             editor_permitted_statuses = ['assigned', 'na assigned', 'changes applied', 'na changes applied']
@@ -61,8 +61,8 @@ def master_editor_panel_view(request):
 def manage_report_view(request, report_id):
     """ view the content of the report and allow to manage it """
     report = Report.objects.get(id=report_id)
-    is_master_editor = request.user.groups.values_list('name', flat=True).filter(name='MasterEditors').exists()
-    is_editor = request.user.groups.values_list('name', flat=True).filter(name='Editors').exists()
+    is_master_editor = request.user.groups.filter(name='MasterEditors').exists()
+    is_editor = request.user.groups.filter(name='Editors').exists()
 
     if is_master_editor:
         if request.method == 'POST' and 'editor_assign_id' in request.POST:

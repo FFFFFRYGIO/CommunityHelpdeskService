@@ -59,11 +59,11 @@ class AccessTestsBase(MainTestBase):
             home_elements.remove('Go to master editor panel')
             return navbar_elements, footer_elements, home_elements
 
-        if not self.user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
+        if not self.user.groups.filter(name='MasterEditors').exists():
             navbar_elements.remove("<a class='nav-link' href='/editor_app/master_editor_panel'>Master Editor Panel</a>")
             home_elements.remove('Go to master editor panel')
 
-            if not self.user.groups.values_list('name', flat=True).filter(name='Editors'):
+            if not self.user.groups.filter(name='Editors').exists():
                 navbar_elements.remove("<a class='nav-link' href='/editor_app/editor_panel'>Editor Panel</a>")
                 home_elements.remove('Go to editor panel')
 
