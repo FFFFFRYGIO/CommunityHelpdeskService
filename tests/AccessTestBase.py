@@ -280,7 +280,7 @@ class AccessTestsBase(MainTestBase):
                     for report in editor_reports:
                         self.assertContains(response, report.title)
                 else:
-                    self.assertContains(response, '<p>You have no reports assigned for now</p>')
+                    self.assertContains(response, '<p>No reports for now</p>')
 
             else:
                 self.assertRedirects(response, reverse('home'))
@@ -302,7 +302,7 @@ class AccessTestsBase(MainTestBase):
                     for report in editor_reports:
                         self.assertContains(response, report.title)
                 else:
-                    self.assertContains(response, '<p>There are no reports to manage</p>')
+                    self.assertContains(response, '<p>No reports for now</p>')
 
             else:
                 self.assertRedirects(response, reverse('home'))
