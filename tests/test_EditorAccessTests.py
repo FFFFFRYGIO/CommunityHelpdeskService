@@ -21,7 +21,7 @@ class EditorAccessTests(AccessTestsBase):
     def tearDown(self):
         super().tearDown()
         response = self.client.post(reverse('logout'))
-        self.assertRedirects(response, reverse('login') + '?next=' + reverse('logout'))
+        self.assertRedirects(response, reverse('login'))
 
 
 del AccessTestsBase
