@@ -11,7 +11,7 @@ from registration.models import User
 # In your views.py
 
 
-def standardized_panel_view(req, editor_type):
+def standardized_editors_panel_view(req, editor_type):
     """ function for editor_panel_view and master_editor_panel_view """
     if req.user.groups.values_list('name', flat=True).filter(name=editor_type):
         filters_applied = {}
@@ -48,29 +48,30 @@ def standardized_panel_view(req, editor_type):
 @login_required
 def editor_panel_view(request):
     """ editor panel with the assigned reports """
-    return standardized_panel_view(request, 'Editors')
+    return standardized_editors_panel_view(request, 'Editors')
 
 
 @login_required
 def master_editor_panel_view(request):
     """ master editor panel with all reports """
-    return standardized_panel_view(request, 'MasterEditors')
+    return standardized_editors_panel_view(request, 'MasterEditors')
 
 
 @login_required
 def manage_report_view(request, report_id):
     """ view the content of the report and allow to manage it """
     report = Report.objects.get(id=report_id)
-    is_master_editor = request.session.get('is_master_editor', False)
-    is_editor = request.session.get('is_editor', False)
+    is_master_editor = request.user.groups.values_list('name', flat=True).filter(name='MasterEditors').exists()
+    is_editor = request.user.groups.values_list('name', flat=True).filter(name='Editors').exists()
 
-    if request.method == 'POST' and 'editor_assign_id' in request.POST:
-        report = Report.objects.get(id=request.POST.get('report_id'))
-        new_editor = User.objects.get(id=request.POST.get('editor_assign_id'))
-        report.editor = new_editor
-        report.status = report.status.replace('opened', 'assigned')
-        report.save()
-        return redirect('home')
+    if is_master_editor:
+        if request.method == 'POST' and 'editor_assign_id' in request.POST:
+            report = Report.objects.get(id=request.POST.get('report_id'))
+            new_editor = User.objects.get(id=request.POST.get('editor_assign_id'))
+            report.editor = new_editor
+            report.status = report.status.replace('opened', 'assigned')
+            report.save()
+            return redirect('home')
 
     if is_master_editor or (is_editor and report.editor == request.user):
         if request.method == 'POST':

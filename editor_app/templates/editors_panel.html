@@ -3,9 +3,9 @@
 
 {% block css %}{% static 'css/editors_panel.css' %}{% endblock %}
 
-{% block title %}Editor Panel{% endblock %}
+{% block title %}{{ type }} Panel{% endblock %}
 
-{% block heading %}Editor Panel{% endblock %}
+{% block heading %}{{ type }} Panel{% endblock %}
 
 {% block content %}
 
@@ -60,7 +60,7 @@
         </div>
 
     {% else %}
-        <p>No reports</p>
+        <p>No reports for now</p>
     {% endif %}
 
 {% endblock %}
