@@ -11,62 +11,50 @@ from registration.models import User
 # In your views.py
 
 
-@login_required
-def editor_panel_view(request):
-    """ editor panel with the assigned reports """
-    if request.user.groups.values_list('name', flat=True).filter(name='Editors'):
-        editor_permitted_statuses = ['assigned', 'na assigned', 'changes applied', 'na changes applied']
+def standardized_panel_view(req, editor_type):
+    """ function for editor_panel_view and master_editor_panel_view """
+    if req.user.groups.values_list('name', flat=True).filter(name=editor_type):
         filters_applied = {}
-        reports = Report.objects.filter(editor=request.user, status__in=editor_permitted_statuses)
+        if editor_type == 'Editors':
+            editor_permitted_statuses = ['assigned', 'na assigned', 'changes applied', 'na changes applied']
+            reports = Report.objects.filter(editor=req.user, status__in=editor_permitted_statuses)
+        elif editor_type == 'MasterEditors':
+            reports = Report.objects.filter()
+        else:
+            raise ValueError('Wrong editor type')
+
         authors = User.objects.filter(report_author__in=reports).distinct()
         statuses = reports.values_list('status', flat=True).distinct()
 
-        if 'author_filter' in request.POST:
-            author_id = request.POST.get('author_filter')
-            print('author_id ', author_id)
+        if 'author_filter' in req.POST:
+            author_id = req.POST.get('author_filter')
             if author_id:
                 reports = reports.filter(author_id=author_id)
                 filters_applied['author'] = User.objects.get(id=author_id).username
 
-        if 'status_filter' in request.POST:
-            status = request.POST.get('status_filter')
+        if 'status_filter' in req.POST:
+            status = req.POST.get('status_filter')
             if status:
                 reports = reports.filter(status=status)
                 filters_applied['status'] = status
 
-        return render(request, 'editor_panel.html', {
-            'reports': reports, 'authors': authors, 'statuses': statuses, 'filters_applied': filters_applied})
+        return render(req, 'editors_panel.html', {
+            'reports': reports, 'authors': authors, 'statuses': statuses,
+            'filters_applied': filters_applied, 'type': editor_type.replace('Editors', ' Editor').strip()})
     else:
         return redirect('home')
+
+
+@login_required
+def editor_panel_view(request):
+    """ editor panel with the assigned reports """
+    return standardized_panel_view(request, 'Editors')
 
 
 @login_required
 def master_editor_panel_view(request):
     """ master editor panel with all reports """
-    if request.user.groups.values_list('name', flat=True).filter(name='MasterEditors'):
-        filters_applied = {}
-        reports = Report.objects.all()
-        authors = User.objects.filter(report_author__in=reports).distinct()
-        statuses = reports.values_list('status', flat=True).distinct()
-
-        if 'author_filter' in request.POST:
-            author_id = request.POST.get('author_filter')
-            print('author_id ', author_id)
-            if author_id:
-                reports = reports.filter(author_id=author_id)
-                filters_applied['author'] = User.objects.get(id=author_id).username
-
-        if 'status_filter' in request.POST:
-            status = request.POST.get('status_filter')
-            if status:
-                reports = reports.filter(status=status)
-                filters_applied['status'] = status
-
-        return render(request, 'master_editor_panel.html', {
-            'reports': reports, 'authors': authors, 'statuses': statuses, 'filters_applied': filters_applied})
-
-    else:
-        return redirect('home')
+    return standardized_panel_view(request, 'MasterEditors')
 
 
 @login_required
