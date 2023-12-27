@@ -134,6 +134,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/registration/login/'
 LOGIN_REDIRECT_URL = '/home'
+LOGOUT_REDIRECT_URL = '/registration/login/'
 
 # files source
 
