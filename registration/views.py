@@ -13,11 +13,8 @@ def register_view(request):
         if form.is_valid():
             form.save()
             return redirect('login')
-        else:
-            return render(request, 'register.html', {'form': form})
-    else:
-        form = UserCreationForm()
 
+    form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
 
 
