@@ -61,6 +61,7 @@ p {
     position: absolute;
     right: 0;
     bottom: 0;
+    height: 50px;
     margin-right: 10px;
     margin-bottom: 10px;
 }
