@@ -21,15 +21,12 @@ def register_view(request):
 def login_view(request):
     """ login user to session """
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username, password = request.POST['username'], request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            is_master_editor = request.user.groups.filter(name='MasterEditors').exists()
-            request.session['is_master_editor'] = bool(is_master_editor)
-            is_editor = request.user.groups.filter(name='Editors').exists()
-            request.session['is_editor'] = bool(is_editor)
+            request.session['is_master_editor'] = request.user.groups.filter(name='MasterEditors').exists()
+            request.session['is_editor'] = request.user.groups.filter(name='Editors').exists()
             return redirect(request.GET.get('next', 'home'))
 
     form = AuthenticationForm()
