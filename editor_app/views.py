@@ -64,8 +64,11 @@ def manage_report_view(request, report_id):
     is_master_editor = request.user.groups.filter(name='MasterEditors').exists()
     is_editor = request.user.groups.filter(name='Editors').exists()
 
-    if is_master_editor:
-        if request.method == 'POST' and 'editor_assign_id' in request.POST:
+    if not (is_master_editor or is_editor):
+        redirect('home')
+
+    if request.method == 'POST':
+        if is_master_editor and 'editor_assign_id' in request.POST:
             report = Report.objects.get(id=request.POST.get('report_id'))
             new_editor = User.objects.get(id=request.POST.get('editor_assign_id'))
             report.editor = new_editor
@@ -73,8 +76,7 @@ def manage_report_view(request, report_id):
             report.save()
             return redirect('home')
 
-    if is_master_editor or (is_editor and report.editor == request.user):
-        if request.method == 'POST':
+        if is_master_editor or (is_editor and report.editor == request.user):
             article = Article.objects.get(id=report.article.id)
             if 'reject_article' in request.POST:
                 article.status = 'rejected'
@@ -99,9 +101,10 @@ def manage_report_view(request, report_id):
 
             return redirect('home')
 
-        editors = Group.objects.get(name='Editors').user_set.all()
-
-        return render(request, 'manage_report.html', {'report': report, 'editors': editors})
-
+    if is_master_editor:
+        editors_list = Group.objects.get(name='Editors').user_set.all()
+        editors = {user.id: user.username for user in editors_list}
     else:
-        return redirect('home')
+        editors = 0
+
+    return render(request, 'manage_report.html', {'report': report, 'editors': editors})
