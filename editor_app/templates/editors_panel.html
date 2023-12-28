@@ -40,8 +40,8 @@
 
         <div class="filters_applied">
             {% if filters_applied %}
-                {% for key, value in filters_applied.items %}
-                    <p>{{ key }}: {{ value }}</p>
+                {% for filter_type, filter_value in filters_applied.items %}
+                    <p>{{ filter_type }}: {{ filter_value }}</p>
                 {% endfor %}
             {% else %}
                 <p>No filters</p>
