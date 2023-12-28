@@ -33,10 +33,7 @@ def login_view(request):
             request.session['is_master_editor'] = bool(is_master_editor)
             is_editor = request.user.groups.filter(name='Editors').exists()
             request.session['is_editor'] = bool(is_editor)
-            return redirect('home')
-        else:
-            return render(request, 'login.html')
-    else:
-        form = AuthenticationForm()
+            return redirect(request.GET.get('next', 'home'))
 
+    form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
