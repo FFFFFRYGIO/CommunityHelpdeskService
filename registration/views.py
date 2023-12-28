@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
 def register_view(request):
-    """parse and handle registration form"""
+    """ parse and handle registration form """
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
