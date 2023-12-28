@@ -21,8 +21,7 @@ def register_view(request):
 def login_view(request):
     """ login user to session """
     if request.method == 'POST':
-        username, password = request.POST['username'], request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             login(request, user)
             request.session['is_master_editor'] = request.user.groups.filter(name='MasterEditors').exists()
