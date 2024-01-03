@@ -90,8 +90,12 @@ def manage_report_view(request, report_id):
                         report.status = 'concluded'
                     elif report.status == 'assigned':
                         report.status = 'rejected'
+                report.save()
 
-                article.status = 'approved'
+                statuses_in_progress = ['na opened', 'opened', 'na assigned', 'assigned',
+                                        'changes applied', 'na changes applied']
+                if not Report.objects.filter(article=article).filter(status__in=statuses_in_progress):
+                    article.status = 'approved'
 
             else:
                 return HttpResponse('HTTP Bad Request', status=400)
