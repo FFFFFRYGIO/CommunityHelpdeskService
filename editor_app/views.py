@@ -94,7 +94,9 @@ def manage_report_view(request, report_id):
 
                 statuses_in_progress = ['na opened', 'opened', 'na assigned', 'assigned',
                                         'changes applied', 'na changes applied']
-                if not Report.objects.filter(article=article).filter(status__in=statuses_in_progress):
+                are_there_another_reports_about_article = Report.objects.filter(article=article).filter(
+                    status__in=statuses_in_progress).exists()
+                if not are_there_another_reports_about_article:
                     article.status = 'approved'
 
             else:
