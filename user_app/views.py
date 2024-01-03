@@ -145,11 +145,28 @@ def edit_article_view(request, article_id):
 
                 if reports:
                     article.status = 'changes during report'
-                    article.save()
 
                     for report in reports:
                         report.status = report.status.replace('assigned', 'changes applied')
                         report.save()
+
+                else:
+                    article.status = 'unapproved'
+
+                    new_report = Report()
+                    new_report.title = f'Review changes in "{new_article.title}"'
+                    new_report.description = (f'Owner applied changes in this article: "{new_article.title}", it is '
+                                              f'required to review them')
+                    new_report.author = User.objects.get(username='system_automat')
+                    new_report.article = article
+                    new_report.status = 'na opened'
+                    with open('CommunityHelpdeskService/static/img/favicon.png', 'rb') as image:
+                        content_file = ContentFile(image.read())
+                        new_report.additional_file.save('favicon.png', content_file)
+                    new_report.save()
+
+                article.save()
+
                 return redirect('home')
             return HttpResponse('HTTP Bad Request', status=400)
         else:
