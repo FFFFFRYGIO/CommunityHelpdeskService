@@ -13,55 +13,53 @@
 </head>
 <body class='d-flex flex-column min-vh-100'>
 
-<nav class='navbar navbar-expand-sm bg-dark'>
-    <div class='container-fluid'>
-        <button class='navbar-brand-custom' disabled><img src='{% static 'img/favicon.png' %}' alt='main_image'>CHS
-        </button>
-        <div class='navbar-collapse' id='navbarNav'>
-            <ul class='navbar-nav'>
+<nav class='navbar navbar-expand-sm bg-dark container-fluid'>
+    <button class='navbar-brand-custom' disabled><img src='{% static 'img/favicon.png' %}' alt='main_image'>CHS
+    </button>
+    <div class='navbar-collapse' id='navbarNav'>
+        <ul class='navbar-nav'>
+            <li class='nav-item active'>
+                <a class='nav-link' href='/user_app/home'>Home</a>
+            </li>
+            <li class='nav-item active'>
+                <a class='nav-link' href='/user_app/search'>Search</a>
+            </li>
+            {% if user.is_authenticated %}
                 <li class='nav-item active'>
-                    <a class='nav-link' href='/user_app/home'>Home</a>
+                    <a class='nav-link' href='/user_app/create_article'>Create article</a>
                 </li>
+            {% endif %}
+            {% if user.is_authenticated %}
                 <li class='nav-item active'>
-                    <a class='nav-link' href='/user_app/search'>Search</a>
+                    <a class='nav-link' href='/user_app/user_panel'>User Panel</a>
                 </li>
-                {% if user.is_authenticated %}
-                    <li class='nav-item active'>
-                        <a class='nav-link' href='/user_app/create_article'>Create article</a>
-                    </li>
-                {% endif %}
-                {% if user.is_authenticated %}
-                    <li class='nav-item active'>
-                        <a class='nav-link' href='/user_app/user_panel'>User Panel</a>
-                    </li>
-                {% endif %}
-                {% if user.is_authenticated and request.session.is_editor %}
-                    <li class='nav-item active'>
-                        <a class='nav-link' href='/editor_app/editor_panel'>Editor Panel</a>
-                    </li>
-                {% endif %}
-                {% if user.is_authenticated and request.session.is_master_editor %}
-                    <li class='nav-item active'>
-                        <a class='nav-link' href='/editor_app/master_editor_panel'>Master Editor Panel</a>
-                    </li>
-                {% endif %}
-                {% if not user.is_authenticated %}
-                    <li class='nav-item active'>
-                        <a class='nav-link' href='/registration/register'>Register</a>
-                    </li>
-                {% endif %}
-                {% if not user.is_authenticated %}
-                    <li class='nav-item active'>
-                        <a class='nav-link' href='/registration/login'>Login</a>
-                    </li>
-                {% endif %}
-                {% if user.is_authenticated %}
-                    <li class='nav-item active'>
-                        <a class='nav-link' href='/registration/logout'>Logout</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
+            {% endif %}
+            {% if user.is_authenticated and request.session.is_editor %}
+                <li class='nav-item active'>
+                    <a class='nav-link' href='/editor_app/editor_panel'>Editor Panel</a>
+                </li>
+            {% endif %}
+            {% if user.is_authenticated and request.session.is_master_editor %}
+                <li class='nav-item active'>
+                    <a class='nav-link' href='/editor_app/master_editor_panel'>Master Editor Panel</a>
+                </li>
+            {% endif %}
+            {% if not user.is_authenticated %}
+                <li class='nav-item active'>
+                    <a class='nav-link' href='/registration/register'>Register</a>
+                </li>
+            {% endif %}
+            {% if not user.is_authenticated %}
+                <li class='nav-item active'>
+                    <a class='nav-link' href='/registration/login'>Login</a>
+                </li>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <li class='nav-item active'>
+                    <a class='nav-link' href='/registration/logout'>Logout</a>
+                </li>
+            {% endif %}
+        </ul>
     </div>
 </nav>
 
