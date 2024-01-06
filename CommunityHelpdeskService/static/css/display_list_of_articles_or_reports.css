@@ -4,6 +4,10 @@
     background-color: #f8f8f8;
 }
 
+.article_title {
+    width: calc(100% - 65px);
+}
+
 .view_article_button {
     bottom: 0;
     right: 10px;
