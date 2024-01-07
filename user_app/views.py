@@ -154,8 +154,8 @@ def edit_article_view(request, article_id):
                     article.status = 'unapproved'
 
                     new_report = Report()
-                    new_report.title = f'Review changes in "{new_article.title}"'
-                    new_report.description = (f'Owner applied changes in this article: "{new_article.title}", it is '
+                    new_report.title = f'Review changes in "{article.title}"'
+                    new_report.description = (f'Owner applied changes in this article: "{article.title}", it is '
                                               f'required to review them')
                     new_report.author = User.objects.get(username='system_automat')
                     new_report.article = article
