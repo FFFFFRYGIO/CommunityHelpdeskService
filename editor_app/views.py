@@ -25,7 +25,8 @@ def standardized_editors_panel_view(req, editor_type):
             raise ValueError('Wrong editor type')
 
         authors = User.objects.filter(report_author__in=reports).distinct()
-        statuses = reports.values_list('status', flat=True).distinct()
+        statuses = [{'status_number': n, 'status_name': ReportStatus.get_status_name(n)}
+                    for n in reports.values_list('status', flat=True).distinct()]
 
         if 'author_filter' in req.POST:
             author_id = req.POST.get('author_filter')
@@ -34,10 +35,10 @@ def standardized_editors_panel_view(req, editor_type):
                 filters_applied['author'] = User.objects.get(id=author_id).username
 
         if 'status_filter' in req.POST:
-            filtered_status = req.POST.get('status_filter')
+            filtered_status = int(req.POST.get('status_filter'))
             if filtered_status:
                 reports = reports.filter(status=filtered_status)
-                filters_applied['status'] = filtered_status
+                filters_applied['status'] = ReportStatus.get_status_name(filtered_status)
 
         reports_with_status = [{
             'report': report, 'report_status': ReportStatus.get_status_name(report.status),

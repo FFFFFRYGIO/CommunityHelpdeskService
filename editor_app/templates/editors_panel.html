@@ -26,7 +26,7 @@
                 <select name='status_filter'>
                     <option value=''>filter status</option>
                     {% for status in statuses %}
-                        <option value='{{ status }}'>{{ status }}</option>
+                        <option value='{{ status.status_number }}'>{{ status.status_name }}</option>
                     {% endfor %}
                 </select>
             </label>
