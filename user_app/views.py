@@ -188,7 +188,6 @@ def user_panel_view(request):
     user_reports = [{
         'report': report, 'report_status': ReportStatus.get_status_name(report.status),
     } for report in Report.objects.filter(author=request.user)]
-    print(user_reports)
     return render(request, 'user_panel.html',
                   {'articles_with_steps': user_articles, 'reports_with_status': user_reports})
 
