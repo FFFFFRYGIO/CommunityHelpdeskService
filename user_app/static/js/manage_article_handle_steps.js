@@ -5,18 +5,12 @@ let totalFormsInput = document.querySelector('input[name$="TOTAL_FORMS"]');
 
 function removeClearableElements(stepForm) {
     Array.from(stepForm.children).forEach(stepFormElement => {
-        console.log("RADEKRADEKRADEKRADEKRADEKRADEKRADEKRADEK");
-        console.log(stepFormElement);
-
         var fileInputElement = stepFormElement.querySelector('p input[type="file"]');
-        console.log(fileInputElement);
-
         if (fileInputElement) {
             const newContainer = document.createElement('p');
             newContainer.appendChild(fileInputElement.cloneNode(true));
             stepForm.replaceChild(newContainer, stepFormElement);
         }
-
     });
     return stepForm;
 }
