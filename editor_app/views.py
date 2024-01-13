@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from user_app.models import Article
 from .models import Report
 from registration.models import User
+from CommunityHelpdeskService.utils import ReportStatus, ArticleStatus
 
 
 # In your views.py
@@ -16,7 +17,7 @@ def standardized_editors_panel_view(req, editor_type):
     if req.user.groups.filter(name=editor_type).exists():
         filters_applied = {}
         if editor_type == 'Editors':
-            editor_permitted_statuses = ['assigned', 'na assigned', 'changes applied', 'na changes applied']
+            editor_permitted_statuses = [status.n for status in ReportStatus if status.editor_permitted]
             reports = Report.objects.filter(editor=req.user, status__in=editor_permitted_statuses)
         elif editor_type == 'MasterEditors':
             reports = Report.objects.filter()
@@ -92,8 +93,7 @@ def manage_report_view(request, report_id):
                         report.status = 'rejected'
                 report.save()
 
-                statuses_in_progress = ['na opened', 'opened', 'na assigned', 'assigned',
-                                        'changes applied', 'na changes applied']
+                statuses_in_progress = [status.n for status in ReportStatus if status.means_in_progress]
                 are_there_another_reports_about_article = Report.objects.filter(article=article).filter(
                     status__in=statuses_in_progress).exists()
                 if not are_there_another_reports_about_article:
