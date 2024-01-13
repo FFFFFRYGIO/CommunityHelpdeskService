@@ -2,7 +2,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import ArticleForm, StepFormSetCreate, StepFormSetEdit, SearchByNameForm, SearchByTagsForm
 from .models import Article, Step
-from datetime import datetime
 from taggit.models import Tag
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.db.models import Q
