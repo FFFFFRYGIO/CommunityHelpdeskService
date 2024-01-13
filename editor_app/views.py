@@ -39,8 +39,12 @@ def standardized_editors_panel_view(req, editor_type):
                 reports = reports.filter(status=filtered_status)
                 filters_applied['status'] = filtered_status
 
+        reports_with_status = [{
+            'report': report, 'report_status': ReportStatus.get_status_name(report.status),
+        } for report in reports]
+
         return render(req, 'editors_panel.html', {
-            'reports': reports, 'authors': authors, 'statuses': statuses,
+            'reports_with_status': reports_with_status, 'authors': authors, 'statuses': statuses,
             'filters_applied': filters_applied, 'type': editor_type.replace('Editors', ' Editor').strip()})
     else:
         return redirect('home')
@@ -113,4 +117,6 @@ def manage_report_view(request, report_id):
     else:
         editors = 0
 
-    return render(request, 'manage_report.html', {'report': report, 'editors': editors})
+    status = ReportStatus.get_status_name(report.status)
+    return render(request, 'manage_report.html',
+                  {'report': report, 'editors': editors, 'status': status})
