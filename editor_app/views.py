@@ -33,10 +33,10 @@ def standardized_editors_panel_view(req, editor_type):
                 filters_applied['author'] = User.objects.get(id=author_id).username
 
         if 'status_filter' in req.POST:
-            status = req.POST.get('status_filter')
-            if status:
-                reports = reports.filter(status=status)
-                filters_applied['status'] = status
+            filtered_status = req.POST.get('status_filter')
+            if filtered_status:
+                reports = reports.filter(status=filtered_status)
+                filters_applied['status'] = filtered_status
 
         return render(req, 'editors_panel.html', {
             'reports': reports, 'authors': authors, 'statuses': statuses,
