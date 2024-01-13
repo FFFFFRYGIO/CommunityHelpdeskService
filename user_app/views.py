@@ -64,9 +64,8 @@ def search_view(request):
 def create_article_view(request):
     """ a form to create an article """
     if request.method == 'POST':
-        form = ArticleForm(request.POST, request.FILES)
+        form = ArticleForm(request.POST)
         if form.is_valid():
-            save_files(request.FILES)
             new_article = form.save(commit=False)
             new_article.author = request.user
             new_article.status = ArticleStatus.UNAPPROVED.n
@@ -79,6 +78,7 @@ def create_article_view(request):
 
             step_form_set = StepFormSetCreate(request.POST, request.FILES)
             if step_form_set.is_valid():
+                save_files(request.FILES)
                 ordinal_number = 1
                 for step_form in step_form_set:
                     step = step_form.save(commit=False)
@@ -99,6 +99,12 @@ def create_article_view(request):
                 new_report.save()
 
                 return redirect('home')
+
+            else:
+                return HttpResponseBadRequest(f'step_form_set not valid: {step_form_set.errors}')
+
+        else:
+            return HttpResponseBadRequest(f'article creation form not valid: {form.errors}')
 
     article_form = ArticleForm()
     step_form_set = StepFormSetCreate(queryset=Step.objects.none())
