@@ -55,7 +55,7 @@ class ReportStatus(Enum):
         for status in cls:
             if status.n == n:
                 return status.phrase
-        raise ValueError('bad status number')
+        raise ValueError('Bad status number')
 
     @classmethod
     def is_about_new_article(cls, n):
@@ -63,7 +63,7 @@ class ReportStatus(Enum):
         for status in cls:
             if status.n == n:
                 return status.is_new_article
-        raise ValueError('bad status number')
+        raise ValueError('Bad status number')
 
     NA_OPENED = (1, 'na opened', True, True)
     NA_ASSIGNED = (2, 'na assigned', True, True, True)
@@ -92,7 +92,7 @@ class ArticleStatus(Enum):
         for status in cls:
             if status.n == n:
                 return status.phrase
-        raise ValueError('bad status number')
+        raise ValueError('Bad status number')
 
     APPROVED = (1, 'approved', True)
     UNAPPROVED = (2, 'unapproved', True)
