@@ -1,3 +1,5 @@
+from enum import Enum
+
 from django.core.files.storage import FileSystemStorage
 from decouple import config
 from openai import OpenAI
@@ -35,3 +37,65 @@ def generate_report_title(description):
         response = response[1:-1]
 
     return response
+
+
+class ReportStatus(Enum):
+    """ Enum for report statuses """
+
+    def __init__(self, n, phrase, is_new_article, means_in_progress=False, editor_permitted=False):
+        self.n = n
+        self.phrase = phrase
+        self.is_new_article = is_new_article
+        self.means_in_progress = means_in_progress
+        self.editor_permitted = editor_permitted
+
+    @classmethod
+    def get_status_name(cls, n):
+        """ get status phrase value to display it """
+        for status in cls:
+            if status.n == n:
+                return status.phrase
+        raise ValueError('bad status number')
+
+    @classmethod
+    def is_about_new_article(cls, n):
+        """ check if the status is about new article """
+        for status in cls:
+            if status.n == n:
+                return status.is_new_article
+        raise ValueError('bad status number')
+
+    NA_OPENED = (1, 'na opened', True, True)
+    NA_ASSIGNED = (2, 'na assigned', True, True, True)
+    NA_CHANGES_APPLIED = (3, 'na changes applied', True, True, True)
+    ARTICLE_REJECTED = (4, 'article rejected', True)
+
+    OPENED = (5, 'opened', False, True)
+    ASSIGNED = (6, 'assigned', False, True, True)
+    CHANGES_APPLIED = (7, 'changes applied', False, True, True)
+    REJECTED = (8, 'rejected', False)
+
+    CONCLUDED = (9, 'concluded', False)
+
+
+class ArticleStatus(Enum):
+    """ Enum for article statuses """
+
+    def __init__(self, n, phrase, search_permitted=False):
+        self.n = n
+        self.phrase = phrase
+        self.search_permitted = search_permitted
+
+    @classmethod
+    def get_status_name(cls, n):
+        """ get status phrase value to display it """
+        for status in cls:
+            if status.n == n:
+                return status.phrase
+        raise ValueError('bad status number')
+
+    APPROVED = (1, 'approved', True)
+    UNAPPROVED = (2, 'unapproved', True)
+    CHANGES_REQUESTED = (3, 'changes requested', True)
+    CHANGES_DURING_REPORT = (4, 'changes during report', True)
+    REJECTED = (5, 'rejected')
