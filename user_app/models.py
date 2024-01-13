@@ -28,9 +28,9 @@ class Step(models.Model):
     ordinal_number = models.IntegerField()
     title = models.CharField(max_length=255)
     description1 = models.TextField(null=True, blank=True)
-    file1 = models.FileField(null=True, blank=True)
+    file1 = models.ImageField(null=True, blank=True)
     description2 = models.TextField(null=True, blank=True)
-    file2 = models.FileField(null=True, blank=True)
+    file2 = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.title} from {self.article.title}'

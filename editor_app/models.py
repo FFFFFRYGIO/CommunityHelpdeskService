@@ -17,7 +17,7 @@ class Report(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     editor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='report_editor')
-    additional_file = models.FileField()
+    additional_file = models.ImageField()
     status = models.IntegerField(choices=[(status.n, status.n) for status in ReportStatus])
 
     def __str__(self):
