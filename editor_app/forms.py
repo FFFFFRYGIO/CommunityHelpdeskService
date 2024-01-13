@@ -10,5 +10,6 @@ class ReportForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(
                 attrs={'class': 'form-control form-control-sm', 'rows': 4, 'placeholder': 'Describe Your issue'}),
-            'additional_file': forms.FileInput(attrs={'class': 'form-control form-control-sm'}),
+            'additional_file': forms.FileInput(
+                attrs={'class': 'form-control form-control-sm', 'type': 'file', 'accept': 'image/*'}),
         }

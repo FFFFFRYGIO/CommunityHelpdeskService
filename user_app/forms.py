@@ -23,12 +23,12 @@ class StepForm(forms.ModelForm):
                 attrs={'class': 'form-control form-control-sm', 'required': True, 'placeholder': 'Title of the step'}),
             'description1': forms.Textarea(attrs={'class': 'form-control form-control-sm', 'rows': 2, 'cols': 40,
                                                   'placeholder': 'First description for the step'}),
-            'file1': forms.FileInput(attrs={'class': 'form-control form-control-sm', 'type': 'file',
-                                            'placeholder': 'First image for the step'}),
+            'file1': forms.ClearableFileInput(attrs={'class': 'form-control form-control-sm', 'type': 'file',
+                                                     'accept': 'image/*', 'placeholder': 'First image for the step'}),
             'description2': forms.Textarea(attrs={'class': 'form-control form-control-sm', 'rows': 2, 'cols': 40,
                                                   'placeholder': 'Second description for the step'}),
-            'file2': forms.FileInput(attrs={'class': 'form-control form-control-sm', 'type': 'file',
-                                            'placeholder': 'Second image for the step'}),
+            'file2': forms.ClearableFileInput(attrs={'class': 'form-control form-control-sm', 'type': 'file',
+                                                     'accept': 'image/*', 'placeholder': 'Second image for the step'}),
         }
         labels = {key: '' for key in ('title', 'description1', 'file1', 'description2', 'file2')}
 
