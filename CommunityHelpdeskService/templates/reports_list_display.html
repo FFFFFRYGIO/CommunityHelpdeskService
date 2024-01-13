@@ -7,14 +7,14 @@
         <div class='card-body'>
             <div class='row'>
                 <div class='card-text'>
-                    <h5>{{ report.title }}</h5>
+                    <h5>{{ report_with_status.report.title }}</h5>
                 </div>
-                <p class='card-text'>{{ report.author }}</p>
-                <p class='card-text'>Status: {{ report.status }}</p>
+                <p class='card-text'>{{ report_with_status.report.author }}</p>
+                <p class='card-text'>Status: {{ report_with_status.report_status }}</p>
 
-                {% if report.editor == user or request.session.is_master_editor %}
+                {% if report_with_status.report.editor == user or request.session.is_master_editor %}
 
-                    <form method='get' action='{% url 'manage_report' report.id %}'>
+                    <form method='get' action='{% url 'manage_report' report_with_status.report.id %}'>
                         <button type='submit' name='manage_article'
                                 class='btn btn-dark image_button manage_report_button let_hover'>
                             <img class='rounded float-end'
@@ -25,7 +25,7 @@
 
                 {% else %}
 
-                    <form method='get' action='{% url 'view_report' report.id %}'>
+                    <form method='get' action='{% url 'view_report' report_with_status.report.id %}'>
                         <button type='submit' name='view_report'
                                 class='btn btn-dark image_button view_report_button let_hover'>
                             <img class='rounded float-end'

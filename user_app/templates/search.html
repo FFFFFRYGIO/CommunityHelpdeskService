@@ -34,8 +34,8 @@
     {% if search_result %}
         <h3>Search Results:</h3>
         <div class='row'>
-            {% for result in search_result %}
-                {% include 'articles_list_display.html' with result=result %}
+            {% for article_with_steps in search_result %}
+                {% include 'articles_list_display.html' with article_with_steps=article_with_steps %}
             {% endfor %}
         </div>
     {% endif %}

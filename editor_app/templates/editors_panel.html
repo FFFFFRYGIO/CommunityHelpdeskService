@@ -50,12 +50,12 @@
 
     </div>
 
-    {% if reports %}
+    {% if reports_with_status %}
 
         <h3>Reports:</h3>
         <div class='row'>
-            {% for report in reports %}
-                {% include 'reports_list_display.html' with report=report %}
+            {% for report_with_status in reports_with_status %}
+                {% include 'reports_list_display.html' with report_with_status=report_with_status %}
             {% endfor %}
         </div>
 
