@@ -1,5 +1,5 @@
 from django.contrib.auth.models import Group
-from django.http import HttpResponse
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
@@ -100,7 +100,7 @@ def manage_report_view(request, report_id):
                     article.status = 'approved'
 
             else:
-                return HttpResponse('HTTP Bad Request', status=400)
+                return HttpResponseBadRequest(f'report not valid: {report_form.errors}')
 
             article.save()
             report.save()

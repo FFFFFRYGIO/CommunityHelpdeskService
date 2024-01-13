@@ -4,7 +4,7 @@ from .forms import ArticleForm, StepFormSetCreate, StepFormSetEdit, SearchByName
 from .models import Article, Step
 from datetime import datetime
 from taggit.models import Tag
-from django.http import HttpResponse
+from django.http import HttpResponseBadRequest, HttpResponse
 from django.db.models import Q
 from django.core.files.base import ContentFile
 from editor_app.models import Report
@@ -35,7 +35,7 @@ def search_view(request):
                 searched_articles = Article.objects.filter(
                     title__icontains=search_text, status__in=search_permitted_statuses)
             else:
-                return HttpResponse('HTTP Bad Request', status=400)
+                return HttpResponseBadRequest(f'report not valid: {report_form.errors}')
 
         if 'search_by_tags' in request.POST:
             search_tags_form = SearchByTagsForm(request.POST)
@@ -44,7 +44,7 @@ def search_view(request):
                 tag_objects = Tag.objects.filter(name__in=tags_to_search)
                 searched_articles = Article.objects.filter(tags__in=tag_objects)
             else:
-                return HttpResponse('HTTP Bad Request', status=400)
+                return HttpResponseBadRequest(f'report not valid: {report_form.errors}')
 
         if 'search_by_ownership' in request.POST:
             if request.user.is_authenticated:
@@ -168,7 +168,7 @@ def edit_article_view(request, article_id):
                 article.save()
 
                 return redirect('home')
-            return HttpResponse('HTTP Bad Request', status=400)
+            return HttpResponseBadRequest(f'report not valid: {report_form.errors}')
         else:
             article_form = ArticleForm(instance=article)
             step_form_set = StepFormSetEdit(queryset=Step.objects.filter(article=article))
@@ -212,7 +212,7 @@ def report_article_view(request, article_id):
             return redirect('home')
 
         else:
-            return HttpResponse('HTTP Bad Request', status=400)
+            return HttpResponseBadRequest(f'report not valid: {report_form.errors}')
 
     else:
         report_form = ReportForm(initial={'article': article})
