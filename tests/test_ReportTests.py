@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+from CommunityHelpdeskService.utils import ReportStatus, ArticleStatus
 from editor_app.forms import ReportForm
 from editor_app.models import Report
 from tests.MainTestBase import MainTestBase, USERS, FORM_DATA
@@ -170,8 +171,8 @@ class ReportsTests(MainTestBase):
         response = self.client.post(reverse('logout'))
         self.assertRedirects(response, reverse('login'))
 
-        self.assertEqual(reports[0].status, 'opened')
-        self.assertEqual(reports[0].article.status, 'changes requested')
+        self.assertEqual(reports[0].status, ReportStatus.OPENED.n)
+        self.assertEqual(reports[0].article.status, ArticleStatus.CHANGES_REQUESTED.n)
 
     def master_editor_assign_the_report(self):
         """ Assign the report to the editor """
@@ -212,10 +213,10 @@ class ReportsTests(MainTestBase):
         self.assertRedirects(response, reverse('home'))
 
         report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
-        if old_report.status == 'changes applied':
-            self.assertEqual(report.status, 'concluded')
-        elif old_report.status == 'assigned':
-            self.assertEqual(report.status, 'rejected')
+        if old_report.status == ReportStatus.CHANGES_APPLIED.n:
+            self.assertEqual(report.status, ReportStatus.CONCLUDED.n)
+        elif old_report.status == ReportStatus.ASSIGNED.n:
+            self.assertEqual(report.status, ReportStatus.REJECTED.n)
 
         response = self.client.post(reverse('logout'))
         self.assertRedirects(response, reverse('login'))
@@ -243,7 +244,7 @@ class ReportsTests(MainTestBase):
         self.assertEqual(list(edited_article.tags.values_list('name', flat=True)), edited_data['tags'].split(', '))
 
         edited_report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
-        self.assertEqual(edited_report.status, 'changes applied')
+        self.assertEqual(edited_report.status, ReportStatus.CHANGES_APPLIED.n)
 
         response = self.client.post(reverse('logout'))
         self.assertRedirects(response, reverse('login'))

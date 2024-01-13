@@ -5,6 +5,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from parameterized import parameterized
 
+from CommunityHelpdeskService.utils import ArticleStatus
 from user_app.forms import StepFormSetCreate
 from user_app.models import Article, Step
 
@@ -23,7 +24,7 @@ class ArticleTests(TestCase):
         for i in range(1, 5):
             article = Article.objects.create(
                 title=f'Test title {i}', author=cls.user,
-                created_at=datetime.now(), tags='tag', status='unapproved')
+                created_at=datetime.now(), tags='tag', status=ArticleStatus.UNAPPROVED.n)
             for j in range(i):
                 Step.objects.create(
                     article=article, ordinal_number=j+1, title=f'Step {i} title',

@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.auth.models import Group, User
 from django.test import TestCase, Client
 
+from CommunityHelpdeskService.utils import ArticleStatus
 from user_app.models import Article
 
 # Create your tests here.
@@ -63,7 +64,7 @@ class MainTestBase(TestCase):
                         author=test_user,
                         created_at=datetime.today().strftime('%Y-%m-%d'),
                         tags=f'tag2, tag{i % 2}',
-                        status='approved',
+                        status=ArticleStatus.APPROVED.n,
                     )
 
     def setUp(self):

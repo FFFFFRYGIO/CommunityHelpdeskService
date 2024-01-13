@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from parameterized import parameterized
 
+from CommunityHelpdeskService.utils import ReportStatus, ArticleStatus
 from editor_app.forms import ReportForm
 from editor_app.models import Report
 from tests.MainTestBase import MainTestBase, USERS, FORM_DATA
@@ -35,8 +36,8 @@ class StatusesTests(MainTestBase):
         self.assertRedirects(response, reverse('login'))
 
         report = Report.objects.get(article__title=FORM_DATA['title'])
-        self.assertEqual(report.status, 'na opened')
-        self.assertEqual(report.article.status, 'unapproved')
+        self.assertEqual(report.status, ReportStatus.NA_OPENED.n)
+        self.assertEqual(report.article.status, ArticleStatus.UNAPPROVED.n)
 
     def user_report_article(self):
         """ Create the report about the existing article"""
@@ -74,8 +75,8 @@ class StatusesTests(MainTestBase):
         response = self.client.post(reverse('logout'))
         self.assertRedirects(response, reverse('login'))
 
-        self.assertEqual(reports[0].status, 'opened')
-        self.assertEqual(reports[0].article.status, 'changes requested')
+        self.assertEqual(reports[0].status, ReportStatus.OPENED.n)
+        self.assertEqual(reports[0].article.status, ArticleStatus.CHANGES_REQUESTED.n)
 
     def master_editor_assign_the_report(self, report_type):
         """ Assign the report to the editor """
@@ -111,11 +112,11 @@ class StatusesTests(MainTestBase):
         self.assertRedirects(response, reverse('login'))
 
         if report_type == 'new':
-            self.assertEqual(report.status, 'na assigned')
-            self.assertEqual(report.article.status, 'unapproved')
+            self.assertEqual(report.status, ReportStatus.NA_ASSIGNED.n)
+            self.assertEqual(report.article.status, ArticleStatus.UNAPPROVED.n)
         elif report_type == 'open':
-            self.assertEqual(report.status, 'assigned')
-            self.assertEqual(report.article.status, 'changes requested')
+            self.assertEqual(report.status, ReportStatus.ASSIGNED.n)
+            self.assertEqual(report.article.status, ArticleStatus.CHANGES_REQUESTED.n)
 
     def editor_editing_article(self, report_type):
         """ Edit article by assigned editor """
@@ -154,11 +155,11 @@ class StatusesTests(MainTestBase):
         self.assertRedirects(response, reverse('login'))
 
         if report_type == 'new':
-            self.assertEqual(edited_report.status, 'na changes applied')
+            self.assertEqual(edited_report.status, ReportStatus.NA_CHANGES_APPLIED.n)
         elif report_type == 'open':
-            self.assertEqual(edited_report.status, 'changes applied')
+            self.assertEqual(edited_report.status, ReportStatus.CHANGES_APPLIED.n)
 
-        self.assertEqual(report.article.status, 'changes during report')
+        self.assertEqual(report.article.status, ArticleStatus.CHANGES_DURING_REPORT.n)
 
     def editor_closes_report(self, report_type):
         """ Close the report by editor """
@@ -189,19 +190,20 @@ class StatusesTests(MainTestBase):
         self.assertRedirects(response, reverse('login'))
 
         if report_type == 'new':
-            if old_report.status == 'na changes applied' or old_report.status == 'na assigned':
-                self.assertEqual(report.status, 'concluded')
+            if (old_report.status == ReportStatus.NA_CHANGES_APPLIED.n or
+                    old_report.status == ReportStatus.NA_ASSIGNED.n):
+                self.assertEqual(report.status, ReportStatus.CONCLUDED.n)
             else:
-                raise ValueError(f'unexpected report status: {old_report.status}')
+                raise ValueError(f'unexpected report status: {ReportStatus.get_status_name(old_report.status)}')
         elif report_type == 'open':
-            if old_report.status == 'changes applied':
-                self.assertEqual(report.status, 'concluded')
-            elif old_report.status == 'assigned':
-                self.assertEqual(report.status, 'rejected')
+            if old_report.status == ReportStatus.CHANGES_APPLIED.n:
+                self.assertEqual(report.status, ReportStatus.CONCLUDED.n)
+            elif old_report.status == ReportStatus.ASSIGNED.n:
+                self.assertEqual(report.status, ReportStatus.REJECTED.n)
             else:
-                raise ValueError(f'unexpected report status: {old_report.status}')
+                raise ValueError(f'unexpected report status: {ReportStatus.get_status_name(old_report.status)}')
 
-        self.assertEqual(report.article.status, 'approved')
+        self.assertEqual(report.article.status, ArticleStatus.APPROVED.n)
 
     def editor_rejects_report(self, report_type):
         """ Close the report by editor """
@@ -231,8 +233,8 @@ class StatusesTests(MainTestBase):
         elif report_type == 'open':
             report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
 
-        self.assertEqual(report.status, 'article rejected')
-        self.assertEqual(report.article.status, 'rejected')
+        self.assertEqual(report.status, ReportStatus.ARTICLE_REJECTED.n)
+        self.assertEqual(report.article.status, ReportStatus.REJECTED.n)
 
     @parameterized.expand(['reject', 'edit reject', 'close', 'edit close'])
     def test_statuses_new_article(self, editor_behavior):
@@ -253,7 +255,7 @@ class StatusesTests(MainTestBase):
             author=self.test_users['users'][0],
             created_at=datetime.today().strftime('%Y-%m-%d'),
             tags=FORM_DATA['tags'],
-            status='approved',
+            status=ArticleStatus.APPROVED.n,
         )
         self.user_report_article()
         self.master_editor_assign_the_report('open')
