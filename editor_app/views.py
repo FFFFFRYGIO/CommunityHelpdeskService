@@ -100,7 +100,7 @@ def manage_report_view(request, report_id):
                     article.status = 'approved'
 
             else:
-                return HttpResponseBadRequest(f'report not valid: {report_form.errors}')
+                return HttpResponseBadRequest(f'report not valid: {report.errors}')
 
             article.save()
             report.save()
