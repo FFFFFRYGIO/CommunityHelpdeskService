@@ -39,8 +39,8 @@
     transform: translateX(-50%);
 }
 
-.status .approved {
-    background-color: rgba(0, 127, 0);
+.approved {
+    background-color: rgb(0, 191, 0);
 }
 
 .created_at {
