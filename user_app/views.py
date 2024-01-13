@@ -135,7 +135,7 @@ def edit_article_view(request, article_id):
     if request.user == article.author or reports:
         if request.method == 'POST':
             article_form = ArticleForm(request.POST, instance=article)
-            step_form_set = StepFormSetEdit(request.POST, queryset=Step.objects.filter(article=article))
+            step_form_set = StepFormSetEdit(request.POST, request.FILES, queryset=Step.objects.filter(article=article))
             if article_form.is_valid():
                 article_form.save()
 
