@@ -2,6 +2,7 @@ from django.db import models
 from registration.models import User
 from taggit.managers import TaggableManager
 from django.utils import timezone
+from CommunityHelpdeskService.utils import ArticleStatus
 
 
 # Create your models here.
@@ -14,7 +15,7 @@ class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
     tags = TaggableManager()
-    status = models.CharField(max_length=50)
+    status = models.IntegerField(choices=[(status.n, status.n) for status in ArticleStatus])
 
     def __str__(self):
         return f'{self.title} created by {self.author.username}'

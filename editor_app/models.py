@@ -2,6 +2,7 @@ from django.db import models
 from registration.models import User
 from user_app.models import Article
 from django.utils import timezone
+from CommunityHelpdeskService.utils import ReportStatus
 
 
 # Create your models here.
@@ -17,7 +18,7 @@ class Report(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     editor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='report_editor')
     additional_file = models.FileField()
-    status = models.CharField(max_length=50)
+    status = models.IntegerField(choices=[(status.n, status.n) for status in ReportStatus])
 
     def __str__(self):
         return f'{self.description} created by {self.author.username}'
