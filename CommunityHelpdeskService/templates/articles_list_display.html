@@ -7,16 +7,16 @@
         <div class='card-body'>
             <div class='row'>
                 <div class='card-text article_title'>
-                    <h5>{{ result.article.title }}</h5>
-                    <p class='card-text steps_display'>Steps: {{ result.steps_amount }}</p>
+                    <h5>{{ article_with_steps.article.title }}</h5>
+                    <p class='card-text steps_display'>Steps: {{ article_with_steps.steps_amount }}</p>
                 </div>
-                <p class='card-text'>Author: {{ result.article.author }}</p>
+                <p class='card-text'>Author: {{ article_with_steps.article.author }}</p>
                 <p class='card-text'>
-                    Tags: {% for tag in result.article.tags.all %}
+                    Tags: {% for tag in article_with_steps.article.tags.all %}
                     #{{ tag.name }}{% if not forloop.last %} {% endif %}
                 {% endfor %}
                 </p>
-                <form method='get' action='{% url 'view_article' result.article.id %}'>
+                <form method='get' action='{% url 'view_article' article_with_steps.article.id %}'>
                     <button type='submit' name='view_article'
                             class='btn btn-dark image_button view_article_button let_hover'>
                         <img class='rounded float-end'

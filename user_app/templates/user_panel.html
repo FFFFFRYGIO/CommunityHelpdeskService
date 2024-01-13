@@ -9,8 +9,8 @@
     {% if articles_with_steps %}
         <h3>Your Articles:</h3>
         <div class='row'>
-            {% for result in articles_with_steps %}
-                {% include 'articles_list_display.html' with result=result %}
+            {% for article_with_steps in articles_with_steps %}
+                {% include 'articles_list_display.html' with article_with_steps=article_with_steps %}
             {% endfor %}
         </div>
     {% else %}
