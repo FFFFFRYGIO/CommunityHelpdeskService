@@ -69,7 +69,7 @@ def create_article_view(request):
             save_files(request.FILES)
             new_article = form.save(commit=False)
             new_article.author = request.user
-            new_article.status = 'unapproved'
+            new_article.status = ArticleStatus.UNAPPROVED.n
             new_article.save()
 
             tags = request.POST.get('tags')
@@ -92,7 +92,7 @@ def create_article_view(request):
                 new_report.description = f'Review new article "{new_article.title}"'
                 new_report.author = User.objects.get(username='system_automat')
                 new_report.article = new_article
-                new_report.status = 'na opened'
+                new_report.status = ReportStatus.NA_OPENED.n
                 with open('CommunityHelpdeskService/static/img/favicon.png', 'rb') as image:
                     content_file = ContentFile(image.read())
                     new_report.additional_file.save('favicon.png', content_file)
@@ -143,14 +143,14 @@ def edit_article_view(request, article_id):
                 steps_to_delete.delete()
 
                 if reports:
-                    article.status = 'changes during report'
+                    article.status = ArticleStatus.CHANGES_DURING_REPORT.n
 
                     for report in reports:
-                        report.status = report.status.replace('assigned', 'changes applied')
+                        report.status += 1  # change from '(na) opened' to '(na) assigned' for both types of report
                         report.save()
 
                 else:
-                    article.status = 'unapproved'
+                    article.status = ArticleStatus.UNAPPROVED.n
 
                     new_report = Report()
                     new_report.title = f'Review changes in "{article.title}"'
@@ -158,7 +158,7 @@ def edit_article_view(request, article_id):
                                               f'required to review them')
                     new_report.author = User.objects.get(username='system_automat')
                     new_report.article = article
-                    new_report.status = 'na opened'
+                    new_report.status = ReportStatus.NA_OPENED.n
                     with open('CommunityHelpdeskService/static/img/favicon.png', 'rb') as image:
                         content_file = ContentFile(image.read())
                         new_report.additional_file.save('favicon.png', content_file)
@@ -202,10 +202,10 @@ def report_article_view(request, article_id):
             report.title = generate_report_title(report.description)
             report.author = request.user
             report.article = article
-            report.status = 'opened'
+            report.status = ReportStatus.OPENED.n
             report.save()
 
-            article.status = 'changes requested'
+            article.status = ArticleStatus.CHANGES_REQUESTED.n
             article.save()
 
             return redirect('home')

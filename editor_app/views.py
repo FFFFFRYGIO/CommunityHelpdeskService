@@ -73,31 +73,31 @@ def manage_report_view(request, report_id):
             report = Report.objects.get(id=request.POST.get('report_id'))
             new_editor = User.objects.get(id=request.POST.get('editor_assign_id'))
             report.editor = new_editor
-            report.status = report.status.replace('opened', 'assigned')
+            report.status += 1  # change from '(na) opened' to '(na) assigned' for both types of report
             report.save()
             return redirect('home')
 
         if is_master_editor or (is_editor and report.editor == request.user):
             article = Article.objects.get(id=report.article.id)
             if 'reject_article' in request.POST:
-                article.status = 'rejected'
-                report.status = 'article rejected'
+                article.status = ReportStatus.REJECTED.n
+                report.status = ReportStatus.ARTICLE_REJECTED.n
 
             elif 'close_report' in request.POST:
-                if 'na' in report.status:
-                    report.status = 'concluded'
+                if ReportStatus.is_about_new_article(report.status):
+                    report.status = ReportStatus.CONCLUDED.n
                 else:
-                    if report.status == 'changes applied':
-                        report.status = 'concluded'
-                    elif report.status == 'assigned':
-                        report.status = 'rejected'
+                    if report.status == ReportStatus.CHANGES_APPLIED.n:
+                        report.status = ReportStatus.CONCLUDED.n
+                    elif report.status == ReportStatus.ASSIGNED.n:
+                        report.status = ReportStatus.REJECTED.n
                 report.save()
 
                 statuses_in_progress = [status.n for status in ReportStatus if status.means_in_progress]
                 are_there_another_reports_about_article = Report.objects.filter(article=article).filter(
                     status__in=statuses_in_progress).exists()
                 if not are_there_another_reports_about_article:
-                    article.status = 'approved'
+                    article.status = ArticleStatus.APPROVED.n
 
             else:
                 return HttpResponseBadRequest(f'report not valid: {report.errors}')
