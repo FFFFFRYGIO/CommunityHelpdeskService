@@ -28,7 +28,7 @@ def generate_report_title(description):
 
     chat_completion = client.chat.completions.create(
         messages=[{'role': 'user', 'content': chat_content}],
-        model='gpt-3.5-turbo',
+        model=config('AI_MODEL'),
     )
 
     response = chat_completion.choices[0].message.content
