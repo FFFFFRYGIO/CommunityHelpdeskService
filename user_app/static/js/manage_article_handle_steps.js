@@ -3,18 +3,6 @@ let removeStepButton = document.getElementById('remove-step-button');
 let stepsFormset = document.getElementById('steps-formset');
 let totalFormsInput = document.querySelector('input[name$="TOTAL_FORMS"]');
 
-function removeClearableElements(stepForm) {
-    Array.from(stepForm.children).forEach(stepFormElement => {
-        var fileInputElement = stepFormElement.querySelector('p input[type="file"]');
-        if (fileInputElement) {
-            const newContainer = document.createElement('p');
-            newContainer.appendChild(fileInputElement.cloneNode(true));
-            stepForm.replaceChild(newContainer, stepFormElement);
-        }
-    });
-    return stepForm;
-}
-
 addStepButton.addEventListener('click', function (e) {
     if (e.target && e.target.classList.contains('add-step-button')) {
         e.preventDefault();
@@ -25,11 +13,18 @@ addStepButton.addEventListener('click', function (e) {
             newStepFormElement.defaultValue = '';
         }
 
+        Array.from(newStepForm.children).forEach(stepFormElement => {
+            var fileInputElement = stepFormElement.querySelector('p input[type="file"]');
+            if (fileInputElement) {
+                const newContainer = document.createElement('p');
+                newContainer.appendChild(fileInputElement.cloneNode(true));
+                newStepForm.replaceChild(newContainer, stepFormElement);
+            }
+        });
+
         newStepForm.innerHTML = newStepForm.innerHTML.replace(/form-\d+/g, 'form-' + totalFormsInput.value);
         totalFormsInput.value = parseInt(totalFormsInput.value, 10) + 1;
         newStepForm.innerHTML = newStepForm.innerHTML.replace(/Step \d+/g, 'Step ' + totalFormsInput.value);
-
-        newStepForm = removeClearableElements(newStepForm);
 
         stepsFormset.appendChild(newStepForm);
     }
