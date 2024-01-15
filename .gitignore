@@ -19,3 +19,6 @@ user_app/migrations/__pycache__/
 
 # media files storage for articles and reports
 /media/
+
+# staticfiles folder
+staticfiles
