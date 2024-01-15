@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${PG_NAME}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${PG_PORT}:${PG_PORT}"
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U ${PG_USER} -d ${PG_NAME}'" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
+      static_collector:
+        condition: service_completed_successfully
+      populate:
+        condition: service_completed_successfully
+
+  migration:
+    build: .
+    command: python manage.py migrate
+    depends_on:
+      db:
+        condition: service_healthy
+
+  populate:
+    build: .
+    command: python manage.py loaddata fixtures/groups.json fixtures/users.json fixtures/articles.json fixtures/steps.json fixtures/reports.json
+    depends_on:
+      migration:
+        condition: service_completed_successfully
+
+  static_collector:
+    build: .
+    command: python manage.py collectstatic --noinput
+
+volumes:
+  postgres_data:
