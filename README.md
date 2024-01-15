@@ -41,6 +41,11 @@ Execute the following command in the root directory:
 
 `docker-compose up -d --build`
 
+To shut down the project use this command:
+
+`docker-compose down -v`
+
+
 ## Author
 
 Radosław Relidzyński
