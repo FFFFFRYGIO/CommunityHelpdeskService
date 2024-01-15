@@ -22,3 +22,6 @@ user_app/migrations/__pycache__/
 
 # staticfiles folder
 staticfiles
+
+# originally dumped data to JSON with UTF-16 encoding
+fixtures_original/
