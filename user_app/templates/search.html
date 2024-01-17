@@ -17,6 +17,13 @@
 
     <form method='post'>
         {% csrf_token %}
+        {{ search_phrase_form.as_p }}
+        <button type='submit' name='search_by_phrase' class='btn btn-dark form-control form-control-sm'>Search by Phrase
+        </button>
+    </form>
+
+    <form method='post'>
+        {% csrf_token %}
         {{ search_tags_form.as_p }}
         <button type='submit' name='search_by_tags' class='btn btn-dark form-control form-control-sm'>Search by Tags
         </button>
