@@ -43,7 +43,7 @@ class SearchByTitleForm(forms.Form):
 
 
 class SearchByPhraseForm(forms.Form):
-    search_phrase = forms.CharField(label='Search by Content phrase', max_length=255, widget=forms.TextInput(
+    search_phrase = forms.CharField(label='Search by Content Phrase', max_length=255, widget=forms.TextInput(
         attrs={'required': True, 'class': 'form-control form-control-sm'}))
 
 
