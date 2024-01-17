@@ -34,7 +34,7 @@ def search_view(request):
                 searched_articles = Article.objects.filter(
                     title__icontains=search_text, status__in=search_permitted_statuses)
             else:
-                return HttpResponseBadRequest(f'report not valid: {report_form.errors}')
+                return HttpResponseBadRequest(f'form not valid: {report_form.errors}')
 
         if 'search_by_tags' in request.POST:
             search_tags_form = SearchByTagsForm(request.POST)
@@ -43,7 +43,7 @@ def search_view(request):
                 tag_objects = Tag.objects.filter(name__in=tags_to_search)
                 searched_articles = Article.objects.filter(tags__in=tag_objects)
             else:
-                return HttpResponseBadRequest(f'report not valid: {report_form.errors}')
+                return HttpResponseBadRequest(f'form not valid: {report_form.errors}')
 
         if 'search_by_ownership' in request.POST:
             if request.user.is_authenticated:
