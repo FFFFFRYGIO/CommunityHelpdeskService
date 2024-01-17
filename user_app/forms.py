@@ -42,5 +42,10 @@ class SearchByTitleForm(forms.Form):
         attrs={'required': True, 'class': 'form-control form-control-sm'}))
 
 
+class SearchByPhraseForm(forms.Form):
+    search_phrase = forms.CharField(label='Search by Content phrase', max_length=255, widget=forms.TextInput(
+        attrs={'required': True, 'class': 'form-control form-control-sm'}))
+
+
 class SearchByTagsForm(forms.Form):
     search_tags = TagField(label='Search by Tags', widget=TagWidget(attrs={'class': 'form-control form-control-sm'}))
