@@ -37,7 +37,7 @@ StepFormSetCreate = forms.modelformset_factory(Step, form=StepForm)
 StepFormSetEdit = forms.modelformset_factory(Step, form=StepForm, extra=0)
 
 
-class SearchByNameForm(forms.Form):
+class SearchByTitleForm(forms.Form):
     search_title = forms.CharField(label='Search by Title', max_length=255, widget=forms.TextInput(
         attrs={'required': True, 'class': 'form-control form-control-sm'}))
 

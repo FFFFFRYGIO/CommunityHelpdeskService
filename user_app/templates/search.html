@@ -10,7 +10,7 @@
 {% block content %}
     <form method='post'>
         {% csrf_token %}
-        {{ search_name_form.as_p }}
+        {{ search_title_form.as_p }}
         <button type='submit' name='search_by_title' class='btn btn-dark form-control form-control-sm'>Search by Title
         </button>
     </form>

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import ArticleForm, StepFormSetCreate, StepFormSetEdit, SearchByNameForm, SearchByTagsForm
+from .forms import ArticleForm, StepFormSetCreate, StepFormSetEdit, SearchByTitleForm, SearchByTagsForm
 from .models import Article, Step
 from taggit.models import Tag
 from django.http import HttpResponseBadRequest, HttpResponse
@@ -27,9 +27,9 @@ def search_view(request):
 
     if request.method == 'POST':
         if 'search_by_title' in request.POST:
-            search_name_form = SearchByNameForm(request.POST)
-            if search_name_form.is_valid():
-                search_text = search_name_form.cleaned_data['search_title']
+            search_title_form = SearchByTitleForm(request.POST)
+            if search_title_form.is_valid():
+                search_text = search_title_form.cleaned_data['search_title']
                 search_permitted_statuses = [status.n for status in ArticleStatus if status.search_permitted]
                 searched_articles = Article.objects.filter(
                     title__icontains=search_text, status__in=search_permitted_statuses)
