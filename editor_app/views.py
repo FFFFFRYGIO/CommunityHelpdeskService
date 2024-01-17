@@ -1,12 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 
+from CommunityHelpdeskService.utils import ReportStatus, ArticleStatus
+from registration.models import User
 from user_app.models import Article
 from .models import Report
-from registration.models import User
-from CommunityHelpdeskService.utils import ReportStatus, ArticleStatus
 
 
 # In your views.py

@@ -1,8 +1,9 @@
 from django.db import models
-from registration.models import User
-from taggit.managers import TaggableManager
 from django.utils import timezone
+from taggit.managers import TaggableManager
+
 from CommunityHelpdeskService.utils import ArticleStatus
+from registration.models import User
 
 
 # Create your models here.

@@ -9,6 +9,7 @@ from CommunityHelpdeskService.utils import ArticleStatus
 from user_app.forms import StepFormSetCreate
 from user_app.models import Article, Step
 
+
 # Create your tests here.
 
 

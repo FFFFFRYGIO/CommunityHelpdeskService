@@ -1,7 +1,4 @@
-from datetime import datetime
-from django.test import TestCase, Client
-
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import User
 from django.urls import reverse
 from parameterized import parameterized
 
@@ -9,6 +6,7 @@ from editor_app.models import Report
 from tests.MainTestBase import MainTestBase, FORM_DATA
 from user_app.forms import StepFormSetCreate
 from user_app.models import Article, Step
+
 
 # Create your tests here.
 

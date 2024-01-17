@@ -1,9 +1,8 @@
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 from tests.AccessTestBase import AccessTestsBase
 from tests.MainTestBase import USERS
-
-from django.urls import reverse
 
 
 # Create your tests here.

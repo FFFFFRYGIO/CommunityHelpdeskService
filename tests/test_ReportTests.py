@@ -1,6 +1,5 @@
-from datetime import datetime
-
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 
 from CommunityHelpdeskService.utils import ReportStatus, ArticleStatus
@@ -10,7 +9,6 @@ from tests.MainTestBase import MainTestBase, USERS, FORM_DATA
 from user_app.forms import StepFormSetCreate
 from user_app.models import Article, Step
 
-from django.core.files.uploadedfile import SimpleUploadedFile
 
 # Create your tests here.
 

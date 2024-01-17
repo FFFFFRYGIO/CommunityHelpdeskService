@@ -1,6 +1,7 @@
 from django import forms
-from .models import Article, Step
 from taggit.forms import TagField, TagWidget
+
+from .models import Article, Step
 
 
 class ArticleForm(forms.ModelForm):

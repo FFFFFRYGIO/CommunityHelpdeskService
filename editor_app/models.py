@@ -1,8 +1,9 @@
 from django.db import models
+from django.utils import timezone
+
+from CommunityHelpdeskService.utils import ReportStatus
 from registration.models import User
 from user_app.models import Article
-from django.utils import timezone
-from CommunityHelpdeskService.utils import ReportStatus
 
 
 # Create your models here.

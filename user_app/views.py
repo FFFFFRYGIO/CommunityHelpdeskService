@@ -1,16 +1,17 @@
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
+from django.db.models import Q
+from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import render, redirect
+from taggit.models import Tag
+
+from CommunityHelpdeskService.utils import save_files, generate_report_title, ArticleStatus, ReportStatus
+from editor_app.forms import ReportForm
+from editor_app.models import Report
+from registration.models import User
 from .forms import ArticleForm, StepFormSetCreate, StepFormSetEdit, SearchByTitleForm, SearchByPhraseForm, \
     SearchByTagsForm
 from .models import Article, Step
-from taggit.models import Tag
-from django.http import HttpResponseBadRequest, HttpResponse
-from django.db.models import Q
-from django.core.files.base import ContentFile
-from editor_app.models import Report
-from editor_app.forms import ReportForm
-from registration.models import User
-from CommunityHelpdeskService.utils import save_files, generate_report_title, ArticleStatus, ReportStatus
 
 
 # In your views.py

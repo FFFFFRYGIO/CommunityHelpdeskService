@@ -1,7 +1,7 @@
 from enum import Enum
 
-from django.core.files.storage import FileSystemStorage
 from decouple import config
+from django.core.files.storage import FileSystemStorage
 from openai import OpenAI
 
 
