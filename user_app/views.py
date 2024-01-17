@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import ArticleForm, StepFormSetCreate, StepFormSetEdit, SearchByTitleForm, SearchByTagsForm
+from .forms import ArticleForm, StepFormSetCreate, StepFormSetEdit, SearchByTitleForm, SearchByPhraseForm, \
+    SearchByTagsForm
 from .models import Article, Step
 from taggit.models import Tag
 from django.http import HttpResponseBadRequest, HttpResponse
@@ -36,6 +37,24 @@ def search_view(request):
             else:
                 return HttpResponseBadRequest(f'form not valid: {report_form.errors}')
 
+        if 'search_by_phrase' in request.POST:
+            search_phrase_form = SearchByPhraseForm(request.POST)
+            if search_phrase_form.is_valid():
+                search_text = search_phrase_form.cleaned_data['search_phrase']
+                search_permitted_statuses = [status.n for status in ArticleStatus if status.search_permitted]
+
+                searched_articles = Article.objects.filter(
+                    Q(status__in=search_permitted_statuses) & (
+                            Q(title__icontains=search_text) |
+                            Q(step__title__icontains=search_text) |
+                            Q(step__description1__icontains=search_text) |
+                            Q(step__description2__icontains=search_text)
+                    )
+                )
+
+            else:
+                return HttpResponseBadRequest(f'form not valid: {report_form.errors}')
+
         if 'search_by_tags' in request.POST:
             search_tags_form = SearchByTagsForm(request.POST)
             if search_tags_form.is_valid():
@@ -57,7 +76,8 @@ def search_view(request):
         } for article in searched_articles)
 
     return render(request, 'search.html', {
-        'search_name_form': SearchByNameForm, 'search_tags_form': SearchByTagsForm, 'search_result': search_result})
+        'search_title_form': SearchByTitleForm, 'search_phrase_form': SearchByPhraseForm,
+        'search_tags_form': SearchByTagsForm, 'search_result': search_result})
 
 
 @login_required
