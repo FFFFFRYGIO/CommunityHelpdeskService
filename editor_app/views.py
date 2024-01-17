@@ -12,7 +12,7 @@ from CommunityHelpdeskService.utils import ReportStatus, ArticleStatus
 # In your views.py
 
 
-def standardized_editors_panel_view(req, editor_type):
+def standardized_editors_panel_view(req, editor_type: str):
     """ function for editor_panel_view and master_editor_panel_view """
     if req.user.groups.filter(name=editor_type).exists():
         filters_applied = {}

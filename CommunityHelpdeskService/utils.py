@@ -5,7 +5,7 @@ from decouple import config
 from openai import OpenAI
 
 
-def save_files(requested_files):
+def save_files(requested_files: list) -> None:
     """ file saving function """
     fs = FileSystemStorage()
     for file_name in requested_files:
@@ -13,7 +13,7 @@ def save_files(requested_files):
         fs.save(file.name, file)
 
 
-def generate_report_title(description):
+def generate_report_title(description: str) -> str:
     """ generate report title with chatGPT help """
     client = OpenAI(api_key=config('OPENAI_API_KEY'))
     language = config('SYS_LANG')
@@ -42,7 +42,8 @@ def generate_report_title(description):
 class ReportStatus(Enum):
     """ Enum for report statuses """
 
-    def __init__(self, n, phrase, is_new_article, means_in_progress=False, editor_permitted=False):
+    def __init__(self, n: int, phrase: str, is_new_article: bool, means_in_progress: bool = False,
+                 editor_permitted: bool = False):
         self.n = n
         self.phrase = phrase
         self.is_new_article = is_new_article
@@ -50,7 +51,7 @@ class ReportStatus(Enum):
         self.editor_permitted = editor_permitted
 
     @classmethod
-    def get_status_name(cls, n):
+    def get_status_name(cls, n: int) -> str:
         """ get status phrase value to display it """
         for status in cls:
             if status.n == n:
@@ -58,7 +59,7 @@ class ReportStatus(Enum):
         raise ValueError(f'Bad status number {n}')
 
     @classmethod
-    def is_about_new_article(cls, n):
+    def is_about_new_article(cls, n: int) -> bool:
         """ check if the status is about new article """
         for status in cls:
             if status.n == n:
@@ -81,13 +82,13 @@ class ReportStatus(Enum):
 class ArticleStatus(Enum):
     """ Enum for article statuses """
 
-    def __init__(self, n, phrase, search_permitted=False):
+    def __init__(self, n: int, phrase: str, search_permitted: bool = False):
         self.n = n
         self.phrase = phrase
         self.search_permitted = search_permitted
 
     @classmethod
-    def get_status_name(cls, n):
+    def get_status_name(cls, n: int) -> str:
         """ get status phrase value to display it """
         for status in cls:
             if status.n == n:
