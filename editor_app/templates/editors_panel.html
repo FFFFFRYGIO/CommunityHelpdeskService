@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    <div class="filter_manager">
+    <div class='filter_manager'>
 
         <form method='post'>
             {% csrf_token %}
@@ -38,7 +38,7 @@
 
         </form>
 
-        <div class="filters_applied">
+        <div class='filters_applied'>
             {% if filters_applied %}
                 {% for filter_type, filter_value in filters_applied.items %}
                     <p>{{ filter_type }}: {{ filter_value }}</p>
