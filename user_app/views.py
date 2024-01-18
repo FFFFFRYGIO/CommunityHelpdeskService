@@ -51,7 +51,7 @@ def search_view(request):
                             Q(step__description1__icontains=search_text) |
                             Q(step__description2__icontains=search_text)
                     )
-                )
+                ).distinct()
 
             else:
                 return HttpResponseBadRequest(f'form not valid: {search_phrase_form.errors}')
