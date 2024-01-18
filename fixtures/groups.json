@@ -1,18 +1,18 @@
 [
-{
+  {
     "model": "auth.group",
     "pk": 2,
     "fields": {
-        "name": "Editors",
-        "permissions": []
+      "name": "Editors",
+      "permissions": []
     }
-},
-{
+  },
+  {
     "model": "auth.group",
     "pk": 3,
     "fields": {
-        "name": "MasterEditors",
-        "permissions": []
+      "name": "MasterEditors",
+      "permissions": []
     }
-}
+  }
 ]

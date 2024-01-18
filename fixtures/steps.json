@@ -1,756 +1,444 @@
 [
 {
     "model": "user_app.step",
+    "pk": 1,
+    "fields": {
+      "article": 1,
+      "ordinal_number": 1,
+      "title": "Pobierz 7zip",
+      "description1": "Wejdź na stronę https://7-zip.org.pl/",
+      "file1": "",
+      "description2": "Pobierz program 7zip z linku dla Windows 64-bit x64",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 2,
+    "fields": {
+      "article": 1,
+      "ordinal_number": 2,
+      "title": "Zainstaluj 7zip",
+      "description1": "Uruchom instalator",
+      "file1": "",
+      "description2": "Kliknij \"Install\", a następnie \"Close\"",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 3,
+    "fields": {
+      "article": 1,
+      "ordinal_number": 3,
+      "title": "Rozpakuj plik",
+      "description1": "Kliknij prawym na spakowany plik, następnie wybierz opcję \"7-Zip\" i \"Wypakuj tutaj\"",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 4,
+    "fields": {
+      "article": 1,
+      "ordinal_number": 4,
+      "title": "W Twoim folderze powinien znajdować się rozpakowany plik",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 5,
+    "fields": {
+      "article": 2,
+      "ordinal_number": 1,
+      "title": "Otwórz historię preglądania",
+      "description1": "Otwórz przeglądarkę",
+      "file1": "",
+      "description2": "Wciśnij kombinację klawiszy \"ctrl + h\"",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 6,
+    "fields": {
+      "article": 2,
+      "ordinal_number": 2,
+      "title": "Kliknij opcję \"Wyczyść dane przeglądania\"",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 7,
+    "fields": {
+      "article": 2,
+      "ordinal_number": 3,
+      "title": "Wybierz sposób czyszczenia",
+      "description1": "Wybierz przedział czasowy czyszczenia",
+      "file1": "",
+      "description2": "Wybierz co ma zostać wyczyszczone",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 8,
+    "fields": {
+      "article": 2,
+      "ordinal_number": 4,
+      "title": "Kliknij opcję \"Wyczyść dane\"",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 9,
+    "fields": {
+      "article": 3,
+      "ordinal_number": 1,
+      "title": "Utwóz maila",
+      "description1": "Utwórz nowego maila",
+      "file1": "",
+      "description2": "Określ odbiorcę i treść wiadomości",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 10,
+    "fields": {
+      "article": 3,
+      "ordinal_number": 2,
+      "title": "Załącz plik do maila",
+      "description1": "Wybierz z komputera plik do załączenia",
+      "file1": "",
+      "description2": "Przeciągnij plik w okno tworzenia maila",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 11,
+    "fields": {
+      "article": 3,
+      "ordinal_number": 3,
+      "title": "Poczekaj, aż plik zostanie wgrany i dołączony",
+      "description1": "Zaleca się dodanie wiadomości w treści, że plik został dostarczony",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 12,
+    "fields": {
+      "article": 4,
+      "ordinal_number": 1,
+      "title": "Otwórz panel aktualizacji",
+      "description1": "W wyszukiwarcre systemowej wpisz hasło \"Aktualizacje\"",
+      "file1": "",
+      "description2": "Kliknij w pierwszą wyświetloną opcję",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 13,
+    "fields": {
+      "article": 4,
+      "ordinal_number": 2,
+      "title": "Uruchom aktualizacje",
+      "description1": "Kliknij opcję \"Sprawdź aktualizację\"",
+      "file1": "",
+      "description2": "Jeśli wyświetlają się rzeczy do aktualizacji, kliknij opcję \"aktualizuj\"",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 14,
+    "fields": {
+      "article": 4,
+      "ordinal_number": 3,
+      "title": "Poczekaj na zakończenie aktualizacji",
+      "description1": "Jeśli system prosi o ponowne uruchomienie, zrestartuj komputer",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 15,
+    "fields": {
+      "article": 4,
+      "ordinal_number": 4,
+      "title": "Ponów krok drugi, żeby sprawdzić czy są jeszcze jakieś aktualizacje",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 16,
+    "fields": {
+      "article": 5,
+      "ordinal_number": 1,
+      "title": "Otwórz plik w systemie office 365",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 17,
+    "fields": {
+      "article": 5,
+      "ordinal_number": 2,
+      "title": "Otwórz panel udostępniania",
+      "description1": "Kliknik przycisk \"Udostępnij\" w prawym górnym rogu",
+      "file1": "",
+      "description2": "Na rozwiniętej liście kliknij \"Udostępnij\"",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 18,
+    "fields": {
+      "article": 5,
+      "ordinal_number": 3,
+      "title": "Przygotuj link udostępniający",
+      "description1": "Po prawej rozwiń listę opcji udostępnienia (można edytować, można wyświetlać, można przeglądać)",
+      "file1": "",
+      "description2": "Kliknij przycisk \"Kopiuj link\"",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 19,
+    "fields": {
+      "article": 5,
+      "ordinal_number": 4,
+      "title": "Skopiowany link można przekazać do odpowiedniego odbiorcy",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 20,
+    "fields": {
+      "article": 6,
+      "ordinal_number": 1,
+      "title": "Zaznacz treść do skomentowania",
+      "description1": "Przejdź do odpowiedniego fragmentu kodu",
+      "file1": "",
+      "description2": "Zaznacz fragment tekstu do skomentowania",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 21,
+    "fields": {
+      "article": 6,
+      "ordinal_number": 2,
+      "title": "Dodaj komentarz",
+      "description1": "Kliknij prawym przyciskiem po zaznaczeniu tekstu i wybierz opcję \"dodaj komentarz\"",
+      "file1": "",
+      "description2": "Wpisz treść komentarza i zatwierdź klikając strzałkę na dole",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 22,
+    "fields": {
+      "article": 7,
+      "ordinal_number": 1,
+      "title": "Zainstaluj \"Gry Goodle Play\"",
+      "description1": "Wejdź na stronę: https://play.google.com/store/apps/details?id=com.google.android.play.games&hl=pl&gl=US",
+      "file1": "",
+      "description2": "Pobierz i zainstaluj program",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 23,
+    "fields": {
+      "article": 7,
+      "ordinal_number": 2,
+      "title": "Otwórz i zainstaluj aplikację",
+      "description1": "W wyszukiwarce wyszukaj odpowiednią grę i kliknij w nią",
+      "file1": "",
+      "description2": "Kliknij przycisk \"Zainstaluj\"",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 24,
+    "fields": {
+      "article": 7,
+      "ordinal_number": 3,
+      "title": "Na stronie główej wybierz odpowiednią aplikację i kliknij \"Zagraj\"",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 25,
+    "fields": {
+      "article": 8,
+      "ordinal_number": 1,
+      "title": "Otwórz aplikację Microsoft TO DO",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 26,
+    "fields": {
+      "article": 8,
+      "ordinal_number": 2,
+      "title": "Na dole aplikacji wpisz treść zadania",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 27,
+    "fields": {
+      "article": 8,
+      "ordinal_number": 3,
+      "title": "W prawej stronie dodawania zadania określ termin realizacji i ewentualną cykliczność zadania",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 28,
+    "fields": {
+      "article": 8,
+      "ordinal_number": 4,
+      "title": "Kliknij enter",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 29,
+    "fields": {
+      "article": 9,
+      "ordinal_number": 1,
+      "title": "Otwórz menadżer zadań",
+      "description1": "Kliknij kombinację klawiszy \"ctrl + alt + del\"",
+      "file1": "",
+      "description2": "Na liście wybierz opcję \"Menedżer zadań\"",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 30,
+    "fields": {
+      "article": 9,
+      "ordinal_number": 2,
+      "title": "Wyszukaj odpowiedni proces",
+      "description1": "Rozwiń listę zadań przez przycisk \"Więcej szczegółów\"",
+      "file1": "",
+      "description2": "Na liście znajdź i zaznacz opcję \"Eksplorator Windows\"",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
+    "pk": 31,
+    "fields": {
+      "article": 9,
+      "ordinal_number": 3,
+      "title": "Po zaznaczeniu opcji kliknij przycisk \"Uruchom ponownie\"",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
+    }
+  },
+  {
+    "model": "user_app.step",
     "pk": 32,
     "fields": {
-        "article": 75,
-        "ordinal_number": 1,
-        "title": "s1",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
+      "article": 10,
+      "ordinal_number": 1,
+      "title": "Pobierz instalator",
+      "description1": "Wejdź na stronę: https://www.ccleaner.com/pl-pl",
+      "file1": "",
+      "description2": "Kliknij przycisk \"Pobierz bezpłatnie\"",
+      "file2": ""
     }
-},
-{
+  },
+  {
     "model": "user_app.step",
     "pk": 33,
     "fields": {
-        "article": 75,
-        "ordinal_number": 2,
-        "title": "s2",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
+      "article": 10,
+      "ordinal_number": 2,
+      "title": "Zainstaluj program",
+      "description1": "Uruchom instalator",
+      "file1": "",
+      "description2": "Przejdź przez kroki instalacyjne i poczekaj na zakończenie procesu",
+      "file2": ""
     }
-},
-{
+  },
+  {
     "model": "user_app.step",
     "pk": 34,
     "fields": {
-        "article": 76,
-        "ordinal_number": 1,
-        "title": "s1",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
+      "article": 10,
+      "ordinal_number": 3,
+      "title": "Uruchom pierwsze czyszczenie klikając na przycisk \"Uruchom CCleaner\"",
+      "description1": "",
+      "file1": "",
+      "description2": "",
+      "file2": ""
     }
-},
-{
-    "model": "user_app.step",
-    "pk": 35,
-    "fields": {
-        "article": 76,
-        "ordinal_number": 2,
-        "title": "s3",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 36,
-    "fields": {
-        "article": 77,
-        "ordinal_number": 1,
-        "title": "s1",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 37,
-    "fields": {
-        "article": 77,
-        "ordinal_number": 2,
-        "title": "s3",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 38,
-    "fields": {
-        "article": 78,
-        "ordinal_number": 1,
-        "title": "s1",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 80,
-    "fields": {
-        "article": 93,
-        "ordinal_number": 1,
-        "title": "s1",
-        "description1": "d11",
-        "file1": "",
-        "description2": "d12",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 81,
-    "fields": {
-        "article": 93,
-        "ordinal_number": 2,
-        "title": "s2",
-        "description1": "d21",
-        "file1": "",
-        "description2": "d22",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 82,
-    "fields": {
-        "article": 94,
-        "ordinal_number": 1,
-        "title": "s1",
-        "description1": "d11",
-        "file1": "",
-        "description2": "d12",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 83,
-    "fields": {
-        "article": 94,
-        "ordinal_number": 2,
-        "title": "s2",
-        "description1": "s21",
-        "file1": "",
-        "description2": "s22",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 84,
-    "fields": {
-        "article": 95,
-        "ordinal_number": 1,
-        "title": "s1",
-        "description1": "d1edit",
-        "file1": "",
-        "description2": "d2",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 85,
-    "fields": {
-        "article": 96,
-        "ordinal_number": 1,
-        "title": "s",
-        "description1": "d",
-        "file1": "",
-        "description2": "dd",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 86,
-    "fields": {
-        "article": 97,
-        "ordinal_number": 1,
-        "title": "s1",
-        "description1": "d1",
-        "file1": "",
-        "description2": "d2",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 87,
-    "fields": {
-        "article": 98,
-        "ordinal_number": 1,
-        "title": "s1",
-        "description1": "d11",
-        "file1": "",
-        "description2": "d12",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 88,
-    "fields": {
-        "article": 98,
-        "ordinal_number": 2,
-        "title": "s2",
-        "description1": "d21",
-        "file1": "",
-        "description2": "d22",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 105,
-    "fields": {
-        "article": 111,
-        "ordinal_number": 1,
-        "title": "dsgasrgargrgawerg",
-        "description1": "Go to this page: https://7-zip.org.pl/ and download 7zip for Windows 64-bit x64",
-        "file1": "Zrzut_ekranu_2023-12-01_142637_n6nt7FB.png",
-        "description2": "Run the downloaded file and follow installation instructions",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 127,
-    "fields": {
-        "article": 111,
-        "ordinal_number": 2,
-        "title": "sadfasdfasfasfasdfas",
-        "description1": "sdfasfasfsa",
-        "file1": "",
-        "description2": "fasfasfasfsaf",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 128,
-    "fields": {
-        "article": 111,
-        "ordinal_number": 3,
-        "title": "33333333333333",
-        "description1": "33333333",
-        "file1": "",
-        "description2": "3333333",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 129,
-    "fields": {
-        "article": 112,
-        "ordinal_number": 1,
-        "title": "Step 1 d0 f0",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 130,
-    "fields": {
-        "article": 112,
-        "ordinal_number": 2,
-        "title": "Step 2 d1 f2",
-        "description1": "Description 2 only first",
-        "file1": "favicon_JbppAdt.png",
-        "description2": "",
-        "file2": "favicon_gqhpuZ9.png"
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 131,
-    "fields": {
-        "article": 112,
-        "ordinal_number": 3,
-        "title": "Step 3 d2 f1",
-        "description1": "Description 3 first",
-        "file1": "favicon_UVMAfSY.png",
-        "description2": "Description 3 second",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 132,
-    "fields": {
-        "article": 112,
-        "ordinal_number": 4,
-        "title": "Step 4",
-        "description1": "Description 2 only first",
-        "file1": "favicon_p6ncIPr.png",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 133,
-    "fields": {
-        "article": 113,
-        "ordinal_number": 1,
-        "title": "dfasdfasd",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 134,
-    "fields": {
-        "article": 114,
-        "ordinal_number": 1,
-        "title": "Download 7zip",
-        "description1": "Go to page https://7-zip.org.pl/",
-        "file1": "",
-        "description2": "Download 7zip with the link for Windows 64-bit x64",
-        "file2": "Zrzut_ekranu_2023-12-01_142637_0ymRB9H.png"
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 135,
-    "fields": {
-        "article": 114,
-        "ordinal_number": 2,
-        "title": "Install 7zip",
-        "description1": "Run downloaded installer",
-        "file1": "Zrzut_ekranu_2023-12-07_191717.png",
-        "description2": "Click \"Install\" and then \"Close\"",
-        "file2": "x_ctIYMHa.png"
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 136,
-    "fields": {
-        "article": 114,
-        "ordinal_number": 3,
-        "title": "Unpack the file",
-        "description1": "Right click on the .7z file, then select \"7-Zip\" and \"Extract here\"",
-        "file1": "x2_B1lwwO2.png",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 137,
-    "fields": {
-        "article": 114,
-        "ordinal_number": 4,
-        "title": "In Your folder You should see packed file",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 138,
-    "fields": {
-        "article": 115,
-        "ordinal_number": 1,
-        "title": "Pobierz 7zip",
-        "description1": "Wejdč na stronŕ https://7-zip.org.pl/",
-        "file1": "Zrzut_ekranu_2023-12-01_142637_I7z5FcM.png",
-        "description2": "Pobierz program 7zip z linku dla Windows 64-bit x64",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 139,
-    "fields": {
-        "article": 115,
-        "ordinal_number": 2,
-        "title": "Zainstaluj 7zip",
-        "description1": "Uruchom instalator",
-        "file1": "Zrzut_ekranu_2023-12-07_191717_AdviL3W.png",
-        "description2": "Kliknij \"Install\", a nastŕpnie \"Close\"",
-        "file2": "x_FOg9GCK.png"
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 140,
-    "fields": {
-        "article": 115,
-        "ordinal_number": 3,
-        "title": "Rozpakuj plik",
-        "description1": "Kliknij prawym na spakowany plik, nastŕpnie wybierz opcjŕ \"7-Zip\" i \"Wypakuj tutaj\"",
-        "file1": "x2_kONqEwk.png",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 141,
-    "fields": {
-        "article": 115,
-        "ordinal_number": 4,
-        "title": "W Twoim folderze powinien znajdowaŠ siŕ rozpakowany plik",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 142,
-    "fields": {
-        "article": 76,
-        "ordinal_number": 5,
-        "title": "safasdf",
-        "description1": "sdafasf",
-        "file1": "Lynx_baby.webp",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 143,
-    "fields": {
-        "article": 116,
-        "ordinal_number": 1,
-        "title": "x",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 144,
-    "fields": {
-        "article": 117,
-        "ordinal_number": 1,
-        "title": "x",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 145,
-    "fields": {
-        "article": 118,
-        "ordinal_number": 1,
-        "title": "x",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 146,
-    "fields": {
-        "article": 119,
-        "ordinal_number": 1,
-        "title": "x",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 147,
-    "fields": {
-        "article": 120,
-        "ordinal_number": 1,
-        "title": "x",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 148,
-    "fields": {
-        "article": 121,
-        "ordinal_number": 1,
-        "title": "qaz",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 149,
-    "fields": {
-        "article": 122,
-        "ordinal_number": 1,
-        "title": "t1",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 150,
-    "fields": {
-        "article": 126,
-        "ordinal_number": 1,
-        "title": "test",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 151,
-    "fields": {
-        "article": 127,
-        "ordinal_number": 1,
-        "title": "steptesttitle",
-        "description1": "testdescription1",
-        "file1": "favicon_9BvukCa.png",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 152,
-    "fields": {
-        "article": 127,
-        "ordinal_number": 2,
-        "title": "steptesttitle2",
-        "description1": "testdescription2",
-        "file1": "",
-        "description2": "",
-        "file2": "favicon_MkSWKZ9.png"
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 153,
-    "fields": {
-        "article": 128,
-        "ordinal_number": 1,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 154,
-    "fields": {
-        "article": 128,
-        "ordinal_number": 2,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 155,
-    "fields": {
-        "article": 129,
-        "ordinal_number": 1,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 156,
-    "fields": {
-        "article": 129,
-        "ordinal_number": 2,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 157,
-    "fields": {
-        "article": 129,
-        "ordinal_number": 3,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 158,
-    "fields": {
-        "article": 129,
-        "ordinal_number": 4,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 159,
-    "fields": {
-        "article": 130,
-        "ordinal_number": 1,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 160,
-    "fields": {
-        "article": 130,
-        "ordinal_number": 2,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 161,
-    "fields": {
-        "article": 130,
-        "ordinal_number": 3,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 162,
-    "fields": {
-        "article": 130,
-        "ordinal_number": 4,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 163,
-    "fields": {
-        "article": 131,
-        "ordinal_number": 1,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 164,
-    "fields": {
-        "article": 132,
-        "ordinal_number": 1,
-        "title": "xx",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 165,
-    "fields": {
-        "article": 133,
-        "ordinal_number": 1,
-        "title": "tete",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 166,
-    "fields": {
-        "article": 138,
-        "ordinal_number": 1,
-        "title": "sadfa",
-        "description1": "",
-        "file1": "",
-        "description2": "",
-        "file2": ""
-    }
-},
-{
-    "model": "user_app.step",
-    "pk": 167,
-    "fields": {
-        "article": 149,
-        "ordinal_number": 1,
-        "title": "trherth",
-        "description1": "",
-        "file1": "clean_3Kq8DB7.png",
-        "description2": "",
-        "file2": ""
-    }
-}
+  }
 ]
