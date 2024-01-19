@@ -25,16 +25,6 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('register_user', (username, password) => {
-
-    // REMOVE IT LATER
-    cy.visit('http://127.0.0.1:8000/registration/register/');
-    cy.get('#id_username').type(username);
-    cy.get('#id_password1').type(password);
-    cy.get('#id_password2').type(password);
-    cy.get('.registration_button').click();
-
-    cy.cleanup_user(username);
-
     cy.visit('http://127.0.0.1:8000/registration/register/');
     cy.get('#id_username').type(username);
     cy.get('#id_password1').type(password);
