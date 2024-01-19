@@ -25,3 +25,8 @@ staticfiles
 
 # originally dumped data to JSON with UTF-16 encoding
 fixtures_original/
+
+# end to end tests - node_modules and other unnessesairy stuff
+end_to_end_tests/node_modules
+end_to_end_tests/cypress/screenshots
+end_to_end_tests/cypress/videos
