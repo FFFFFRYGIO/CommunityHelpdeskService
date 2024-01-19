@@ -155,48 +155,52 @@ def edit_article_view(request, article_id):
     reports = Report.objects.filter(article=article, editor=request.user)
     if request.user == article.author or reports:
         if request.method == 'POST':
+
             article_form = ArticleForm(request.POST, instance=article)
+            if not article_form.is_valid():
+                return HttpResponseBadRequest(f'article_form not valid: {article_form.errors}')
+
             step_form_set = StepFormSetEdit(request.POST, request.FILES, queryset=Step.objects.filter(article=article))
-            if article_form.is_valid():
-                article_form.save()
+            if not step_form_set.is_valid():
+                return HttpResponseBadRequest(f'step_form_set not valid: {step_form_set.errors}')
 
-                ordinal_number = 1
-                for step_form in step_form_set:
-                    step = step_form.save(commit=False)
-                    step.article = article
-                    step.ordinal_number = ordinal_number
-                    step.save()
-                    ordinal_number += 1
+            article_form.save()
 
-                steps_to_delete = Step.objects.filter(article=article, ordinal_number__gte=ordinal_number)
-                steps_to_delete.delete()
+            ordinal_number = 1
+            for step_form in step_form_set:
+                step = step_form.save(commit=False)
+                step.article = article
+                step.ordinal_number = ordinal_number
+                step.save()
+                ordinal_number += 1
 
-                if reports:
-                    article.status = ArticleStatus.CHANGES_DURING_REPORT.n
+            steps_to_delete = Step.objects.filter(article=article, ordinal_number__gte=ordinal_number)
+            steps_to_delete.delete()
 
-                    for report in reports:
-                        report.status += 1  # change from '(na) opened' to '(na) assigned' for both types of report
-                        report.save()
+            if reports:
+                article.status = ArticleStatus.CHANGES_DURING_REPORT.n
 
-                else:
-                    article.status = ArticleStatus.UNAPPROVED.n
+                for report in reports:
+                    report.status += 1  # change from '(na) opened' to '(na) assigned' for both types of report
+                    report.save()
 
-                    new_report = Report()
-                    new_report.title = f'Review changes in "{article.title}"'
-                    new_report.description = (f'Owner applied changes in this article: "{article.title}", it is '
-                                              f'required to review them')
-                    new_report.author = User.objects.get(username='system_automat')
-                    new_report.article = article
-                    new_report.status = ReportStatus.NA_OPENED.n
-                    with open('CommunityHelpdeskService/static/img/favicon.png', 'rb') as image:
-                        content_file = ContentFile(image.read())
-                        new_report.additional_file.save('favicon.png', content_file)
-                    new_report.save()
+            else:
+                article.status = ArticleStatus.UNAPPROVED.n
 
-                article.save()
+                new_report = Report()
+                new_report.title = f'Review changes in "{article.title}"'
+                new_report.description = (f'Owner applied changes in this article: "{article.title}", it is '
+                                          f'required to review them')
+                new_report.author = User.objects.get(username='system_automat')
+                new_report.article = article
+                new_report.status = ReportStatus.NA_OPENED.n
+                with open('CommunityHelpdeskService/static/img/favicon.png', 'rb') as image:
+                    content_file = ContentFile(image.read())
+                    new_report.additional_file.save('favicon.png', content_file)
+                new_report.save()
 
-                return redirect('home')
-            return HttpResponseBadRequest(f'report not valid: {report_form.errors}')
+            article.save()
+            return redirect('home')
         else:
             article_form = ArticleForm(instance=article)
             step_form_set = StepFormSetEdit(queryset=Step.objects.filter(article=article))
