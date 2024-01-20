@@ -213,12 +213,18 @@ def edit_article_view(request, article_id):
 @login_required
 def user_panel_view(request):
     """ all user's articles and reports """
+
     user_articles = [{
         'article': article, 'steps_amount': len(Step.objects.filter(article=article)),
     } for article in Article.objects.filter(author=request.user)]
+
+    user_authored_reports = Report.objects.filter(author=request.user)
+    users_article_reports = Report.objects.filter(article__author=request.user)
+    user_reports_list = (user_authored_reports | users_article_reports).distinct()
     user_reports = [{
         'report': report, 'report_status': ReportStatus.get_status_name(report.status),
-    } for report in Report.objects.filter(author=request.user)]
+    } for report in user_reports_list]
+
     return render(request, 'user_panel.html',
                   {'articles_with_steps': user_articles, 'reports_with_status': user_reports})
 
@@ -258,7 +264,7 @@ def view_report_view(request, report_id):
     """ view the whole content of the report """
     report = Report.objects.get(id=report_id)
 
-    if report.author == request.user:
+    if report.author == request.user or report.article.author == request.user:
         status = ReportStatus.get_status_name(report.status)
         return render(request, 'view_report.html', {'report': report, 'status': status})
 
