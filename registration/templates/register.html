@@ -12,6 +12,9 @@
         <h3>User is logged, can't register</h3>
     {% else %}
         <div class='main-box'>
+            {% if user_already_exists %}
+                <p><b>User already exists! Choose another one</b></p>
+            {% endif %}
             <form action='#' method='post' class='form-group'>
                 {% csrf_token %}
                 {{ form.as_p }}

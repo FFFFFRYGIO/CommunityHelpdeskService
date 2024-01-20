@@ -8,14 +8,17 @@ from django.shortcuts import render, redirect
 
 def register_view(request):
     """ parse and handle registration form """
+    user_already_exists = False
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('login')
+        else:
+            user_already_exists = True
 
     form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'register.html', {'form': form, 'user_already_exists': user_already_exists})
 
 
 def login_view(request):
