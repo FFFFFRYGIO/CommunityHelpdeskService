@@ -1,62 +1,74 @@
 describe('template spec', () => {
 
     beforeEach(() => {
-        cy.register_user('testuser', 'ph1shstix!');
-        cy.login_user('testuser', 'ph1shstix!');
+        cy.fixture('user').then(user => {
+            cy.register_user(user.username, user.password);
+            cy.login_user(user.username, user.password);
+        });
     });
 
     it('View Article Test', () => {
-        cy.visit('http://127.0.0.1:8000/user_app/create_article/');
+        cy.fixture('article').then(article => {
 
-        cy.get('#id_title').type('Test Article Title');
-        cy.get('#id_tags').type('tag1, tag2, tagtest');
+            cy.visit('http://127.0.0.1:8000/user_app/create_article/');
 
-        cy.get('#id_form-0-title').type('Test Step 1 title');
-        cy.get('#id_form-0-description1').type('Test Step 1 description1');
-        cy.get('#id_form-0-description2').type('Test Step 1 description2');
+            cy.get('#id_title').type(article.title);
+            cy.get('#id_tags').type(article.tags);
 
-        cy.get('#add-step-button').click();
+            cy.get('#id_form-0-title').type(article.steps[0].title);
+            cy.get('#id_form-0-description1').type(article.steps[0].description1);
+            cy.get('#id_form-0-description2').type(article.steps[0].description2);
 
-        cy.get('#id_form-1-title').type('Test Step 2 title');
-        cy.get('#id_form-1-description1').type('Test Step 2 description1');
-        cy.get('#id_form-1-description2').type('Test Step 2 description2');
+            cy.get('#add-step-button').click();
 
-        cy.get('button[type="submit"]').click();
+            cy.get('#id_form-1-title').type(article.steps[1].title);
+            cy.get('#id_form-1-description1').type(article.steps[1].description1);
+            cy.get('#id_form-1-description2').type(article.steps[1].description2);
 
-        cy.visit('http://127.0.0.1:8000/user_app/user_panel/');
+            cy.get('button[type="submit"]').click();
 
-        cy.get('.card-body').should('contain', 'Test Article Title');
-        cy.get('.card-body').should('contain', 'testuser');
-        cy.get('.card-body').should('contain', 'Steps: 2');
-        cy.get('.card-body').should('contain', '\n' +
-            '                    Tags: \n' +
-            '                    #tag1 \n' +
-            '                \n' +
-            '                    #tagtest \n' +
-            '                \n' +
-            '                    #tag2\n' +
-            '                \n' +
-            '                ');
+            cy.visit('http://127.0.0.1:8000/user_app/user_panel/');
 
-        cy.get('button[name="view_article"]').click();
+            cy.get('.card-body').should('contain', article.title);
+            cy.get('.card-body').should('contain', 'Steps: 2');
+            cy.fixture('user').then(user => {
+                cy.get('.card-body').should('contain', user.username);
+            });
+            cy.get('.card-body').should('contain', '\n' +
+                '                    Tags: \n' +
+                '                    #tag2 \n' +
+                '                \n' +
+                '                    #tag1 \n' +
+                '                \n' +
+                '                    #tagtest\n' +
+                '                \n' +
+                '                ');
 
-        cy.get('.author').should('contain', 'testuser');
-        cy.get('.status').should('contain', 'unapproved');
-        cy.get('.tags').should('contain', '#tag1');
-        cy.get('.tags').should('contain', '#tag2');
-        cy.get('.tags').should('contain', '#tagtest');
-        cy.get('h4').should('contain', 'Test Step 1 title');
-        cy.get('.description').should('contain', 'Test Step 1 description1');
-        cy.get('.description').should('contain', 'Test Step 1 description2');
-        cy.get('h4').should('contain', 'Test Step 2 title');
-        cy.get('.description').should('contain', 'Test Step 2 description1');
-        cy.get('.description').should('contain', 'Test Step 2 description2');
+            cy.get('button[name="view_article"]').click();
+
+            cy.fixture('user').then(user => {
+                cy.get('.author').should('contain', user.username);
+            });
+            cy.get('.status').should('contain', 'unapproved');
+            cy.get('.tags').should('contain', '#tag1');
+            cy.get('.tags').should('contain', '#tag2');
+            cy.get('.tags').should('contain', '#tagtest');
+            cy.get('h4').should('contain', article.steps[0].title);
+            cy.get('.description').should('contain', article.steps[0].description1);
+            cy.get('.description').should('contain', article.steps[0].description2);
+            cy.get('h4').should('contain', article.steps[1].title);
+            cy.get('.description').should('contain', article.steps[1].description1);
+            cy.get('.description').should('contain', article.steps[1].description2);
+        });
+
 
     });
 
     afterEach(() => {
         cy.visit('http://127.0.0.1:8000/registration/logout');
-        cy.cleanup_user('testuser');
+        cy.fixture('user').then(user => {
+            cy.cleanup_user(user.username);
+        });
     });
 
 });
