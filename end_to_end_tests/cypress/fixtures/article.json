@@ -1,6 +1,10 @@
 {
   "title": "Test Article Title",
-  "tags": "tag1, tag2, tagtest",
+  "tags": [
+    "tag1",
+    "tag2",
+    "tagtest"
+  ],
   "steps": [
     {
       "title": "Test Step 1 title",
