@@ -9,11 +9,21 @@ describe('template spec', () => {
 
     it('Edit Article Test', () => {
         cy.fixture('article').then(article => {
+            var tags_list;
 
             cy.visit('http://127.0.0.1:8000/user_app/create_article/');
 
+            tags_list = '';
+            article.tags.forEach((tag) => {
+                if (tags_list === '') {
+                    tags_list = tag;
+                } else {
+                    tags_list += ', ' + tag;
+                }
+            });
+
             cy.get('#id_title').type(article.title);
-            cy.get('#id_tags').type(article.tags);
+            cy.get('#id_tags').type(tags_list);
 
             cy.get('#id_form-0-title').type(article.steps[0].title);
             cy.get('#id_form-0-description1').type(article.steps[0].description1);
@@ -34,15 +44,9 @@ describe('template spec', () => {
             cy.fixture('user').then(user => {
                 cy.get('.card-body').should('contain', user.username);
             });
-            cy.get('.card-body').should('contain', '\n' +
-                '                    Tags: \n' +
-                '                    #tag2 \n' +
-                '                \n' +
-                '                    #tag1 \n' +
-                '                \n' +
-                '                    #tagtest\n' +
-                '                \n' +
-                '                ');
+            article.tags.forEach((tag) => {
+                cy.get('.card-body').should('contain', '#' + tag);
+            });
         });
 
         cy.get('button[name="view_article"]').click();
