@@ -1,0 +1,21 @@
+{
+  "title": "Test Article Title",
+  "tags": "tag1, tag2, tagtest",
+  "steps": [
+    {
+      "title": "Test Step 1 title",
+      "description1": "Test Step 1 description1",
+      "description2": "Test Step 1 description2"
+    },
+    {
+      "title": "Test Step 2 title",
+      "description1": "Test Step 2 description1",
+      "description2": "Test Step 2 description2"
+    },
+    {
+      "title": "Test Step 3 title",
+      "description1": "Test Step 3 description1",
+      "description2": "Test Step 3 description2"
+    }
+  ]
+}
