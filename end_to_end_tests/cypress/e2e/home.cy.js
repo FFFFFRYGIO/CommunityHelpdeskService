@@ -1,8 +1,10 @@
 describe('template spec', () => {
 
     beforeEach(() => {
-        cy.register_user('testuser', 'ph1shstix!');
-        cy.login_user('testuser', 'ph1shstix!');
+        cy.fixture('user').then(user => {
+            cy.register_user(user.username, user.password);
+            cy.login_user(user.username, user.password);
+        });
     });
 
     it('Home Test', () => {
@@ -35,7 +37,9 @@ describe('template spec', () => {
 
     afterEach(() => {
         cy.visit('http://127.0.0.1:8000/registration/logout');
-        cy.cleanup_user('testuser');
+        cy.fixture('user').then(user => {
+            cy.cleanup_user(user.username);
+        });
     });
 
 });
