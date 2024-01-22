@@ -18,7 +18,7 @@ install:
 	pip install -r requirements.txt
 
 docker-up:
-	set DOCKER_PG_HOST=db && docker-compose up -d --build
+	docker-compose up -d --build
 
 docker-down:
 	docker-compose down -v
