@@ -152,37 +152,55 @@ def view_article_view(request, article_id):
 def edit_article_view(request, article_id):
     """ change article elements (for owners and editors) """
     article = Article.objects.get(id=article_id)
-    reports = Report.objects.filter(article=article, editor=request.user)
-    if request.user == article.author or reports:
+    if request.user == article.author or Report.objects.filter(article=article, editor=request.user).exists():
         if request.method == 'POST':
 
             article_form = ArticleForm(request.POST, instance=article)
             if not article_form.is_valid():
                 return HttpResponseBadRequest(f'article_form not valid: {article_form.errors}')
 
-            step_form_set = StepFormSetEdit(request.POST, request.FILES, queryset=Step.objects.filter(article=article))
-            if not step_form_set.is_valid():
-                return HttpResponseBadRequest(f'step_form_set not valid: {step_form_set.errors}')
-
             article_form.save()
+
+            original_steps = Step.objects.filter(article=article)
+
+            step_form_set = StepFormSetEdit(request.POST, request.FILES, queryset=Step.objects.filter(article=article))
 
             ordinal_number = 1
             for step_form in step_form_set:
-                step = step_form.save(commit=False)
-                step.article = article
-                step.ordinal_number = ordinal_number
-                step.save()
+                try:
+                    step = original_steps.get(ordinal_number=ordinal_number)
+                except Step.DoesNotExist:
+                    step = Step()
+                    step.article = article
+                    step.ordinal_number = ordinal_number
+
+                step.title = step_form.data.get(f'form-{ordinal_number - 1}-title')
+                step.description1 = step_form.data.get(f'form-{ordinal_number - 1}-description1')
+                step.description2 = step_form.data.get(f'form-{ordinal_number - 1}-description2')
+
+                if request.FILES.get(f'form-{ordinal_number - 1}-file1'):
+                    step.file1 = request.FILES.get(f'form-{ordinal_number - 1}-file1')
+                elif step_form.data.get(f'form-{ordinal_number - 1}-file1-clear'):
+                    step.file1 = request.FILES.get(f'form-{ordinal_number - 1}-file1')
+
+                if request.FILES.get(f'form-{ordinal_number - 1}-file2'):
+                    step.file2 = request.FILES.get(f'form-{ordinal_number - 1}-file2')
+                elif step_form.data.get(f'form-{ordinal_number - 1}-file2-clear'):
+                    step.file2 = request.FILES.get(f'form-{ordinal_number - 1}-file2')
+
                 ordinal_number += 1
+
+                step.save()
 
             steps_to_delete = Step.objects.filter(article=article, ordinal_number__gte=ordinal_number)
             steps_to_delete.delete()
 
-            if reports:
-                article.status = ArticleStatus.CHANGES_DURING_REPORT.n
-
-                for report in reports:
-                    report.status += 1  # change from '(na) opened' to '(na) assigned' for both types of report
-                    report.save()
+            if request.user.groups.filter(name='Editors').exists():
+                for report in Report.objects.filter(article=article, editor=request.user):
+                    if report.status in (ReportStatus.NA_ASSIGNED.n, ReportStatus.ASSIGNED.n):
+                        article.status = ArticleStatus.CHANGES_DURING_REPORT.n
+                        # change from '(na) assigned' to '(na) changes applied' for both types of report
+                        report.status += 1
 
             else:
                 article.status = ArticleStatus.UNAPPROVED.n
