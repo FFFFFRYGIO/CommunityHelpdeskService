@@ -86,12 +86,13 @@ class ArticleTests(TestCase):
 
             self.assertEqual(Step.objects.filter(article=article).count(), len(steps_to_compare))
             for step_dict in steps_to_compare:
-                edited_step = Step.objects.get(id=step_dict['id'])
+                edited_step = Step.objects.get(article_id=step_dict['article_id'],
+                                               ordinal_number=step_dict['ordinal_number'])
                 self.assertNotEqual(step_dict, edited_step.__dict__)
 
-                self.assertEqual(step_dict['title'], Step.objects.get(id=step_dict['id']).title)
-                self.assertEqual(step_dict['description1'], Step.objects.get(id=step_dict['id']).description1)
-                self.assertEqual(step_dict['description2'], Step.objects.get(id=step_dict['id']).description2)
+                self.assertEqual(step_dict['title'], edited_step.title)
+                self.assertEqual(step_dict['description1'], edited_step.description1)
+                self.assertEqual(step_dict['description2'], edited_step.description2)
 
     def test_edit_article_different_steps_amount(self):
         modification = ' modified'
@@ -112,7 +113,8 @@ class ArticleTests(TestCase):
 
             self.assertEqual(Step.objects.filter(article=article).count(), len(steps_to_compare))
             for step_dict in steps_to_compare:
-                edited_step = Step.objects.get(id=step_dict['id'])
+                edited_step = Step.objects.get(article_id=step_dict['article_id'],
+                                               ordinal_number=step_dict['ordinal_number'])
                 self.assertNotEqual(step_dict, edited_step.__dict__)
 
                 self.assertEqual(step_dict['title'] + modification, edited_step.title)
@@ -143,14 +145,13 @@ class ArticleTests(TestCase):
 
             self.assertEqual(Step.objects.filter(article=article).count(), len(steps_to_compare) + modify_amount_number)
             for step_dict in steps_to_compare[:modify_amount_number]:
-                edited_step = Step.objects.get(id=step_dict['id'])
+                edited_step = Step.objects.get(article_id=step_dict['article_id'],
+                                               ordinal_number=step_dict['ordinal_number'])
                 self.assertNotEqual(step_dict, edited_step.__dict__)
 
-                self.assertEqual(step_dict['title'] + modification, Step.objects.get(id=step_dict['id']).title)
-                self.assertEqual(step_dict['description1'] + modification,
-                                 Step.objects.get(id=step_dict['id']).description1)
-                self.assertEqual(step_dict['description2'] + modification,
-                                 Step.objects.get(id=step_dict['id']).description2)
+                self.assertEqual(step_dict['title'] + modification, edited_step.title)
+                self.assertEqual(step_dict['description1'] + modification, edited_step.description1)
+                self.assertEqual(step_dict['description2'] + modification, edited_step.description2)
 
             for i in range(modify_amount_number, 0, -1):
                 not_existing_step_id = steps_to_compare[i].id
@@ -176,14 +177,13 @@ class ArticleTests(TestCase):
 
             self.assertEqual(Step.objects.filter(article=article).count(), len(steps_to_compare) + modify_amount_number)
             for step_dict in steps_to_compare[:modify_amount_number]:
-                edited_step = Step.objects.get(id=step_dict['id'])
+                edited_step = Step.objects.get(article_id=step_dict['article_id'],
+                                               ordinal_number=step_dict['ordinal_number'])
                 self.assertNotEqual(step_dict, edited_step.__dict__)
 
-                self.assertEqual(step_dict['title'] + modification, Step.objects.get(id=step_dict['id']).title)
-                self.assertEqual(step_dict['description1'] + modification,
-                                 Step.objects.get(id=step_dict['id']).description1)
-                self.assertEqual(step_dict['description2'] + modification,
-                                 Step.objects.get(id=step_dict['id']).description2)
+                self.assertEqual(step_dict['title'] + modification, edited_step.title)
+                self.assertEqual(step_dict['description1'] + modification, edited_step.description1)
+                self.assertEqual(step_dict['description2'] + modification, edited_step.description2)
 
             for step_ordinal_number in range(len(steps_to_compare) + 1, len(steps_to_compare) + modify_amount_number):
                 edited_step = Step.objects.get(article=article, ordinal_number=step_ordinal_number)
