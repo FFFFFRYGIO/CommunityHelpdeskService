@@ -191,6 +191,7 @@ class ReportsTests(MainTestBase):
 
         report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
         self.assertEqual(report.editor.username, USERS[2]['username'])
+        self.assertIn(report.status, (ReportStatus.ASSIGNED.n, ReportStatus.NA_ASSIGNED.n))
 
         response = self.client.post(reverse('logout'))
         self.assertRedirects(response, reverse('login'))
@@ -250,7 +251,7 @@ class ReportsTests(MainTestBase):
         self.assertEqual(list(edited_article.tags.values_list('name', flat=True)), edited_data['tags'].split(', '))
 
         edited_report = Report.objects.get(description=f'New report about article "{FORM_DATA["title"]}"')
-        self.assertEqual(edited_report.status, ReportStatus.CHANGES_APPLIED.n)
+        self.assertIn(edited_report.status, (ReportStatus.CHANGES_APPLIED.n, ReportStatus.NA_CHANGES_APPLIED.n))
 
         response = self.client.post(reverse('logout'))
         self.assertRedirects(response, reverse('login'))
