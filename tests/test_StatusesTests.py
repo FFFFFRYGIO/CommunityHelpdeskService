@@ -135,6 +135,14 @@ class StatusesTests(MainTestBase):
         edited_data = {
             'title': article.title,
             'tags': 'new_tag',
+            'form-TOTAL_FORMS': '2',
+            'form-INITIAL_FORMS': '0',
+            'form-MIN_NUM_FORMS': '0',
+            'form-MAX_NUM_FORMS': '1000',
+            'form-0-title': 'Step 1 edited',
+            'form-0-description1': 'Description for Step 1 edited',
+            'form-1-title': 'Step 2 edited',
+            'form-1-description1': 'Description for Step 2 edited',
         }
 
         self.assertNotEquals(article.tags, edited_data['tags'])
@@ -257,6 +265,10 @@ class StatusesTests(MainTestBase):
             tags=FORM_DATA['tags'],
             status=ArticleStatus.APPROVED.n,
         )
+        Step.objects.create(article=Article.objects.get(title=FORM_DATA['title']), ordinal_number=1,
+                            title=FORM_DATA['form-0-title'], description1=FORM_DATA['form-0-description1'])
+        Step.objects.create(article=Article.objects.get(title=FORM_DATA['title']), ordinal_number=2,
+                            title=FORM_DATA['form-1-title'], description1=FORM_DATA['form-1-description1'])
         self.user_report_article()
         self.master_editor_assign_the_report('open')
 
