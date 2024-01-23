@@ -231,6 +231,14 @@ class ReportsTests(MainTestBase):
         edited_data = {
             'title': article.title,
             'tags': 'new_tag',
+            'form-TOTAL_FORMS': '2',
+            'form-INITIAL_FORMS': '0',
+            'form-MIN_NUM_FORMS': '0',
+            'form-MAX_NUM_FORMS': '1000',
+            'form-0-title': 'Step 1 edited',
+            'form-0-description1': 'Description for Step 1 edited',
+            'form-1-title': 'Step 2 edited',
+            'form-1-description1': 'Description for Step 2 edited',
         }
 
         self.assertNotEquals(article.tags, edited_data['tags'])
