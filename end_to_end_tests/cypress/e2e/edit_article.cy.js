@@ -61,9 +61,12 @@ describe('template spec', () => {
             cy.get('#id_form-0-description1').clear().type(article.steps[0].description1 + ' edited');
             cy.get('#id_form-0-description2').clear().type(article.steps[0].description2 + ' edited');
 
-            cy.get('#id_form-1-title').clear().type(article.steps[1].title + ' edited');
-            cy.get('#id_form-1-description1').clear().type(article.steps[1].description1 + ' edited');
-            cy.get('#id_form-1-description2').clear().type(article.steps[1].description2 + ' edited');
+            cy.get('#remove-step-button').click();
+            cy.get('#add-step-button').click();
+
+            cy.get('#id_form-1-title').clear().type('New ' + article.steps[1].title);
+            cy.get('#id_form-1-description1').clear().type('New ' + article.steps[1].description1);
+            cy.get('#id_form-1-description2').clear().type('New ' + article.steps[1].description2);
 
             cy.get('#add-step-button').click();
 
