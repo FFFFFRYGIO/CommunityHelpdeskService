@@ -201,6 +201,7 @@ def edit_article_view(request, article_id):
                         article.status = ArticleStatus.CHANGES_DURING_REPORT.n
                         # change from '(na) assigned' to '(na) changes applied' for both types of report
                         report.status += 1
+                        report.save()
 
             else:
                 article.status = ArticleStatus.UNAPPROVED.n
