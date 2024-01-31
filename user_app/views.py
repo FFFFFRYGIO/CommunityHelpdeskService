@@ -165,6 +165,8 @@ def edit_article_view(request, article_id):
 
             step_form_set = StepFormSetEdit(request.POST, request.FILES, queryset=Step.objects.filter(article=article))
 
+            save_files(request.FILES)
+
             ordinal_number = 1
             for step_form in step_form_set:
                 try:
