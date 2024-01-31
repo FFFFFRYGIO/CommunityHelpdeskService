@@ -43,12 +43,12 @@ class ReportStatus(Enum):
     """ Enum for report statuses """
 
     def __init__(self, n: int, phrase: str, is_new_article: bool, means_in_progress: bool = False,
-                 editor_permitted: bool = False):
+                 view_permitted: bool = False):
         self.n = n
         self.phrase = phrase
         self.is_new_article = is_new_article
         self.means_in_progress = means_in_progress
-        self.editor_permitted = editor_permitted
+        self.view_permitted = view_permitted
 
     @classmethod
     def get_status_name(cls, n: int) -> str:

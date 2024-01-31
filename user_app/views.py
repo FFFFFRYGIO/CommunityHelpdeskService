@@ -237,8 +237,9 @@ def user_panel_view(request):
         'article': article, 'steps_amount': len(Step.objects.filter(article=article)),
     } for article in Article.objects.filter(author=request.user)]
 
-    user_authored_reports = Report.objects.filter(author=request.user)
-    users_article_reports = Report.objects.filter(article__author=request.user)
+    view_permitted_statuses = [status.n for status in ReportStatus if status.view_permitted]
+    user_authored_reports = Report.objects.filter(author=request.user, status__in=view_permitted_statuses)
+    users_article_reports = Report.objects.filter(article__author=request.user, status__in=view_permitted_statuses)
     user_reports_list = (user_authored_reports | users_article_reports).distinct()
     user_reports = [{
         'report': report, 'report_status': ReportStatus.get_status_name(report.status),
