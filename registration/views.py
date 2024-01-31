@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
+from .models import User
 
 
 # Create your views here.
@@ -15,7 +16,8 @@ def register_view(request):
             form.save()
             return redirect('login')
         else:
-            user_already_exists = True
+            if User.objects.filter(username=request.POST.get('username')).exists():
+                user_already_exists = True
 
     form = UserCreationForm()
     return render(request, 'register.html', {'form': form, 'user_already_exists': user_already_exists})
