@@ -17,8 +17,8 @@ def standardized_editors_panel_view(req, editor_type: str):
     if req.user.groups.filter(name=editor_type).exists():
         filters_applied = {}
         if editor_type == 'Editors':
-            view_permitted_statuses = [status.n for status in ReportStatus if status.view_permitted]
-            reports = Report.objects.filter(editor=req.user, status__in=view_permitted_statuses)
+            editor_permitted_statuses = [status.n for status in ReportStatus if status.editor_permitted]
+            reports = Report.objects.filter(editor=req.user, status__in=editor_permitted_statuses)
         elif editor_type == 'MasterEditors':
             reports = Report.objects.filter()
         else:
