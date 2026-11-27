@@ -35,7 +35,7 @@ describe('template spec', () => {
             cy.get('#id_form-1-description1').type(article.steps[1].description1);
             cy.get('#id_form-1-description2').type(article.steps[1].description2);
 
-            cy.get('button[type="submit"]').click();
+            cy.get('.content button[type="submit"]').click();
 
             cy.visit('http://127.0.0.1:8000/user_app/user_panel/');
 
@@ -77,7 +77,7 @@ describe('template spec', () => {
     });
 
     afterEach(() => {
-        cy.visit('http://127.0.0.1:8000/registration/logout');
+        cy.logout();
         cy.fixture('user').then(user => {
             cy.cleanup_user(user.username);
         });
