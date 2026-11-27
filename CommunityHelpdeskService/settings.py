@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'registration.apps.RegistrationConfig',
     'editor_app.apps.EditorAppConfig',
     'taggit',
-    'bootstrap5',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -145,3 +145,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 django_heroku.settings(locals())
+
+# Django >= 5.1 removed STATICFILES_STORAGE (which django_heroku sets above);
+# keep the same whitenoise storage via the STORAGES setting.
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
