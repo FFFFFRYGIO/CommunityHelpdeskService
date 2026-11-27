@@ -32,16 +32,12 @@ jobs:
           docker compose exec -T db psql -U helpdesk -d helpdesk -c 'select version();'
           docker compose exec -T db psql -U helpdesk -d helpdesk -c 'select count(*) as users from auth_user;'
 
-      # Informational: on master 12 tests already fail independently of dependency
-      # versions (need OPENAI_API_KEY/SYS_LANG and have fixture/KeyError issues).
-      - name: Django tests (informational)
-        continue-on-error: true
+      - name: Django tests
         run: docker compose run --rm web sh -c "python manage.py collectstatic --noinput && python manage.py test tests"
       - uses: actions/setup-node@v6
         with:
           node-version: "22"
-      - name: Cypress e2e (informational)
-        continue-on-error: true
+      - name: Cypress e2e
         working-directory: end_to_end_tests
         run: npm ci && npx cypress run
       - if: failure()
