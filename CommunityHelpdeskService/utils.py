@@ -1,8 +1,11 @@
+import logging
 from enum import Enum
 
 from decouple import config
 from django.core.files.storage import FileSystemStorage
 from openai import OpenAI
+
+logger = logging.getLogger(__name__)
 
 
 def save_files(requested_files: list) -> None:
@@ -13,10 +16,23 @@ def save_files(requested_files: list) -> None:
         fs.save(file.name, file)
 
 
+def _fallback_report_title(description: str, max_words: int = 8) -> str:
+    """ short title built from the description itself (no external service) """
+    words = description.split()
+    title = ' '.join(words[:max_words])
+    if len(words) > max_words:
+        title += '...'
+    return title[:150] or 'Report'
+
+
 def generate_report_title(description: str) -> str:
-    """ generate report title with chatGPT help """
-    client = OpenAI(api_key=config('OPENAI_API_KEY'))
-    language = config('SYS_LANG')
+    """ generate report title with chatGPT help; falls back to a local title
+    when OPENAI_API_KEY is not configured or the API call fails """
+    api_key = config('OPENAI_API_KEY', default='')
+    if not api_key:
+        return _fallback_report_title(description)
+
+    language = config('SYS_LANG', default='en')
     if language == 'pl':
         chat_content = (f'Stwórz tytuł do zgłoszenia o takim opisie: "{description}".'
                         f'Tytuł ma być zwięzły, kilkusłowny oraz pragmatyczny, bez upiększeń')
@@ -26,17 +42,21 @@ def generate_report_title(description: str) -> str:
     else:
         raise ValueError(f'Language "{language}" not supported')
 
-    chat_completion = client.chat.completions.create(
-        messages=[{'role': 'user', 'content': chat_content}],
-        model=config('AI_MODEL'),
-    )
+    try:
+        client = OpenAI(api_key=api_key)
+        chat_completion = client.chat.completions.create(
+            messages=[{'role': 'user', 'content': chat_content}],
+            model=config('AI_MODEL', default='gpt-4o-mini'),
+        )
+        response = (chat_completion.choices[0].message.content or '').strip()
+    except Exception:  # network / auth / quota problems must not break reporting
+        logger.exception('OpenAI title generation failed, using fallback title')
+        return _fallback_report_title(description)
 
-    response = chat_completion.choices[0].message.content
-
-    if response[0] == '"' and response[-1] == '"':
+    if len(response) >= 2 and response[0] == '"' and response[-1] == '"':
         response = response[1:-1]
 
-    return response
+    return response[:150] or _fallback_report_title(description)
 
 
 class ReportStatus(Enum):
