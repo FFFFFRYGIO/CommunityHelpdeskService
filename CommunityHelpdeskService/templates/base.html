@@ -56,7 +56,11 @@
             {% endif %}
             {% if user.is_authenticated %}
                 <li class='nav-item active'>
-                    <a class='nav-link' href='/registration/logout'>Logout</a>
+                    {# Django >= 5.0: LogoutView accepts POST only #}
+                    <form method='post' action='/registration/logout/' class='d-inline'>
+                        {% csrf_token %}
+                        <button type='submit' class='nav-link btn btn-link'>Logout</button>
+                    </form>
                 </li>
             {% endif %}
         </ul>

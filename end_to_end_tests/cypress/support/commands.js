@@ -63,5 +63,15 @@ Cypress.Commands.add('cleanup_user', (username) => {
         cy.visit(`http://127.0.0.1:8000${href}`);
     });
     cy.get('input[type="submit"]').click();
-    cy.visit('http://127.0.0.1:8000/registration/logout');
+    cy.logout();
+});
+
+// Django >= 5.0 only accepts POST for logout: use the navbar logout form.
+Cypress.Commands.add('logout', () => {
+    cy.visit('http://127.0.0.1:8000/user_app/home');
+    cy.get('body').then($body => {
+        if ($body.find("button:contains('Logout')").length) {
+            cy.contains('button', 'Logout').click();
+        }
+    });
 });
