@@ -51,7 +51,7 @@ describe('template spec', () => {
     });
 
     afterEach(() => {
-        cy.visit('http://127.0.0.1:8000/registration/logout');
+        cy.logout();
         cy.fixture('user').then(user => {
             cy.cleanup_user(user.username);
         });
