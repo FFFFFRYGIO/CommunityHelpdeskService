@@ -1,4 +1,5 @@
 from datetime import datetime
+from unittest import mock
 
 from django.contrib.auth.models import Group, User
 from django.test import TestCase, Client
@@ -41,6 +42,9 @@ class MainTestBase(TestCase):
     @classmethod
     def setUpTestData(cls):
         """ setUp separate database to test functionalities """
+        # fresh per test class: a shared class-level dict kept User objects
+        # from other test classes whose rows were already rolled back
+        cls.test_users = {'users': [], 'editors': [], 'master_editors': []}
         User.objects.create_user(username='system_automat', password='system_password1')
         editors_group, created = Group.objects.get_or_create(name='Editors')
         master_editors_group, created = Group.objects.get_or_create(name='MasterEditors')
@@ -70,6 +74,11 @@ class MainTestBase(TestCase):
     def setUp(self):
         """setUp method for AccessTests"""
         self.client = Client()
+        # never call the OpenAI API from tests
+        patcher = mock.patch('user_app.views.generate_report_title',
+                             side_effect=lambda description: description[:50] or 'Report')
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def tearDown(self):
         """tearDown method for AccessTestsBase"""
