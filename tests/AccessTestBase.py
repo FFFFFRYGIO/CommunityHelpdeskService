@@ -27,7 +27,7 @@ class AccessTestsBase(MainTestBase):
             "<a class='nav-link' href='/user_app/user_panel'>User Panel</a>",
             "<a class='nav-link' href='/editor_app/editor_panel'>Editor Panel</a>",
             "<a class='nav-link' href='/editor_app/master_editor_panel'>Master Editor Panel</a>",
-            "<a class='nav-link' href='/registration/logout'>Logout</a>",
+            "<button type='submit' class='nav-link btn btn-link'>Logout</button>",
         ]
         footer_elements = [
             '<div>Community Helpdesk Service</div>',
@@ -48,7 +48,7 @@ class AccessTestsBase(MainTestBase):
             navbar_elements.remove("<a class='nav-link' href='/user_app/user_panel'>User Panel</a>")
             navbar_elements.remove("<a class='nav-link' href='/editor_app/editor_panel'>Editor Panel</a>")
             navbar_elements.remove("<a class='nav-link' href='/editor_app/master_editor_panel'>Master Editor Panel</a>")
-            navbar_elements.remove("<a class='nav-link' href='/registration/logout'>Logout</a>")
+            navbar_elements.remove("<button type='submit' class='nav-link btn btn-link'>Logout</button>")
             navbar_elements.append("<a class='nav-link' href='/registration/register'>Register")
             navbar_elements.append("<a class='nav-link' href='/registration/login'>Login")
             home_elements.remove('Create new article')
