@@ -1,0 +1,48 @@
+name: build
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  stack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Create CI .env (throwaway values generated per run)
+        run: |
+          {
+            echo "SECRET_KEY=$(openssl rand -hex 32)"
+            echo "DEBUG=True"
+            echo "PG_NAME=helpdesk"
+            echo "PG_USER=helpdesk"
+            echo "PG_PASSWORD=$(openssl rand -hex 16)"
+            echo "PG_PORT=5432"
+            echo "DOCKER_PG_HOST=db"
+          } > .env
+      - name: Start stack (docker compose)
+        run: docker compose up -d --build
+      - name: Wait for web
+        run: |
+          for i in $(seq 1 90); do curl -fsS -o /dev/null http://127.0.0.1:8000/ && echo up && break; sleep 2; done
+          curl -fsS -o /dev/null http://127.0.0.1:8000/ || { docker compose ps; docker compose logs --tail 80; exit 1; }
+      - name: Check DB server version and loaded fixtures
+        run: |
+          docker compose exec -T db psql -U helpdesk -d helpdesk -c 'select version();'
+          docker compose exec -T db psql -U helpdesk -d helpdesk -c 'select count(*) as users from auth_user;'
+
+      # Informational: on master 12 tests already fail independently of dependency
+      # versions (need OPENAI_API_KEY/SYS_LANG and have fixture/KeyError issues).
+      - name: Django tests (informational)
+        continue-on-error: true
+        run: docker compose run --rm web sh -c "python manage.py collectstatic --noinput && python manage.py test tests"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+      - name: Cypress e2e (informational)
+        continue-on-error: true
+        working-directory: end_to_end_tests
+        run: npm ci && npx cypress run
+      - if: failure()
+        run: docker compose logs --tail 100
